@@ -1,0 +1,17 @@
+{
+  "name": "1412180",
+  "version": "1.0.0",
+  "main": "myscript.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "http-server": "^0.11.1",
+    "express": "4.17.1"
+  },
+  "devDependencies": {},
+  "description": ""
+}
