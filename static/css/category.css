@@ -32,3 +32,26 @@
     padding: 6px 12px;
     font: 14px sans-serif;
 }
+
+.content-date {
+    height: 30px;
+    width: 50px;
+    background-color: #f16543;
+    color: #ffffff;
+    border-radius: 3px;
+    line-height: 30px;
+    border: 0px solid #ffffff;
+    font-size: 14px;
+    transform: rotate(0deg);
+    padding: 0px 0px 0px 0px;
+    margin: 0px 0px 0px 0px;
+}
+
+.font-date {
+    background-color: #f16543;
+    border-color: #f16543;
+}
+
+.no-spacing {
+    margin: 0 !important;
+}
