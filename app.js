@@ -1,15 +1,18 @@
 var express = require('express');
-var app = express();
+var exphbs = require('express-handlebars');
 
-app.set('view engine', 'html');
+var app = express();
 app.use(express.static(__dirname))
 
-//set port
-var port = process.env.PORT || 8080;
-app.get("/", function(req, res) {
-    res.render("home");
+app.engine('handlebars', exphbs());
+app.set('view engine', 'handlebars');
+
+app.get('/', function(req, res) {
+    res.render('home');
 });
 
-app.listen(port, function() {
-    console.log("app running");
-})
+app.get('/MSIcatgory', function(req, res) {
+    res.render('layouts/Laptop/MSI/all');
+});
+
+app.listen(3000);

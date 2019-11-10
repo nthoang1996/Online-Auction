@@ -25,6 +25,9 @@
     color: black;
     border-radius: 0px 5px 5px 0px !important;
     min-width: 160px;
+    border-top: 1px solid black;
+    border-right: 1px solid black;
+    border-bottom: 1px solid black;
 }
 
 .option-order {
