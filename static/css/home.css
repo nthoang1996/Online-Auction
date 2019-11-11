@@ -292,3 +292,34 @@ body {
     left: 10px;
     color: blue;
 }
+
+.label-image-footer {
+    line-height: 45px;
+    margin-left: 10px;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.container-subtitle {
+    font-size: 16px;
+    margin-bottom: 9px;
+}
+
+.title-place {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.title-address {
+    font-size: 16px;
+    line-height: 1.5;
+}
+
+.container-info {
+    border-top: 1px solid #adadad;
+}
+
+.container-lable-info {
+    margin-top: 40px;
+    margin-bottom: 10px;
+}
