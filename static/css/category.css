@@ -58,3 +58,42 @@
 .no-spacing {
     margin: 0 !important;
 }
+
+.button-sort {
+    font-size: 12px !important;
+    background-color: #9097B4 !important;
+}
+
+.bidder-name {
+    position: absolute;
+    top: 0;
+    font-size: 12px;
+    font-weight: bold;
+    background-color: #000000;
+    color: #ffffff;
+    border: 1px solid black;
+    border-bottom-right-radius: 5px;
+    padding: 5px 10px;
+}
+
+.count-bid {
+    position: absolute;
+    top: 0;
+    right: 0;
+    font-size: 12px;
+    font-weight: bold;
+    background-color: #FC445D;
+    color: #ffffff;
+    border: 1px solid #FC445D;
+    border-bottom-left-radius: 5px;
+    padding: 5px 10px;
+}
+
+.title-product {
+    min-width: 1170px;
+    font-weight: bold;
+}
+
+.container-product {
+    margin-top: 10px;
+}

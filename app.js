@@ -15,4 +15,12 @@ app.get('/MSIcatgory', function(req, res) {
     res.render('layouts/Laptop/MSI/all');
 });
 
+app.get('/msi-gaming-series', function(req, res) {
+    res.render('layouts/Laptop/MSI/msi-gaming-series');
+});
+
+app.get('/msi-gaming-series-1', function(req, res) {
+    res.render('layouts/Laptop/MSI/msi-gaming-series-1');
+});
+
 app.listen(3000);
