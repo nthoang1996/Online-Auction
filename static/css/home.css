@@ -323,3 +323,65 @@ body {
     margin-top: 40px;
     margin-bottom: 10px;
 }
+
+.image-button {
+    padding: 0 !important;
+    margin-top: 5px;
+}
+
+.container-info-product {
+    margin: 15px !important;
+    height: 100%;
+}
+
+.title-container {
+    font-size: 25px;
+}
+
+.time-expired {
+    border: 1px solid red;
+    font-size: 20px;
+    padding: 10px 20px 10px 20px;
+    border-radius: 5px;
+}
+
+.container-price {
+    border: 3px double black;
+    padding: 10px;
+    border-radius: 5px;
+    margin-top: 10px;
+    font-size: 15px;
+}
+
+.info {
+    margin-left: 5px;
+    margin-top: 10px;
+    font-size: 13px;
+}
+
+.product-description {
+    font-size: 12px;
+}
+
+.header-description {
+    font-size: 15px;
+    margin-left: 5px;
+    color: red;
+    font-weight: bold;
+}
+
+.content-description {
+    margin-left: 10px;
+    margin-top: 5px;
+}
+
+.thumbnails {
+    max-width: 370px;
+    display: inline-block;
+}
+
+.container-other {
+    margin-top: 10px;
+    border-top: 1px groove red;
+    padding-top: 5px;
+}
