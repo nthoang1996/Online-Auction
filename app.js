@@ -23,4 +23,8 @@ app.get('/msi-gaming-series-1', function(req, res) {
     res.render('layouts/Laptop/MSI/msi-gaming-series-1');
 });
 
+app.get('/star', function(req, res) {
+    res.render('layouts/Laptop/star');
+});
+
 app.listen(3000);

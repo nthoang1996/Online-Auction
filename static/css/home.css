@@ -375,13 +375,76 @@ body {
     margin-top: 5px;
 }
 
-.thumbnails {
-    max-width: 370px;
-    display: inline-block;
-}
-
 .container-other {
     margin-top: 10px;
     border-top: 1px groove red;
     padding-top: 5px;
+}
+
+.mark-star {
+    position: absolute;
+    right: 15px;
+    bottom: 20px;
+}
+
+.container-button {
+    height: 40px;
+}
+
+.container-thumbnails {
+    width: 70px;
+    height: 70px;
+    margin: 0;
+}
+
+.button-favorite {
+    display: inline-block;
+    padding: 0px 20px;
+    font-size: 15px;
+    margin: 0 0.3em 0.3em 0;
+    border-radius: 2em;
+    box-sizing: border-box;
+    text-decoration: none;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 300;
+    color: #FFFFFF;
+    background-color: #4eb5f1;
+    text-align: center;
+    transition: all 0.2s;
+    height: 100%;
+}
+
+.button-left-right {
+    padding: 0px 10px !important;
+}
+
+.button-favorite:hover {
+    background-color: #4095c6;
+}
+
+@media all and (max-width:30em) {
+    .button-favorite {
+        display: block;
+        margin: 0.2em auto;
+    }
+}
+
+.text-price {
+    width: 100%;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    border-bottom: 3px double black;
+    width: 150px;
+    font-size: 20px;
+}
+
+.normal-fontsize {
+    font-size: 15px;
+}
+
+.container-each-other-product {
+    width: 254px !important;
+    height: 420px;
+    display: inline-block;
 }
