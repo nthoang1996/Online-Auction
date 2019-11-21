@@ -27,4 +27,8 @@ app.get('/star', function(req, res) {
     res.render('layouts/Laptop/star');
 });
 
+app.get('/admin', function(req, res) {
+    res.render('seller/post_product', { layout: false });
+});
+
 app.listen(3000);

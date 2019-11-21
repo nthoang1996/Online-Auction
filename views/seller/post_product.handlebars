@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/png" href="/assets/img/favicon.ico">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+
+    <title>Quản lý</title>
+
+    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
+    <meta name="viewport" content="width=device-width" />
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script src ="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.js"></script>
+    <script src="//cdn.quilljs.com/1.3.6/quill.min.js"></script>
+
+    <!-- Bootstrap core CSS     -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.css">
+
+    <!--  Light Bootstrap Table core CSS    -->
+    <link href="/assets/css/light-bootstrap-dashboard.css?v=1.4.0" rel="stylesheet" />
+
+
+    <!--  CSS for Demo Purpose, don't include it in your project     -->
+    <link href="/assets/css/demo.css" rel="stylesheet" />
+
+
+    <!--     Fonts and icons     -->
+    <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href='http://fonts.googleapis.com/css?family=Roboto:400,700,300' rel='stylesheet' type='text/css'>
+    <!-- Theme included stylesheets -->
+    <link href="https://cdn.quilljs.com/1.1.9/quill.snow.css" rel="stylesheet">
+    
+
+</head>
+
+<body>
+    <div class="wrapper">
+        <div class="sidebar" data-color="purple" data-image="/assets/img/sidebar-5.jpg">
+            <div class="sidebar-wrapper">
+                <div class="logo">
+                    <a href="#" class="simple-text">
+                        ONLINE AUTION
+                    </a>
+                </div>
+
+                <ul class="nav">
+                    <li class="active pl-3 my-li-dashboard">
+                        <a href="dashboard.html">
+                            <i class="pe-7s-graph"></i>
+                            <p class="mb-0">Thông tin cá nhân</p>
+                        </a>
+                    </li>
+                    <li class="pl-3 my-li-dashboard">
+                        <a href="user.html">
+                            <i class="pe-7s-user"></i>
+                            <p class="mb-0">Đổi mật khẩu</p>
+                        </a>
+                    </li>
+                    <li class="pl-3 my-li-dashboard">
+                        <a href="table.html">
+                            <i class="pe-7s-note2"></i>
+                            <p class="mb-0">Các sản phẩm của bạn</p>
+                        </a>
+                    </li>
+                    <li class="pl-3 my-li-dashboard">
+                        <a href="typography.html">
+                            <i class="pe-7s-news-paper"></i>
+                            <p class="mb-0">Quản lý danh mục</p>
+                        </a>
+                    </li>
+                    <li class="pl-3 my-li-dashboard">
+                        <a href="icons.html">
+                            <i class="pe-7s-science"></i>
+                            <p class="mb-0">Quản lý sản phẩm</p>
+                        </a>
+                    </li>
+                    <li class="pl-3 my-li-dashboard">
+                        <a href="maps.html">
+                            <i class="pe-7s-map-marker"></i>
+                            <p class="mb-0">Quản lý người dùng</p>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="main-panel">
+            <nav class="navbar navbar-default navbar-fixed">
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                        <a class="navbar-brand" href="#">Thông tin cá nhân</a>
+                    </div>
+                </div>
+            </nav>
+
+            <div class="row mt-5">
+                <div class="col-sm-3 text-right">
+                    <label>Tên sản phẩm:</label>
+                </div>
+                <div class="col-sm-6">
+                    <input type="text" class="my-product-input" />
+                </div>
+            </div>
+            <div class="row mt-2">
+                <div class="col-sm-3 text-right">
+                    <label>Chuyên mục</label>
+                </div>
+                <div class="col-sm-6">
+                    <select id="selectbox" class="my-product-select" data-selected="">
+                        <option value="" selected="selected" disabled="disabled">Vui lòng chọn 1 chuyên mục</option>
+                        <option value="1">Laptop</option>
+                        <option value="2">Laptop</option>
+                        <option value="3">Laptop</option>
+                        <option value="4">Laptop</option>
+                        <option value="5">Laptop</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="row mt-2">
+                <div class="col-sm-3 text-right">
+                    <label>Giá khởi điểm</label>
+                </div>
+                <div class="col-sm-1">
+                    <input type="text" class="my-product-input text-right" />
+                </div>
+            </div>
+
+            <div class="row mt-2">
+                <div class="col-sm-3 text-right">
+                    <label>Bước nhảy:</label>
+                </div>
+                <div class="col-sm-1">
+                    <input type="text" class="my-product-input text-right" />
+                </div>
+            </div>
+
+            <div class="row mt-2">
+                <div class="col-sm-3 text-right">
+                    <label>Ngày kết thúc</label>
+                </div>
+                <div class="col-sm-1">
+                    <input size="16" type="text" value="" readonly class="datepicker my-product-input">
+                </div>
+            </div>
+
+            <div class="row mt-2">
+                <div class="col-sm-3 text-right">
+                    <label>Mô tả</label>
+                </div>
+                <div class="col-sm-6">
+                    <div id="editor" class="my-text-area-product"></div>
+                </div>
+            </div>
+
+            <footer class="footer my-footer-product">
+                <div class="container-fluid">
+                    <nav class="pull-left">
+                        <ul>
+                            <li>
+                                <a href="#">
+                                    Home
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    Company
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    Portfolio
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    Blog
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                    <p class="copyright pull-right">
+                        <a href="#">ONLINE AUTION</a>
+                    </p>
+                </div>
+            </footer>
+
+        </div>
+    </div>
+    <script type="text/javascript">
+        var toolbarOptions = [
+        [{ 'font': [] }, { 'size': [] }],
+          [ 'bold', 'italic', 'underline', 'strike' ],
+          [{ 'color': [] }, { 'background': [] }],
+          [{ 'script': 'super' }, { 'script': 'sub' }],
+          [{ 'header': '1' }, { 'header': '2' }, 'blockquote', 'code-block' ],
+          [{ 'list': 'ordered' }, { 'list': 'bullet'}, { 'indent': '-1' }, { 'indent': '+1' }],
+          [ 'direction', { 'align': [] }],
+          [ 'link', 'image', 'video', 'formula' ],
+          [ 'clean' ]
+        ];
+        $(document).ready(function() {
+            $('.datepicker').datepicker({
+                format: 'dd/mm/yyyy'
+             });
+             var quill = new Quill('#editor', {
+                 modules: {
+                    toolbar: toolbarOptions
+                 },
+                 theme: 'snow'
+            });
+        });
+
+    
+    </script>
+    
+</body>
+
+</html>
