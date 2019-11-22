@@ -151,6 +151,24 @@
 
             <div class="row mt-2">
                 <div class="col-sm-3 text-right">
+                    <label>Ảnh đại diện</label>
+                </div>
+                <div class="col-sm-1">
+                    <label for="upload-image" class="btn btn-danger">Upload
+                        <input type="file" id="upload-image" class="my-input-upload" onchange="upload()">
+                    </label>
+                </div>
+                <div class="col-sm-8">
+                    <img id="img_1" src="/picture/upload.png" class="my-img-upload">
+                    <img id="img_2" src="/picture/upload.png" class="my-img-upload">
+                    <img id="img_3" src="/picture/upload.png" class="my-img-upload">
+                    <img id="img_4" src="/picture/upload.png" class="my-img-upload">
+                    <img id="img_5" src="/picture/upload.png" class="my-img-upload">
+                </div>
+            </div>
+
+            <div class="row mt-2">
+                <div class="col-sm-3 text-right">
                     <label>Mô tả</label>
                 </div>
                 <div class="col-sm-6">
@@ -215,6 +233,23 @@
                  theme: 'snow'
             });
         });
+        
+        var index_file = 1;
+        function upload (){
+
+            var image = document.getElementById("upload-image").files[0];
+            var currentImage = document.getElementById("img_"+index_file)
+            var reader = new FileReader();
+            reader.onload = function (){
+                currentImage.src = reader.result;
+
+            }
+            reader.readAsDataURL(image);
+            index_file +=1;
+            if(index_file > 5){
+                index_file = 1;
+            }
+        }
 
     
     </script>

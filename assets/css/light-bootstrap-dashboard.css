@@ -2390,3 +2390,12 @@ fieldset[disabled] .form-control {
     bottom: 0;
     width: 100%;
 }
+
+.my-input-upload {
+    display: none;
+}
+
+.my-img-upload {
+    width: 72px;
+    height: 72px;
+}
