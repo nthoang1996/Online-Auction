@@ -31,4 +31,8 @@ app.get('/admin', function(req, res) {
     res.render('seller/post_product', { layout: false });
 });
 
+app.get('/login', function(req, res) {
+    res.render('guest/login', { layout: false });
+});
+
 app.listen(3000);
