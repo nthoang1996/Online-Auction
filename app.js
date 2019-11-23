@@ -35,4 +35,12 @@ app.get('/login', function(req, res) {
     res.render('guest/login', { layout: false });
 });
 
+app.get('/category', function(req, res) {
+    res.render('admin/category', { layout: false });
+});
+
+app.get('/create_category', function(req, res) {
+    res.render('admin/create_category', { layout: false });
+});
+
 app.listen(3000);

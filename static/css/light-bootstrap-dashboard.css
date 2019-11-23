@@ -2380,15 +2380,9 @@ fieldset[disabled] .form-control {
 }
 
 .my-text-area-product {
-    max-height: 400px;
+    height: 200px !important;
     width: 100%;
     background-color: #F7F7F8;
-}
-
-.my-footer-product {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
 }
 
 .my-input-upload {
@@ -2398,4 +2392,18 @@ fieldset[disabled] .form-control {
 .my-img-upload {
     width: 72px;
     height: 72px;
+}
+
+.container-quilljs {
+    min-height: 400px;
+}
+
+.my-footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+
+.my-category-button {
+    padding: 4px 8px;
 }
