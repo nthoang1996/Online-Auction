@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>
+         Quản lí sản phẩm 
+    </title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <table>
+        <tr>
+            <td>
+                <form onsubmit="event.preventDefault();onFormSubmit();" autocomplete="off">
+                    <div>
+                        <label>ID</label>
+                        <input type="text" name="id" id="id">
+                    </div>
+                    <div>
+                        <label> Title</label><label class="validation-error hide" id="fullNameValidationError">This field is required.</label>
+                        <input type="text" name="title" id="title">
+                    </div>
+                    <div>
+                        <label style="display: block;">Category</label>
+                      <select name="category" type="text" id="category" style="width: 100%;padding: 12px 20px;"> 
+                          <option selected="selected" disabled="disabled">Choose Category</option>
+                          <option value="0">Cat1</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label>Start_price</label>
+                        <input type="text" name="start_price" id="start_price">
+                    </div>
+                    <div>
+                        <label>Minimum_Increase</label>
+                        <input type="text" name="minimum_increase" id="minimum_increase">
+                    </div>  
+                    <div>
+                        <label>End_date</label>
+                        <input type="text" name="end_date" id="end_date">
+                    </div> 
+                    <div>
+                        <label>Start_date</label>
+                        <input type="text" name="start_date" id="start_date">
+                    </div> 
+                    <div>
+                        <label>Highest_Price</label>
+                        <input type="text" name="highest_price" id="highest_price">
+                    </div> 
+                    <div>
+                        <label>Description</label>
+                        <input type="text" name="description" id="description">
+                    </div> 
+                  
+                    <div  class="form-action-buttons">
+                        <input type="submit" value="Submit">
+                    </div>
+                </form>
+            </td>
+            <td>
+                <table class="list" id="employeeList">
+                    <thead>
+                        <tr>
+                            <th> ID</th>
+                            <th>Title</th>
+                            <th> Start_price</th>
+                            <th>Minimum_Increase</th>
+                            <th>End_date</th>
+                            <th> Start_date</th>
+                            <th>Highest_Price</th>
+                            <th>Description</th>
+                            <th>Category</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+    </table>
+    <script src="script3.js"></script>
+</body>
+
+</html>
