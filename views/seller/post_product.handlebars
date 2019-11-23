@@ -22,20 +22,13 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.css">
 
     <!--  Light Bootstrap Table core CSS    -->
-    <link href="/assets/css/light-bootstrap-dashboard.css?v=1.4.0" rel="stylesheet" />
-
-
-    <!--  CSS for Demo Purpose, don't include it in your project     -->
-    <link href="/assets/css/demo.css" rel="stylesheet" />
-
+    <link href="/static/css/light-bootstrap-dashboard.css?v=1.4.0" rel="stylesheet" />
 
     <!--     Fonts and icons     -->
     <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
     <link href='http://fonts.googleapis.com/css?family=Roboto:400,700,300' rel='stylesheet' type='text/css'>
     <!-- Theme included stylesheets -->
     <link href="https://cdn.quilljs.com/1.1.9/quill.snow.css" rel="stylesheet">
-    
-
 </head>
 
 <body>
@@ -151,6 +144,24 @@
 
             <div class="row mt-2">
                 <div class="col-sm-3 text-right">
+                    <label>Ảnh đại diện</label>
+                </div>
+                <div class="col-sm-1">
+                    <label for="upload-image" class="btn btn-danger">Upload
+                        <input type="file" id="upload-image" class="my-input-upload" onchange="upload()">
+                    </label>
+                </div>
+                <div class="col-sm-8">
+                    <img id="img_1" src="/picture/upload.png" class="my-img-upload">
+                    <img id="img_2" src="/picture/upload.png" class="my-img-upload">
+                    <img id="img_3" src="/picture/upload.png" class="my-img-upload">
+                    <img id="img_4" src="/picture/upload.png" class="my-img-upload">
+                    <img id="img_5" src="/picture/upload.png" class="my-img-upload">
+                </div>
+            </div>
+
+            <div class="row mt-2">
+                <div class="col-sm-3 text-right">
                     <label>Mô tả</label>
                 </div>
                 <div class="col-sm-6">
@@ -215,6 +226,23 @@
                  theme: 'snow'
             });
         });
+        
+        var index_file = 1;
+        function upload (){
+
+            var image = document.getElementById("upload-image").files[0];
+            var currentImage = document.getElementById("img_"+index_file)
+            var reader = new FileReader();
+            reader.onload = function (){
+                currentImage.src = reader.result;
+
+            }
+            reader.readAsDataURL(image);
+            index_file +=1;
+            if(index_file > 5){
+                index_file = 1;
+            }
+        }
 
     
     </script>
