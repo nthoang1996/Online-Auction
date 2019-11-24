@@ -50,24 +50,18 @@
                 </div>
 
                 <ul class="nav">
-                    <li class="active pl-3 my-li-dashboard">
+                    <li class=" pl-3 my-li-dashboard">
                         <a href="dashboard.html">
                             <i class="pe-7s-graph"></i>
                             <p class="mb-0">Thông tin cá nhân</p>
                         </a>
                     </li>
-                    <li class="pl-3 my-li-dashboard">
-                        <a href="user.html">
-                            <i class="pe-7s-user"></i>
-                            <p class="mb-0">Đổi mật khẩu</p>
-                        </a>
-                    </li>
-                    <li class="pl-3 my-li-dashboard">
-                        <a href="table.html">
-                            <i class="pe-7s-note2"></i>
-                            <p class="mb-0">Các sản phẩm của bạn</p>
-                        </a>
-                    </li>
+                                            <li class="pl-3 my-li-dashboard">
+                            <a href="table.html">
+                                <i class="pe-7s-note2"></i>
+                                <p class="mb-0">Các sản phẩm của bạn</p>
+                            </a>
+                        </li>
                     <li class="pl-3 my-li-dashboard">
                         <a href="typography.html">
                             <i class="pe-7s-news-paper"></i>
@@ -80,7 +74,7 @@
                             <p class="mb-0">Quản lý sản phẩm</p>
                         </a>
                     </li>
-                    <li class="pl-3 my-li-dashboard">
+                    <li class="active pl-3 my-li-dashboard">
                         <a href="maps.html">
                             <i class="pe-7s-map-marker"></i>
                             <p class="mb-0">Quản lý người dùng</p>
@@ -94,7 +88,7 @@
             <nav class="navbar navbar-default navbar-fixed">
                 <div class="container-fluid">
                     <div class="navbar-header">
-                        <a class="navbar-brand" href="#">Quản lý tài khoản</a>
+                        <a class="navbar-brand" href="#">Quản lý người dùng</a>
                     </div>
                 </div>
             </nav>
@@ -128,10 +122,8 @@
                                 <td>0/0</td>
                                 <td>Bình thường</td>
                                 <td>
-                                    <button class="btn btn-primary my-category-button"><i
-                                            class="fa fa-eye"></i></button>
-                                    <button class="btn btn-success my-category-button"><i
-                                            class="fa fa-edit"></i></button>
+                                    <button class="btn btn-success my-category-button" data-toggle="modal"
+                                        data-target="#exampleModalCenter"><i class="fa fa-edit"></i></button>
                                     <button class="btn btn-danger my-category-button"><i
                                             class="fa fa-trash"></i></button>
                                 </td>
@@ -146,8 +138,6 @@
                                 <td>06/8</td>
                                 <td>Bình thường</td>
                                 <td>
-                                    <button class="btn btn-primary my-category-button"><i
-                                            class="fa fa-eye"></i></button>
                                     <button class="btn btn-success my-category-button"><i
                                             class="fa fa-edit"></i></button>
                                     <button class="btn btn-danger my-category-button"><i
@@ -164,8 +154,6 @@
                                 <td>3/7</td>
                                 <td>Bình thường</td>
                                 <td>
-                                    <button class="btn btn-primary my-category-button"><i
-                                            class="fa fa-eye"></i></button>
                                     <button class="btn btn-success my-category-button"><i
                                             class="fa fa-edit"></i></button>
                                     <button class="btn btn-danger my-category-button"><i
@@ -182,8 +170,6 @@
                                 <td>5/10</td>
                                 <td>Bình thường</td>
                                 <td>
-                                    <button class="btn btn-primary my-category-button"><i
-                                            class="fa fa-eye"></i></button>
                                     <button class="btn btn-success my-category-button"><i
                                             class="fa fa-edit"></i></button>
                                     <button class="btn btn-danger my-category-button"><i
@@ -199,6 +185,94 @@
             <div class="row mt-2">
                 <div class="col-sm-12 d-flex justify-content-end">
                     <button class="btn btn-danger"><i class="fa fa-arrow-left"></i>&nbsp;Quay lại</button>
+                </div>
+            </div>
+
+            <!-- Modal -->
+            <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
+                aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog my-category-modal" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title" id="exampleModalLongTitle">Thông tin chi tiết</h4>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body" style="background-color: #f7f7f8;">
+                            <div class="row mt-5">
+                                <div class="col-sm-3 text-right">
+                                    <label>Tên người dùng:</label>
+                                </div>
+                                <div class="col-sm-6 ">
+                                    <input type="text" class="my-product-input pl-2" value="Nguyễn Thái Hoàng"
+                                        readonly />
+                                </div>
+                            </div>
+
+                            <div class="row mt-2">
+                                <div class="col-sm-3 text-right">
+                                    <label>Email:</label>
+                                </div>
+                                <div class="col-sm-6">
+                                    <input type="text" class="my-product-input pl-2" value="nthoang1996@gmail.com"
+                                        readonly />
+                                </div>
+                            </div>
+
+                            <div class="row mt-2">
+                                <div class="col-sm-3 text-right">
+                                    <label>Số điện thoại:</label>
+                                </div>
+                                <div class="col-sm-6">
+                                    <input type="text" class="my-product-input pl-2" value="0936252722" readonly />
+                                </div>
+                            </div>
+
+                            <div class="row mt-2">
+                                <div class="col-sm-3 text-right">
+                                    <label>Địa chỉ:</label>
+                                </div>
+                                <div class="col-sm-6">
+                                    <input type="text" class="my-product-input pl-2"
+                                        value="c4/6d Lê Đình Chi H.Bình Chánh TP.Hồ Chí Minh" readonly />
+                                </div>
+                            </div>
+
+                            <div class="row mt-2">
+                                <div class="col-sm-3 text-right">
+                                    <label>Quyền</label>
+                                </div>
+                                <div class="col-sm-6">
+                                    <select id="selectbox" class="my-product-select" data-selected="">
+                                        <option value="" selected="selected" disabled="disabled">Vui lòng chọn 1 chuyên
+                                            mục</option>
+                                        <option value="1" selected>Admin</option>
+                                        <option value="2">Người bán</option>
+                                        <option value="3">Người đấu giá</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="row mt-2">
+                                <div class="col-sm-3 text-right">
+                                    <label>Trạng thái</label>
+                                </div>
+                                <div class="col-sm-6">
+                                    <select id="selectbox" class="my-product-select" data-selected="">
+                                        <option value="" selected="selected" disabled="disabled">Vui lòng chọn 1 chuyên
+                                            mục</option>
+                                        <option value="1" selected>Bình thường</option>
+                                        <option value="2">Vô hiệu hóa</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="modal-footer d-flex justify-content-end">
+                            <button class="btn btn-danger"><i class="fa fa-arrow-left"></i>&nbsp;Quay lại</button>
+                        </div>
+                    </div>
                 </div>
             </div>
 

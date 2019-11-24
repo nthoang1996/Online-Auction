@@ -51,4 +51,12 @@ app.get('/register', function(req, res) {
     res.render('guest/register', { layout: false });
 });
 
+app.get('/product_manament', function(req, res) {
+    res.render('admin/list_product', { layout: false });
+});
+
+app.get('/profile', function(req, res) {
+    res.render('admin/profile', { layout: false });
+});
+
 app.listen(3000);
