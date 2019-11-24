@@ -43,4 +43,12 @@ app.get('/create_category', function(req, res) {
     res.render('admin/create_category', { layout: false });
 });
 
+app.get('/user_manament', function(req, res) {
+    res.render('admin/list_user', { layout: false });
+});
+
+app.get('/register', function(req, res) {
+    res.render('guest/register', { layout: false });
+});
+
 app.listen(3000);

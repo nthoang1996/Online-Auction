@@ -167,8 +167,8 @@
                         <thead class="thead-dark">
                             <tr>
                                 <th scope="col" width="10%" style="font-weight:bold;">STT</th>
-                                <th scope="col" width="70%" style="font-weight:bold;">Tên Chuyên Mục</th>
-                                <th scope="col" width="20%" style="font-weight:bold;"></th>
+                                <th scope="col" width="65%" style="font-weight:bold;">Tên Chuyên Mục</th>
+                                <th scope="col" width="25%" style="font-weight:bold;"></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -176,8 +176,8 @@
                                 <th scope="row">1</th>
                                 <td>MSI</td>
                                 <td>
-                                    <button class="btn btn-primary my-category-button"><i
-                                            class="fa fa-eye"></i></button>
+                                    <button class="btn btn-primary my-category-button" data-toggle="modal"
+                                        data-target="#exampleModalCenter"><i class="fa fa-eye"></i></button>
                                     <button class="btn btn-success my-category-button"><i
                                             class="fa fa-edit"></i></button>
                                     <button class="btn btn-danger my-category-button"><i
@@ -286,9 +286,128 @@
                 </div>
             </div>
 
+            <!-- Modal -->
+            <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
+                aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered my-category-modal" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title" id="exampleModalLongTitle">MSI</h4>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-sm-1">
+                                </div>
+                                <div class="col-sm-11">
+                                    <table class="table">
+                                        <thead class="thead-dark">
+                                            <tr>
+                                                <th scope="col" width="10%" style="font-weight:bold;">STT</th>
+                                                <th scope="col" width="70%" style="font-weight:bold;">Tên Chuyên Mục
+                                                </th>
+                                                <th scope="col" width="20%" style="font-weight:bold;"></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <th scope="row">1</th>
+                                                <td>MSI Gaming Series</td>
+                                                <td>
+                                                    <button class="btn btn-success my-category-button"><i
+                                                            class="fa fa-edit"></i></button>
+                                                    <button class="btn btn-danger my-category-button"><i
+                                                            class="fa fa-trash"></i></button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row">2</th>
+                                                <td>Alpha Series</td>
+                                                <td>
+                                                    <button class="btn btn-success my-category-button"><i
+                                                            class="fa fa-edit"></i></button>
+                                                    <button class="btn btn-danger my-category-button"><i
+                                                            class="fa fa-trash"></i></button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row">3</th>
+                                                <td>GF Series</td>
+                                                <td>
+                                                    <button class="btn btn-success my-category-button"><i
+                                                            class="fa fa-edit"></i></button>
+                                                    <button class="btn btn-danger my-category-button"><i
+                                                            class="fa fa-trash"></i></button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row">4</th>
+                                                <td>GL Series</td>
+                                                <td>
+                                                    <button class="btn btn-success my-category-button"><i
+                                                            class="fa fa-edit"></i></button>
+                                                    <button class="btn btn-danger my-category-button"><i
+                                                            class="fa fa-trash"></i></button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row">5</th>
+                                                <td>GP Serires</td>
+                                                <td>
+                                                    <button class="btn btn-success my-category-button"><i
+                                                            class="fa fa-edit"></i></button>
+                                                    <button class="btn btn-danger my-category-button"><i
+                                                            class="fa fa-trash"></i></button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row">6</th>
+                                                <td>GS Series</td>
+                                                <td>
+                                                    <button class="btn btn-success my-category-button"><i
+                                                            class="fa fa-edit"></i></button>
+                                                    <button class="btn btn-danger my-category-button"><i
+                                                            class="fa fa-trash"></i></button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row">7</th>
+                                                <td>GT Series</td>
+                                                <td>
+                                                    <button class="btn btn-success my-category-button"><i
+                                                            class="fa fa-edit"></i></button>
+                                                    <button class="btn btn-danger my-category-button"><i
+                                                            class="fa fa-trash"></i></button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row">8</th>
+                                                <td>Content Creation</td>
+                                                <td>
+                                                    <button class="btn btn-success my-category-button"><i
+                                                            class="fa fa-edit"></i></button>
+                                                    <button class="btn btn-danger my-category-button"><i
+                                                            class="fa fa-trash"></i></button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer d-flex justify-content-end">
+                            <button class="btn btn-danger"><i class="fa fa-arrow-left"></i>&nbsp;Quay lại</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div class="row mt-2">
                 <div class="col-sm-7 d-flex justify-content-end">
-                    <a href="/create_category" class="btn btn-primary mr-3"><i class="fa fa-plus"></i>&nbsp;Thêm chuyên mục</a>
+                    <a href="/create_category" class="btn btn-primary mr-3"><i class="fa fa-plus"></i>&nbsp;Thêm
+                        chuyên mục</a>
                     <button class="btn btn-danger"><i class="fa fa-arrow-left"></i>&nbsp;Quay lại</button>
                 </div>
             </div>

@@ -5,67 +5,76 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="/static/css/register.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-    <title>Register Form</title>
+    <title>Đăng ký</title>
 </head>
 
-<body>
+<body class="bg">
     <div class="d-flex justify-content-center align-items-center container ">
         <div class="row">
             <div class="main-center">
-                <h3>Please provide your information.</h3>
+                <h3>Vui lòng cung cấp thông tin của bạn</h3>
                 <form method="post" action="#">
 
                     <div class="form-group">
-                        <label for="name" class="cols-sm-2 control-label">Your Name</label>
+                        <label for="name" class="cols-sm-2 control-label">Tên</label>
                         <div class="cols-sm-10">
                             <div class="input-group">
-                                <input type="text" class="form-control" name="name" id="name" placeholder="Enter your Name" />
+                                <input type="text" class="form-control" name="name" id="name" placeholder="Nguyễn Văn A" />
                             </div>
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label for="email" class="cols-sm-2 control-label">Your Email</label>
+                        <label for="phone" class="cols-sm-2 control-label">Số điện thoại</label>
                         <div class="cols-sm-10">
                             <div class="input-group">
-                                <input type="text" class="form-control" name="email" id="email" placeholder="Enter your Email" />
+                                <input type="text" class="form-control" name="phone" id="phone" placeholder="0901234567" />
                             </div>
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label for="username" class="cols-sm-2 control-label">Your Address</label>
+                        <label for="email" class="cols-sm-2 control-label">Email</label>
                         <div class="cols-sm-10">
                             <div class="input-group">
-                                <input type="text" class="form-control" name="username" id="username" placeholder="Enter your Username" />
+                                <input type="text" class="form-control" name="email" id="email" placeholder="abc@gmail.com" />
                             </div>
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label for="password" class="cols-sm-2 control-label">Password</label>
+                        <label for="username" class="cols-sm-2 control-label">Địa chỉ</label>
                         <div class="cols-sm-10">
                             <div class="input-group">
-                                <input type="password" class="form-control" name="password" id="password" placeholder="Enter your Password" />
+                                <input type="text" class="form-control" name="username" id="username" placeholder="123 Nguyễn Trãi Quận 1 TP.Hồ Chí Minh" />
                             </div>
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label for="confirm" class="cols-sm-2 control-label">Confirm Password</label>
+                        <label for="password" class="cols-sm-2 control-label">Mật khẩu</label>
                         <div class="cols-sm-10">
                             <div class="input-group">
-                                <input type="password" class="form-control" name="confirm" id="confirm" placeholder="Confirm your Password" />
+                                <input type="password" class="form-control" name="password" id="password" placeholder="******" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="confirm" class="cols-sm-2 control-label">Nhập lại mật khẩu</label>
+                        <div class="cols-sm-10">
+                            <div class="input-group">
+                                <input type="password" class="form-control" name="confirm" id="confirm" placeholder="******" />
                             </div>
                         </div>
                     </div>
 
                     <div class="form-group ">
-                        <a href="https://www.google.com" target="_blank" type="button" id="button" class="btn btn-primary btn-lg btn-block login-button">Register</a>
+                        <a href="https://www.google.com" target="_blank" type="button" id="button" class="btn btn-primary btn-lg btn-block login-button">Đăng ký</a>
                     </div>
 
                 </form>

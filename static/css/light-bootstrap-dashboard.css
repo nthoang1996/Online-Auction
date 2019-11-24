@@ -2407,3 +2407,8 @@ fieldset[disabled] .form-control {
 .my-category-button {
     padding: 4px 8px;
 }
+
+.my-category-modal {
+    max-width: 900px !important;
+    width: 50%;
+}
