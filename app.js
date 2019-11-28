@@ -1,8 +1,11 @@
-var express = require('express');
-var exphbs = require('express-handlebars');
+const express = require('express');
+const exphbs = require('express-handlebars');
+const db = require('./utils/db');
+const morgan = require('morgan');
 
-var app = express();
-app.use(express.static(__dirname))
+const app = express();
+app.use(morgan('dev'));
+app.use(express.static(__dirname));
 
 app.engine('handlebars', exphbs());
 app.set('view engine', 'handlebars');
@@ -35,10 +38,6 @@ app.get('/login', function(req, res) {
     res.render('guest/login', { layout: false });
 });
 
-app.get('/category', function(req, res) {
-    res.render('admin/category', { layout: false });
-});
-
 app.get('/create_category', function(req, res) {
     res.render('admin/create_category', { layout: false });
 });
@@ -58,5 +57,7 @@ app.get('/product_manament', function(req, res) {
 app.get('/profile', function(req, res) {
     res.render('admin/profile', { layout: false });
 });
+
+app.use('/admin/category', require('./routes/admin/category.route'));
 
 app.listen(3000);
