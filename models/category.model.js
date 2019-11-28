@@ -1,4 +1,6 @@
 const db = require('../utils/db');
 module.exports = {
-    all: () => { return db.load('select * from tblcategory where level = 1') }
+    all_by_level: (table, level) => { return db.load(`select * from ${table} where level = ${level}`) },
+    single_by_id: (table, id) => { return db.load(`select * from ${table} where id = ${id}`) },
+    all_by_pid: (table, id) => { return db.load(`select * from ${table} where parent_id = ${id}`) },
 };

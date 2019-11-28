@@ -1,11 +1,13 @@
 const express = require('express');
 const exphbs = require('express-handlebars');
-const db = require('./utils/db');
 const morgan = require('morgan');
 
 const app = express();
 app.use(morgan('dev'));
 app.use(express.static(__dirname));
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 app.engine('handlebars', exphbs());
 app.set('view engine', 'handlebars');

@@ -13,14 +13,17 @@ const pool = mysql.createPool({
 
 const mysql_query = util.promisify(pool.query).bind(pool);
 module.exports = {
-    load: sql => mysql_query(sql),
-    // load: sql => new Promise((done, fail) => {
-    //     pool.query(sql, (error, results, fields) => {
-    //         if (error) {
-    //             return fail(error);
-    //         } else {
-    //             done(results);
-    //         }
-    //     });
-    // })
+    load: sql => {
+            console.log(sql);
+            return mysql_query(sql);
+        }
+        // load: sql => new Promise((done, fail) => {
+        //     pool.query(sql, (error, results, fields) => {
+        //         if (error) {
+        //             return fail(error);
+        //         } else {
+        //             done(results);
+        //         }
+        //     });
+        // })
 }
