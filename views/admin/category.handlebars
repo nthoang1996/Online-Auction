@@ -106,7 +106,17 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
+                            {{#each this.categories}}
+                                <tr>
+                                    <th scope="row">{{number}}</th>
+                                    <td>{{name}}</td>
+                                    <td>
+                                        <button class="btn btn-primary my-category-button" onclick="seeDetail({{id}})"><i
+                                                class="fa fa-eye"></i></button>
+                                    </td>
+                                </tr>
+                            {{/each}}
+                            {{!-- <tr>
                                 <th scope="row">1</th>
                                 <td>Laptop</td>
                                 <td>
@@ -145,7 +155,7 @@
                                     <button class="btn btn-primary my-category-button"><i
                                             class="fa fa-eye"></i></button>
                                 </td>
-                            </tr>
+                            </tr> --}}
                         </tbody>
                     </table>
                     <hr>
@@ -439,6 +449,11 @@
             </footer>
         </div>
     </div>
+    <script type="text/javascript">
+        function seeDetail(id){
+            console.log(id);
+        }
+    </script>
 </body>
 
 </html>

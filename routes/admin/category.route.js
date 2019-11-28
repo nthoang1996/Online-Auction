@@ -8,6 +8,9 @@ router.get('/', async(req, res) => {
     try {
         // const rows = await db.load('select * from tblcategory');
         const rows = await categoryModel.all();
+        for (let i = 0; i < rows.length; i++) {
+            rows[i]['number'] = i + 1;
+        }
         console.log(rows);
         res.render('admin/category', {
             categories: rows,
