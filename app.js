@@ -40,10 +40,6 @@ app.get('/login', function(req, res) {
     res.render('guest/login', { layout: false });
 });
 
-app.get('/create_category', function(req, res) {
-    res.render('admin/create_category', { layout: false });
-});
-
 app.get('/user_manament', function(req, res) {
     res.render('admin/list_user', { layout: false });
 });
@@ -61,5 +57,6 @@ app.get('/profile', function(req, res) {
 });
 
 app.use('/admin/category', require('./routes/admin/category.route'));
+app.use('/admin/user', require('./routes/admin/user.route'));
 
 app.listen(3000);

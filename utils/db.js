@@ -14,8 +14,11 @@ const pool = mysql.createPool({
 const mysql_query = util.promisify(pool.query).bind(pool);
 module.exports = {
     load: sql => {
-            console.log(sql);
-            return mysql_query(sql);
+        console.log(sql);
+        return mysql_query(sql);
+    },
+    add: (table, entity) => {
+            return mysql_query(`insert into ${table} set ?`, entity);
         }
         // load: sql => new Promise((done, fail) => {
         //     pool.query(sql, (error, results, fields) => {

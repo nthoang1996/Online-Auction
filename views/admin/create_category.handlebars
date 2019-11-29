@@ -85,36 +85,42 @@
                     </div>
                 </nav>
 
-                <div class="row mt-5">
-                    <div class="col-sm-3 text-right">
-                        <label>Tên chuyên mục:</label>
+                <form method="POST">
+                    <div class="row mt-5 form-group">
+                        <div class="col-sm-3 text-right">
+                            <label for="cat-name">Tên chuyên mục:</label>
+                        </div>
+                        <div class="col-sm-6">
+                            <input type="text" class="my-product-input" name="name" id="cat-name" placeholder="Chuyên mục abcxyz" autofocus/>
+                        </div>
                     </div>
-                    <div class="col-sm-6">
-                        <input type="text" class="my-product-input" />
-                    </div>
-                </div>
-                <div class="row mt-2">
-                    <div class="col-sm-3 text-right">
-                        <label>Chuyên mục</label>
-                    </div>
-                    <div class="col-sm-6">
-                        <select id="selectbox" class="my-product-select" data-selected="">
-                            <option value="" selected="selected" disabled="disabled">Vui lòng chọn 1 chuyên mục</option>
-                            <option value="1">Laptop</option>
-                            <option value="2">Laptop</option>
-                            <option value="3">Laptop</option>
-                            <option value="4">Laptop</option>
-                            <option value="5">Laptop</option>
-                        </select>
-                    </div>
-                </div>
 
-                <div class="row mt-2">
+                    <div class="row mt-2 form-group">
+                        <div class="col-sm-3 text-right">
+                            <label>Chuyên mục</label>
+                        </div>
+                        <div class="col-sm-6">
+                            <select id="selectbox" class="my-product-select" data-selected="" name="parent_id">
+                                <option value="" selected="selected" disabled="disabled" value="0">Vui lòng chọn 1 chuyên mục</option>
+                                {{#each this.categories}}
+                                    <option value="{{id}}">{{name}}</option>
+                                {{/each}}
+                                {{!-- <option value="1">Laptop</option>
+                                <option value="2">Laptop</option>
+                                <option value="3">Laptop</option>
+                                <option value="4">Laptop</option>
+                                <option value="5">Laptop</option> --}}
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row mt-2">
                     <div class="col-sm-9 d-flex justify-content-end">
-                        <button class="btn btn-success mr-3"><i class="fa fa-save"></i>&nbsp;Lưu</button>
-                        <button class="btn btn-danger"><i class="fa fa fa-arrow-left"></i>&nbsp;Quay lại</button>
+                        <button type="submit" class="btn btn-success mr-3"><i class="fa fa-save"></i>&nbsp;Lưu</button>
+                        <a class="btn btn-danger" href="/admin/category"><i class="fa fa fa-arrow-left"></i>&nbsp;Quay lại</a>
                     </div>
                 </div>
+                </form>
 
                 <footer class="footer mt-2">
                     <div class="container-fluid">

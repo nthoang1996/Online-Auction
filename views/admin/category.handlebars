@@ -109,7 +109,8 @@
                                     <th scope="row">{{number}}</th>
                                     <td>{{name}}</td>
                                     <td>
-                                        <button class="btn btn-primary my-category-button" onclick="seeDetail({{id}}, {{level}})"><i
+                                        <button class="btn btn-primary my-category-button" onclick='seeDetail({{id}}, {{level}}, "{{name}}" )'>
+                                            <i
                                                 class="fa fa-eye"></i></button>
                                     </td>
                                 </tr>
@@ -160,8 +161,8 @@
                 </div>
             </div>
 
-            <h4 class="ml-5">LAPTOP:</h4>
-            <div class="row">
+            <h4 class="ml-5" id="title_sub_category" style="visibility: hidden;">LAPTOP:</h4>
+            <div class="row" id="conteiner_sub_category" style="visibility: hidden;">
                 <div class="col-sm-1">
                 </div>
                 <div class="col-sm-6">
@@ -408,9 +409,8 @@
 
             <div class="row mt-2">
                 <div class="col-sm-7 d-flex justify-content-end">
-                    <a href="/create_category" class="btn btn-primary mr-3"><i class="fa fa-plus"></i>&nbsp;Thêm
+                    <a href="/admin/category/create_category" class="btn btn-primary mr-3"><i class="fa fa-plus"></i>&nbsp;Thêm
                         chuyên mục</a>
-                    <button class="btn btn-danger"><i class="fa fa-arrow-left"></i>&nbsp;Quay lại</button>
                 </div>
             </div>
 
@@ -448,10 +448,13 @@
         </div>
     </div>
     <script type="text/javascript">
-        function seeDetail(id, level){
+        function seeDetail(id, level, name){
             $.ajax({url: "/admin/category/get_category/" + id, success: function(result){
                 if(result.length){
                     if(level == 1){
+                        $("#title_sub_category").text(name);
+                        $("#title_sub_category").css('visibility', 'visible');
+                        $("#conteiner_sub_category").css('visibility', 'visible');
                         $("#tbody-child-category").empty();
                     }
                     else if(level == 22){
@@ -462,11 +465,10 @@
                                     +   '<th scope="row">' + i +'</th> '
                                     +   '<td>' + result[i-1].name + '</td> '
                                     +   '<td> ';
-                        console.log(result);
                         if(level==1){
                             element = element
                                     +       '<button class="btn btn-primary my-category-button" '
-                                    +           'onclick="seeDetail(' + result[i-1].id  +',' +result[i-1].level + ')" '
+                                    +           'onclick="seeDetail(' + result[i-1].id  +',' +result[i-1].level + ',\'' + result[i-1].name + '\')" '
                                     +           ' data-toggle="modal" data-target="#exampleModalCenter"><i '
                                     +            ' class="fa fa-eye"></i></button> '
                                     +       '<button class="btn btn-success my-category-button"><i '
