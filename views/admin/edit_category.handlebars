@@ -11,7 +11,7 @@
         <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
         <meta name="viewport" content="width=device-width" />
 
-        <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
         <script src ="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.js"></script>
@@ -31,7 +31,7 @@
         <link href="https://cdn.quilljs.com/1.1.9/quill.snow.css" rel="stylesheet">
     </head>
 
-    <body>
+    <body onload="init({{this.category.parent_id}})">
         <div class="wrapper">
             <div class="sidebar" data-color="purple" data-image="/assets/img/sidebar-5.jpg">
                 <div class="sidebar-wrapper">
@@ -85,13 +85,15 @@
                     </div>
                 </nav>
 
-                <form method="POST" id="form-create-category">
+                <form method="POST">
+                    <div></div>
                     <div class="row mt-5 form-group">
+                        <input type="text" class="my-product-input" name="id" id="cat-id" placeholder="Chuyên mục abcxyz" value="{{this.category.id}}" autofocus style="display: none;"/>
                         <div class="col-sm-3 text-right">
                             <label for="cat-name">Tên chuyên mục:</label>
                         </div>
                         <div class="col-sm-6">
-                            <input type="text" class="my-product-input" name="name" id="cat-name" placeholder="Chuyên mục abcxyz" autofocus/>
+                            <input type="text" class="my-product-input" name="name" id="cat-name" placeholder="Chuyên mục abcxyz" value="{{this.category.name}}" autofocus/>
                         </div>
                     </div>
 
@@ -100,8 +102,8 @@
                             <label>Chuyên mục</label>
                         </div>
                         <div class="col-sm-6">
-                            <select id="selectbox" class="my-product-select" data-selected="" name="parent_id">
-                                <option value="" selected="selected" disabled="disabled" value="0">Vui lòng chọn 1 chuyên mục</option>
+                            <select id="selectbox" class="my-product-select" name="parent_id">
+                                <option value="" disabled="disabled" value="0">Vui lòng chọn 1 chuyên mục</option>
                                 {{#each this.categories}}
                                     <option value="{{id}}">{{name}}</option>
                                 {{/each}}
@@ -116,8 +118,9 @@
 
                     <div class="row mt-2">
                     <div class="col-sm-9 d-flex justify-content-end">
-                        <button type="submit" class="btn btn-success mr-3"><i class="fa fa-save"></i>&nbsp;Lưu</button>
+                        <button type="submit" class="btn btn-success mr-3" formaction="/admin/category/edit"><i class="fa fa-save"></i>&nbsp;Lưu</button>
                         <a class="btn btn-danger" href="/admin/category"><i class="fa fa fa-arrow-left"></i>&nbsp;Quay lại</a>
+                        <button type="submit" class="btn btn-default ml-3" formaction="/admin/category/delete"><i class="fa fa-trash"></i>&nbsp;Xóa</button>
                     </div>
                 </div>
                 </form>
@@ -155,40 +158,13 @@
                 </footer>
             </div>
         </div>
-        
-        <script type="text/javascript">
-            $( "#form-create-category" ).submit(function( event ) {
-                let listCategory = [];
-                $.ajax({
-                    url: "/admin/category/get_all_category",
-                    type : "get",
-                    async: false,
-                    success: function (data, statusRequest) {
-                        listCategory = data;
-                    }
-                });
-                let categoryName = $('#cat-name').val();
-                var selectedVal = $("#selectbox option:selected").val();
-                if(!categoryName.length){
-                    alert("Vui lòng nhập tên chuyên mục");
-                    event.preventDefault();
-                }
-                else if(!selectedVal){
-                    alert("Vui lòng chọn chuyên mục cha");
-                    event.preventDefault();
-                }
-                else{
-                    for (let i = 0 ; i< listCategory.length; i++){
-                        if(categoryName === listCategory[i].name){
-                            alert("Tên chuyên mục hiện đã sẵn có");
-                            event.preventDefault();
-                            break;
-                        }
-                    }
-                }
 
-            });
+        <script type="text/javascript">
+            function init(value){
+                $("#selectbox").val(value);
+            }
         </script>
+        
     </body>
 
     </html>

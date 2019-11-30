@@ -31,11 +31,25 @@ router.get('/get_category/:id', async(req, res) => {
     }
 })
 
+router.get('/get_all_category', async(req, res) => {
+    try {
+        const rows = await categoryModel.all("tblcategory");
+        res.send(rows);
+
+    } catch (err) {
+        console.log(err);
+        res.end('View error log in console.');
+    }
+})
+
 router.get('/create_category', async(req, res) => {
-    const rows = await categoryModel.all("tblcategory");
+    let rowsLevel1 = await categoryModel.all_by_level("tblcategory", 1);
+    let rowsLevel2 = await categoryModel.all_by_level("tblcategory", 2);
+    let rowsResult = rowsLevel1.concat(rowsLevel2);
+    console.log(rowsResult);
     res.render('admin/create_category', {
-        categories: rows,
-        empty: rows.length === 0,
+        categories: rowsResult,
+        empty: rowsResult.length === 0,
         layout: false
     });
 });
@@ -61,5 +75,49 @@ router.post('/create_category', async(req, res) => {
         layout: false
     });
 });
+
+router.get('/edit_category/:id', async(req, res) => {
+    const data = await categoryModel.single_by_id("tblcategory", req.params.id);
+    if (data.length === 0) {
+        throw new Error('Invalid category id');
+    }
+    const rows = await categoryModel.all("tblcategory");
+    console.log(data);
+    res.render('admin/edit_category', {
+        category: data[0],
+        categories: rows,
+        layout: false
+    })
+})
+
+router.post('/edit', async(req, res) => {
+    let entityId = {
+        "id": req.body.id
+    }
+    let entity = {
+        "name": req.body.name,
+        "parent_id": req.body.parent_id
+    }
+    const data = await categoryModel.edit("tblcategory", entity, entityId);
+    res.redirect('/admin/category');
+});
+
+router.post('/delete', async(req, res) => {
+    let entityId = {
+        "id": req.body.id
+    }
+    const data = await categoryModel.del("tblcategory", entityId);
+    res.redirect('/admin/category');
+});
+
+router.get('/err', (req, res) => {
+    throw new Error('error occured');
+    // try {
+    //     throw new Error('error occured');
+    // } catch (err) {
+    //     console.log(err.stack);
+    //     res.send('View error on console');
+    // }
+})
 
 module.exports = router;

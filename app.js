@@ -58,5 +58,10 @@ app.get('/profile', function(req, res) {
 
 app.use('/admin/category', require('./routes/admin/category.route'));
 app.use('/admin/user', require('./routes/admin/user.route'));
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    // res.render('vwError/index');
+    res.status(500).send('View error on console!');
+})
 
 app.listen(3000);
