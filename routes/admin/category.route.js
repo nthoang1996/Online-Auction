@@ -4,20 +4,20 @@ const categoryModel = require('../../models/category.model');
 const router = express.Router();
 
 router.get('/', async(req, res) => {
-    try {
-        const rows = await categoryModel.all_by_level("tblcategory", 1);
-        for (let i = 0; i < rows.length; i++) {
-            rows[i]['number'] = i + 1;
-        }
-        res.render('admin/category', {
-            categories: rows,
-            empty: rows.length === 0,
-            layout: false
-        });
-    } catch (err) {
-        console.log(err);
-        res.end('View error log in console.');
+    // try {
+    const rows = await categoryModel.all_by_level("tblcategory", 1);
+    for (let i = 0; i < rows.length; i++) {
+        rows[i]['number'] = i + 1;
     }
+    res.render('admin/category', {
+        categories: rows,
+        empty: rows.length === 0,
+        layout: false
+    });
+    // } catch (err) {
+    //     console.log(err);
+    //     res.end('View error log in console.');
+    // }
 })
 
 router.get('/get_category/:id', async(req, res) => {
@@ -27,7 +27,7 @@ router.get('/get_category/:id', async(req, res) => {
 
     } catch (err) {
         console.log(err);
-        res.end('View error log in console.');
+        //     res.end('View error log in console.');
     }
 })
 
@@ -38,7 +38,7 @@ router.get('/get_all_category', async(req, res) => {
 
     } catch (err) {
         console.log(err);
-        res.end('View error log in console.');
+        // res.end('View error log in console.');
     }
 })
 

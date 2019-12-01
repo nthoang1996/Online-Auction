@@ -1,6 +1,7 @@
 const express = require('express');
 const exphbs = require('express-handlebars');
 const morgan = require('morgan');
+require('express-async-errors');
 
 const app = express();
 app.use(morgan('dev'));
@@ -60,8 +61,11 @@ app.use('/admin/category', require('./routes/admin/category.route'));
 app.use('/admin/user', require('./routes/admin/user.route'));
 app.use((err, req, res, next) => {
     console.error(err.stack);
-    // res.render('vwError/index');
-    res.status(500).send('View error on console!');
+    res.render('error500', { layout: false });
+})
+
+app.use((req, res, next) => {
+    res.render('error404', { layout: false });
 })
 
 app.listen(3000);
