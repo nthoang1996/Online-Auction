@@ -2467,3 +2467,8 @@ h3 {
 .my-body {
     background-color: #f7f7f8;
 }
+
+.my-content-modal {
+    padding-top: 0 !important;
+    margin-bottom: 10px;
+}

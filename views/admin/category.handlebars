@@ -473,7 +473,7 @@
                                     +            ' class="fa fa-eye"></i></button> '
                                     +       '<a href="/admin/category/edit_category/'+ result[i-1].id + '" class="btn btn-success my-category-button"><i '
                                     +            ' class="fa fa-edit"></i></a> '
-                                    +       '<button class="btn btn-danger my-category-button"><i '
+                                    +       '<button class="btn btn-danger my-category-button" onclick="deleteItem(' + result[i-1].id + ')"><i '
                                     +            ' class="fa fa-trash"></i></button> '
                                     +   '</td> '
                                     + '</tr> ';
@@ -481,9 +481,9 @@
                         }
                         else{
                             element = element
-                                    +       '<button class="btn btn-success my-category-button"><i'
-                                    +            ' class="fa fa-edit"></i></button>'
-                                    +       '<button class="btn btn-danger my-category-button"><i'
+                                    +       '<a href="/admin/category/edit_category/'+ result[i-1].id + '" class="btn btn-success my-category-button"><i '
+                                    +            ' class="fa fa-edit"></i></a> '
+                                    +       '<button class="btn btn-danger my-category-button" onclick="deleteItem(' + result[i-1].id + ')" ><i'
                                     +            ' class="fa fa-trash"></i></button>'
                                     +   '</td>'
                                     + '</tr>';
@@ -497,6 +497,12 @@
 
         function closeModal(){
             $('#exampleModalCenter').modal('toggle');
+        }
+
+        function deleteItem(id){
+            $.post('/admin/category/delete', {"id": id}, function(response){
+                location.reload();
+            });
         }
     </script>
 </body>

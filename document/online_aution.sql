@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th10 24, 2019 lúc 06:29 PM
+-- Thời gian đã tạo: Th12 05, 2019 lúc 02:17 AM
 -- Phiên bản máy phục vụ: 10.4.8-MariaDB
 -- Phiên bản PHP: 7.3.11
 
@@ -186,7 +186,9 @@ INSERT INTO `tblcategory` (`id`, `name`, `level`, `parent_id`) VALUES
 (144, 'DxRacer', 2, 137),
 (145, 'Fomular Series', 3, 144),
 (146, 'Racing Pro Series', 3, 144),
-(147, 'Valkyrie Series', 3, 144);
+(147, 'Valkyrie Series', 3, 144),
+(156, 'thư con heo', 2, 77),
+(160, 'local', 2, 77);
 
 -- --------------------------------------------------------
 
@@ -212,7 +214,7 @@ CREATE TABLE `tbluser` (
 INSERT INTO `tbluser` (`id`, `name`, `phone`, `address`, `email`, `role`, `point`, `is_active`) VALUES
 (1, 'Nguyễn Thái Hoàng', '0936252722', 'c4/6d Lê Đình Chi H.Bình Chánh TP.Hồ Chí Minh', 'nthoang1996@gmail.com', 1, '0/0', 1),
 (2, 'Võ Thanh Hiếu', '0901234567', '33/29 ĐHT 21 quận 12 TP.Hồ Chí Minh', 'zannaghazi123@gmail.com', 2, '6/8', 1),
-(3, 'Phan Dương Phi', '0378561472', '801 Trần Xuân Soạn quận 7 TP.Hồ Chí Minh', 'phidk96@gmail.com', 2, '3/5', 1),
+(3, 'Phan Dương Phi', '0378561472', '801 Trần Xuân Soạn quận 7 TP.Hồ Chí Minh', 'phidk96@gmail.com', 3, '3/5', 1),
 (4, 'Trần Hoàng Anh Thư', '0947874515', 'k24/7 Nguyễn Trường Tộ quận Hải Châu TP.Đà Nẵng', 'thuconheo99@gmail.com', 2, '8/10', 1),
 (5, 'Nguyễn Văn Bảo', '0338013415', '123 Phạm Thế Hiển quận 8 TP.Hồ Chí Minh', 'nvbao62@gmail.com', 3, '10/10', 1),
 (6, 'Nguyễn Thị Hiền', '0377385619', '325 Nguyễn Trãi quận 1 TP.Hồ Chí Minh', 'nthien67@gmail.com', 3, '12/0', 1),
@@ -244,7 +246,7 @@ ALTER TABLE `tbluser`
 -- AUTO_INCREMENT cho bảng `tblcategory`
 --
 ALTER TABLE `tblcategory`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=148;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=164;
 
 --
 -- AUTO_INCREMENT cho bảng `tbluser`

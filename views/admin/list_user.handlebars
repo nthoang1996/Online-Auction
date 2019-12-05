@@ -11,9 +11,7 @@
     <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
     <meta name="viewport" content="width=device-width" />
 
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-        crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
         integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
         crossorigin="anonymous"></script>
@@ -39,7 +37,7 @@
     <link href="https://cdn.quilljs.com/1.1.9/quill.snow.css" rel="stylesheet">
 </head>
 
-<body>
+<body onload="init()">
     <div class="wrapper">
         <div class="sidebar" data-color="purple" data-image="/assets/img/sidebar-5.jpg">
             <div class="sidebar-wrapper">
@@ -124,9 +122,9 @@
                                 <td>{{status}}</td>
                                 <td>
                                     <button class="btn btn-success my-category-button" data-toggle="modal"
-                                        data-target="#exampleModalCenter"><i class="fa fa-edit"></i></button>
+                                        data-target="#exampleModalCenter" onclick="viewUser({{id}})"><i class="fa fa-edit"></i></button>
                                     <button class="btn btn-danger my-category-button"><i
-                                            class="fa fa-trash"></i></button>
+                                            class="fa fa-trash" onclick="deleteUser({{id}})"></i></button>
                                 </td>
                             </tr>
                             {{/each}}
@@ -195,78 +193,78 @@
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
-                        <div class="modal-body" style="background-color: #f7f7f8;">
-                            <div class="row mt-5">
-                                <div class="col-sm-3 text-right">
-                                    <label>Tên người dùng:</label>
+                        <div class="modal-body my-content-modal" style="background-color: #f7f7f8;">
+                            <form method="POST" id="form-edit-user">
+                                <input name="user_id" id="user_id" type="text" class="my-product-input pl-2" value="Nguyễn Thái Hoàng"
+                                            readonly style="display: none;"/>
+                                <div class="row mt-5 form-group">
+                                    <div class="col-sm-3 text-right">
+                                        <label for="user_name">Tên người dùng:</label>
+                                    </div>
+                                    <div class="col-sm-6 ">
+                                        <input name="user_name" id="user_name" type="text" class="my-product-input pl-2" value="Nguyễn Thái Hoàng"
+                                            readonly />
+                                    </div>
                                 </div>
-                                <div class="col-sm-6 ">
-                                    <input type="text" class="my-product-input pl-2" value="Nguyễn Thái Hoàng"
-                                        readonly />
-                                </div>
-                            </div>
 
-                            <div class="row mt-2">
-                                <div class="col-sm-3 text-right">
-                                    <label>Email:</label>
+                                <div class="row mt-2 form-group">
+                                     <div class="col-sm-3 text-right">
+                                        <label for="user_email">Email:</label>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <input name="user_email" id="user_email" type="text" class="my-product-input pl-2" value="nthoang1996@gmail.com"
+                                            readonly />
+                                    </div>
                                 </div>
-                                <div class="col-sm-6">
-                                    <input type="text" class="my-product-input pl-2" value="nthoang1996@gmail.com"
-                                        readonly />
-                                </div>
-                            </div>
 
-                            <div class="row mt-2">
-                                <div class="col-sm-3 text-right">
-                                    <label>Số điện thoại:</label>
+                                <div class="row mt-2 form-group">
+                                    <div class="col-sm-3 text-right">
+                                        <label for="user_phone">Số điện thoại:</label>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <input type="text" name="user_phone" id="user_phone" class="my-product-input pl-2" value="0936252722" readonly />
+                                    </div>
                                 </div>
-                                <div class="col-sm-6">
-                                    <input type="text" class="my-product-input pl-2" value="0936252722" readonly />
-                                </div>
-                            </div>
 
-                            <div class="row mt-2">
-                                <div class="col-sm-3 text-right">
-                                    <label>Địa chỉ:</label>
+                                <div class="row mt-2 form-group">
+                                    <div class="col-sm-3 text-right">
+                                        <label for="user_address">Địa chỉ:</label>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <input type="text" class="my-product-input pl-2" name="user_address" id="user_address"
+                                            value="c4/6d Lê Đình Chi H.Bình Chánh TP.Hồ Chí Minh" readonly />
+                                    </div>
                                 </div>
-                                <div class="col-sm-6">
-                                    <input type="text" class="my-product-input pl-2"
-                                        value="c4/6d Lê Đình Chi H.Bình Chánh TP.Hồ Chí Minh" readonly />
-                                </div>
-                            </div>
 
-                            <div class="row mt-2">
-                                <div class="col-sm-3 text-right">
-                                    <label>Quyền</label>
+                                <div class="row mt-2 form-group">
+                                    <div class="col-sm-3 text-right">
+                                        <label for="user_role">Quyền</label>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <select class="my-product-select" data-selected="" name="user_role" id="user_role">
+                                            <option value="" selected="selected" disabled="disabled">Vui lòng chọn 1 quyền</option>
+                                        </select>
+                                    </div>
                                 </div>
-                                <div class="col-sm-6">
-                                    <select id="selectbox" class="my-product-select" data-selected="">
-                                        <option value="" selected="selected" disabled="disabled">Vui lòng chọn 1 chuyên
-                                            mục</option>
-                                        <option value="1" selected>Admin</option>
-                                        <option value="2">Người bán</option>
-                                        <option value="3">Người đấu giá</option>
-                                    </select>
-                                </div>
-                            </div>
 
-                            <div class="row mt-2">
-                                <div class="col-sm-3 text-right">
-                                    <label>Trạng thái</label>
+                                <div class="row mt-2 form-group">
+                                    <div class="col-sm-3 text-right">
+                                        <label for="user_status">Trạng thái</label>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <select class="my-product-select" data-selected="" name="user_status" id="user_status">
+                                            <option value="" disabled="disabled">Vui lòng chọn 1 trạng thái</option>
+                                        </select>
+                                    </div>
                                 </div>
-                                <div class="col-sm-6">
-                                    <select id="selectbox" class="my-product-select" data-selected="">
-                                        <option value="" selected="selected" disabled="disabled">Vui lòng chọn 1 chuyên
-                                            mục</option>
-                                        <option value="1" selected>Bình thường</option>
-                                        <option value="2">Vô hiệu hóa</option>
-                                    </select>
-                                </div>
-                            </div>
 
-                        </div>
-                        <div class="modal-footer d-flex justify-content-end">
-                            <button class="btn btn-danger"><i class="fa fa-arrow-left"></i>&nbsp;Quay lại</button>
+                                 <div class="row mt-2 d-flex justify-content-end">
+                                     <div class="modal-footer">
+                                        <button type="submit"  formaction="/admin/user/edit" class="btn btn-success mr-3"><i class="fa fa-save"></i>&nbsp;Lưu</button>
+                                        <button type="button" class="btn btn-danger" onclick="closeModal()"><i class="fa fa fa-arrow-left"></i>&nbsp;Quay lại</button>
+                                    </div>
+                                 </div>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -305,6 +303,68 @@
             </footer>
         </div>
     </div>
+    <script type="text/javascript">
+        function viewUser(id){
+           $.ajax({url: "/admin/user/get_user/" + id, async: false, success: function(result){
+                console.log(result);
+                $("#user_id").val(result.id);
+                $("#user_name").val(result.name);
+                $("#user_email").val(result.email);
+                $("#user_phone").val(result.phone);
+                $("#user_address").val(result.address);
+                $("#user_role").val(result.role);
+                $("#user_status").val(result.is_active);
+            }});
+        }
+
+        function closeModal(){
+            $('#exampleModalCenter').modal('toggle');
+        }
+
+        function init(){
+             $.ajax({
+                url: '/admin/user/get_userrole',
+                success: function (result) {
+                    for(let i = 0; i<result.length; i++){
+                        let role_name_vn = "";
+                        if(result[i].name === "Admin"){
+                            role_name_vn = "Quản trị viên";
+                        }
+                        else if(result[i].name === "Seller"){
+                            role_name_vn = "Người bán";
+                        }
+                        else{
+                            role_name_vn = "Người đấu giá";
+                        }
+                        $("#user_role").append(`<option value="${result[i].id}" >${role_name_vn}</option>`)
+                    }
+                },
+                async: false
+            });
+            $.ajax({
+                url: '/admin/user/get_userstatus',
+                success: function (result) {
+                    for(let i = 0; i<result.length; i++){
+                        let status_name_vn = "";
+                        if(result[i].name === "Active"){
+                            status_name_vn = "Bình thường";
+                        }
+                        else{
+                            status_name_vn = "Vô hiệu hóa";
+                        }
+                        $("#user_status").append(`<option value="${result[i].id}" >${status_name_vn}</option>`)
+                    }
+                },
+                async: false
+            });
+        }
+
+        function deleteUser(id){
+            $.post('/admin/user/delete', {"id": id}, function(response){
+                location.reload();
+            });
+        }
+    </script>
 </body>
 
 </html>
