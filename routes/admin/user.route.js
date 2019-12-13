@@ -6,22 +6,28 @@ const router = express.Router();
 router.get('/', async(req, res) => {
     // try {
     const rows = await categoryModel.all("tbluser");
+    // console.log(rows);
     for (let i = 0; i < rows.length; i++) {
-        switch (rows[i].role) {
-            case 1:
-                rows[i]["role_name"] = "Quản trị viên";
-                break;
-            case 2:
-                rows[i]["role_name"] = "Người bán";
-                break;
-            case 3:
-                rows[i]["role_name"] = "Người Đấu giá";
-                break;
-
+        let listRole = JSON.parse(rows[i].role);
+        rows[i]["role_name"] = "";
+        for (let j = 0; j < listRole.length; j++) {
+            switch (listRole[j]) {
+                case 1:
+                    rows[i]["role_name"] += "Quản trị viên";
+                    break;
+                case 2:
+                    rows[i]["role_name"] += "Người bán";
+                    break;
+                case 3:
+                    rows[i]["role_name"] += "Người Đấu giá";
+                    break;
+            }
+            if (j != listRole.length - 1) {
+                rows[i]["role_name"] += ", ";
+            }
         }
         rows[i]["status"] = rows[i].is_active == 1 ? "Bình thường" : "Vô hiệu hóa";
     }
-    console.log(rows);
     res.render('admin/list_user', {
         listUser: rows,
         empty: rows.length === 0,
@@ -70,8 +76,19 @@ router.post('/edit', async(req, res) => {
     let entityId = {
         "id": parseInt(req.body.user_id)
     }
+    console.log(req.body);
+    let json = "";
+    if (Array.isArray(req.body.role)) {
+        let listRole = [];
+        for (let i = 0; i < req.body.role.length; i++) {
+            listRole.push(parseInt(req.body.role[i]));
+        }
+        json = JSON.stringify(listRole);
+    } else {
+        json = "[" + req.body.role + "]";
+    }
     let entity = {
-        "role": parseInt(req.body.user_role),
+        "role": json,
         "is_active": parseInt(req.body.user_status)
     }
     console.log(entity);

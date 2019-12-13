@@ -118,6 +118,6 @@ router.get('/err', (req, res) => {
     //     console.log(err.stack);
     //     res.send('View error on console');
     // }
-})
+});
 
 module.exports = router;

@@ -59,6 +59,9 @@ app.get('/profile', function(req, res) {
 
 app.use('/admin/category', require('./routes/admin/category.route'));
 app.use('/admin/user', require('./routes/admin/user.route'));
+app.use('/category', require('./routes/category.routes'));
+app.use('/admin/product', require('./routes/admin/product.route'));
+
 app.use((err, req, res, next) => {
     console.error(err.stack);
     res.render('error500', { layout: false });

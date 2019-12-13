@@ -11,9 +11,7 @@
     <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
     <meta name="viewport" content="width=device-width" />
 
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-        crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
         integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
         crossorigin="anonymous"></script>
@@ -68,7 +66,7 @@
                             <p class="mb-0">Quản lý danh mục</p>
                         </a>
                     </li>
-                    <li class="active pl-3 my-li-dashboard">
+                    <li class="my-active pl-3 my-li-dashboard">
                         <a href="icons.html">
                             <i class="pe-7s-science"></i>
                             <p class="mb-0">Quản lý sản phẩm</p>
@@ -94,43 +92,52 @@
             </nav>
             <h4 class="ml-5">Danh sách sản phẩm:</h4>
             <div class="row">
-                <div class="col-sm-1">
-                </div>
-                <div class="col-sm-11">
+                {{!-- <div class="col-sm-1">
+                </div> --}}
+                <div class="col-sm-12 ml-2 mr-2">
                     <table class="table">
                         <thead class="thead-dark">
                             <tr>
                                 <th scope="col" width="2%" style="font-weight:bold;">STT</th>
-                                <th scope="col" width="15%" style="font-weight:bold;">Tên sản phẩm</th>
+                                <th scope="col" width="33%" style="font-weight:bold;">Tên sản phẩm</th>
                                 <th scope="col" width="10%" style="font-weight:bold;">Chuyên mục</th>
-                                <th scope="col" width="10%" style="font-weight:bold;">Giá khởi điểm</th>
-                                <th scope="col" width="10%" style="font-weight:bold;">Bước nhảy</th>
+                                <th scope="col" width="5%" style="font-weight:bold;">Giá khởi điểm</th>
+                                <th scope="col" width="5%" style="font-weight:bold;">Giá mua ngay</th>
+                                <th scope="col" width="5%" style="font-weight:bold;">Giá cao nhất</th>
+                                <th scope="col" width="5%" style="font-weight:bold;">Bước nhảy</th>
                                 <th scope="col" width="10%" style="font-weight:bold;">Ngày kết thúc</th>
                                 <th scope="col" width="10%" style="font-weight:bold;">Ngày bắt đầu</th>
-                                <th scope="col" width="18%" style="font-weight:bold;">Mô tả</th>
                                 <th scope="col" width="5%" style="font-weight:bold;">Trạng thái</th>
                                 <th scope="col" width="10%" style="font-weight:bold;"></th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <th scope="row">1</th>
-                                <td>Laptop MSI GF63 Thin 9RCX 646VN Geforce GTX1050Ti 4GB Intel Core i5 9300H 8GB 512GB 15.6” IPS Backlight Keyboard Win 10</td>
-                                <td>MSI Gaming Series</td>
-                                <td>21.690.000₫</td>
-                                <td>500.000₫</td>
-                                <td>17/08/2020</td>
-                                <td>17/08/2019</td>
-                                <td>Laptop MSI GF63 Thin 9RCX 646VN với mặt trên vỏ kim loại xước và thiết kế bàn phím liền kề, măt dưới với khe thông gió hình chữ X ẩn vô cùng độc đáo.</td>
-                                <td>Bình thường</td>
-                                <td>
-                                    <button class="btn btn-secondary my-category-button"><i
-                                            class="fa fa-ban"></i></button>
-                                    <button class="btn btn-danger my-category-button"><i
-                                            class="fa fa-trash"></i></button>
-                                </td>
-                            </tr>
-                            <tr>
+                            {{#each this.listProduct}}
+                                <tr>
+                                    <th scope="row" class="text-center">{{id}}</th>
+                                    <td>{{name}}</td>
+                                    <td>{{cat_name}}</td>
+                                    <td>{{start_price}}</td>
+                                    <td>{{buynow_price}}</td>
+                                    <td>0</td>
+                                    <td>{{min_increase}}</td>
+                                    <td>{{start_date}}</td>
+                                    <td>{{end_date}}</td>
+                                    <td>{{status}}</td>
+                                    <td>
+                                        {{#if can_disable}}
+                                            <button class="btn btn-secondary my-category-button" onclick="disableProduct({{id}})"><i
+                                                class="fa fa-ban"></i></button>
+                                        {{else}}
+                                            <button class="btn btn-success my-category-button" onclick="enableProduct({{id}})"><i
+                                                class="fa fa-check-circle"></i></button>
+                                        {{/if}}
+                                        <button class="btn btn-danger my-category-button" onclick="deleteProduct({{id}})"><i
+                                                class="fa fa-trash"></i></button>
+                                    </td>
+                                </tr>
+                            {{/each}}
+                            {{!-- <tr>
                                 <th scope="row">2</th>
                                 <td>Laptop Gaming MSI GF75 Thin 9RCX 432VN GTX 1050Ti Intel Core i5 9300H 8GB 256GB 17.3” IPS 120Hz Backlight Keyboard Win 10</td>
                                 <td>MSI Gaming Series</td>
@@ -180,7 +187,7 @@
                                     <button class="btn btn-danger my-category-button"><i
                                             class="fa fa-trash"></i></button>
                                 </td>
-                            </tr>
+                            </tr> --}}
                         </tbody>
                     </table>
                     <hr>
@@ -226,6 +233,26 @@
             </footer>
         </div>
     </div>
+
+    <script type="text/javascript">
+        function disableProduct(id){
+            $.post('/admin/product/edit', {"id": id, "is_active" : 0}, function(response){
+                location.reload();
+            });
+        }
+
+        function enableProduct(id){
+            $.post('/admin/product/edit', {"id": id, "is_active" : 1}, function(response){
+                location.reload();
+            });
+        }
+
+        function deleteProduct(id){
+            $.post('/admin/product/delete', {"id": id}, function(response){
+                location.reload();
+            });
+        }
+    </script>
 </body>
 
 </html>

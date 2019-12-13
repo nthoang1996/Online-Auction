@@ -72,7 +72,7 @@
                             <p class="mb-0">Quản lý sản phẩm</p>
                         </a>
                     </li>
-                    <li class="active pl-3 my-li-dashboard">
+                    <li class="my-active pl-3 my-li-dashboard">
                         <a href="maps.html">
                             <i class="pe-7s-map-marker"></i>
                             <p class="mb-0">Quản lý người dùng</p>
@@ -92,9 +92,9 @@
             </nav>
             <h4 class="ml-5">Danh sách người dùng:</h4>
             <div class="row">
-                <div class="col-sm-1">
-                </div>
-                <div class="col-sm-11">
+                {{!-- <div class="col-sm-1">
+                </div> --}}
+                <div class="col-sm-12 ml-1 mr-1">
                     <table class="table">
                         <thead class="thead-dark">
                             <tr>
@@ -102,8 +102,8 @@
                                 <th scope="col" width="15%" style="font-weight:bold;">Tên người dùng</th>
                                 <th scope="col" width="10%" style="font-weight:bold;">Số điện thoại</th>
                                 <th scope="col" width="25%" style="font-weight:bold;">Địa chỉ</th>
-                                <th scope="col" width="20%" style="font-weight:bold;">Email</th>
-                                <th scope="col" width="5%" style="font-weight:bold;">Quyền</th>
+                                <th scope="col" width="15%" style="font-weight:bold;">Email</th>
+                                <th scope="col" width="10%" style="font-weight:bold;">Quyền</th>
                                 <th scope="col" width="5%" style="font-weight:bold;">Điểm</th>
                                 <th scope="col" width="5%" style="font-weight:bold;">Trạng thái</th>
                                 <th scope="col" width="10%" style="font-weight:bold;"></th>
@@ -241,9 +241,9 @@
                                         <label for="user_role">Quyền</label>
                                     </div>
                                     <div class="col-sm-6">
-                                        <select class="my-product-select" data-selected="" name="user_role" id="user_role">
-                                            <option value="" selected="selected" disabled="disabled">Vui lòng chọn 1 quyền</option>
-                                        </select>
+                                        <input id="chxboxAdmin" type="checkbox" name="role" value="1"> Quản trị viên
+                                        <input id="chxboxSeller" type="checkbox" name="role" value="2" class="ml-3">Người bán
+                                        <input id="chxboxBidder" type="checkbox" name="role" value="3" class="ml-3">Người đấu giá
                                     </div>
                                 </div>
 
@@ -306,6 +306,9 @@
     <script type="text/javascript">
         function viewUser(id){
            $.ajax({url: "/admin/user/get_user/" + id, async: false, success: function(result){
+               $('#chxboxAdmin').prop('checked', false);
+               $('#chxboxSeller').prop('checked', false);
+               $('#chxboxBidder').prop('checked', false);
                 console.log(result);
                 $("#user_id").val(result.id);
                 $("#user_name").val(result.name);
@@ -313,6 +316,18 @@
                 $("#user_phone").val(result.phone);
                 $("#user_address").val(result.address);
                 $("#user_role").val(result.role);
+                let listRole = JSON.parse(result.role);
+                for(let i = 0; i< listRole.length; i++){
+                    if(listRole[i] === 1){
+                        $('#chxboxAdmin').prop('checked', true);
+                    }
+                    else if(listRole[i] === 2){
+                        $('#chxboxSeller').prop('checked', true);
+                    }
+                    else{
+                        $('#chxboxBidder').prop('checked', true);
+                    }
+                }
                 $("#user_status").val(result.is_active);
             }});
         }
@@ -322,7 +337,7 @@
         }
 
         function init(){
-             $.ajax({
+            /*$.ajax({
                 url: '/admin/user/get_userrole',
                 success: function (result) {
                     for(let i = 0; i<result.length; i++){
@@ -340,7 +355,7 @@
                     }
                 },
                 async: false
-            });
+            });*/
             $.ajax({
                 url: '/admin/user/get_userstatus',
                 success: function (result) {
