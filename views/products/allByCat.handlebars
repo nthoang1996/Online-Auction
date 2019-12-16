@@ -45,11 +45,11 @@
                                     <div class="products-entry item-wrap clearfix ">
                                         <div class="item-detail ">
                                             <div class="item-img products-thumb ">
-                                                <div class="bidder-name">****Khoa</div>
-                                                <div class="count-bid">10 lượt</div>
+                                                <div class="bidder-name">{{bidder}}</div>
+                                                <div class="count-bid">{{count_bid}}</div>
                                                 <a href="#">
                                                     <div class="product-thumb-hover ">
-                                                        <img width="193 " height="193 " src="/picture/MSI/msi_1.jpg " class="attachment-shop_catalog size-shop_catalog wp-post-image lazyloaded ">
+                                                        <img class="my-image" src="/picture/product/{{id}}/main1.jpg " class="attachment-shop_catalog size-shop_catalog wp-post-image lazyloaded ">
                                                     </div>
                                                 </a>
                                                 <div class="berocket_better_labels berocket_better_labels_image ">
@@ -57,7 +57,7 @@
                                                         <div class="berocket_better_labels_line berocket_better_labels_line_1 ">
                                                             <div class="berocket_better_labels_inline berocket_better_labels_inline_1 ">
                                                                 <span class="content-date">    
-                                                                <i class="template-i-after  font-date"></i><b>26/12/2019</b></span>
+                                                                <i class="template-i-after  font-date"></i><b>{{date_time}}</b></span>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -69,7 +69,7 @@
                                                     <div class="star "></div>
 
                                                 </div>
-                                                <h4><a href="#">Laptop MSI PS42 8M 288VN /478VN Intel Core i5 8250U 8GB 256GB 14″ IPS Backlight Keyboard Win 10</a></h4>
+                                                <h4><a href="#">{{name}}</a></h4>
                                                 <div class="row">
                                                     <div class="col-sm-6">
                                                         <div>Khởi điểm:</div>
@@ -79,10 +79,10 @@
 
                                                     </div>
                                                     <div class="col-sm-6">
-                                                        <div>10.000.000₫</div>
-                                                        <div>15.990.000₫</div>
-                                                        <div>21.990.000₫</div>
-                                                        <div>500.000₫</div>
+                                                        <div>{{format start_price}}</div>
+                                                        <div>{{format top_price}}</div>
+                                                        <div>{{format buynow_price}}</div>
+                                                        <div>{{format min_increase}}</div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -702,14 +702,24 @@
         <div class="d-flex justify-content-end">
             <nav aria-label="Page navigation example">
                 <ul class="pagination justify-content-end no-spacing">
-                    <li class="page-item disabled">
-                        <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
-                    </li>
-                    <li class="page-item"><a class="page-link" href="#">1</a></li>
-                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link" href="#">3</a></li>
                     <li class="page-item">
-                        <a class="page-link" href="#">Next</a>
+                        <a class="page-link {{#if this.disable_prev}}my-disabled{{/if}}" href="?page={{prev_value}}" >
+                            <i class="fa fa-backward" aria-hidden="true"></i>
+                        </a>
+                    </li>
+                    {{#each this.page_numbers}}
+                    {{#if isCurrentPage}}
+                        <li class="page-item active" aria-current="page"><a class="page-link" href="javascript:;">{{value}}<span class="sr-only">(current)</span></a></li>   
+                    {{else}}
+                        <li class="page-item"><a class="page-link" href="?page={{value}}">{{value}}</a></li>
+                    {{/if}}
+                    {{/each}}
+                    {{!-- <li class="page-item"><a class="page-link" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link" href="#">3</a></li> --}}
+                    <li class="page-item">
+                        <a class="page-link {{#if this.disable_next}}my-disabled {{/if}}" href="?page={{next_value}}">
+                            <i class="fa fa-forward" aria-hidden="true"></i>
+                        </a>
                     </li>
                 </ul>
             </nav>

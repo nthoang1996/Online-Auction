@@ -97,3 +97,21 @@
 .container-product {
     margin-top: 10px;
 }
+
+.my-size-small {
+    width: 30px;
+    height: 30px;
+    border: 1px solid #FC445D;
+    border-radius: 5px !important;
+    margin-right: 3px;
+}
+
+.my-image {
+    width: 193px;
+    height: 193px;
+}
+
+.my-disabled {
+    pointer-events: none;
+    cursor: default;
+}

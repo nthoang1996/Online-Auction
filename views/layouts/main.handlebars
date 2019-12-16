@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="/static/css/category.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.8.10/css/mdb.css">
-    <script type="text/javascript" src="/static/javascript/category.js"></script>
+    {{{_section.css}}}
 </head>
 
 <body>
@@ -17,7 +17,37 @@
         <div class="my-header-list">
             <div class="my-container-list">
                 <ul id="main_menu">
+                    {{#each lcCategories}}
                     <li>
+                        <a href="javascript:;" class="my-button-list d-flex justify-content-center"> <i class="{{icon}}"></i>&nbsp;&nbsp;{{name}}</a>
+                        {{#if haveSub}}
+                        <ul class="sub_menu">
+                            {{#each subcategory}}
+                            <li class="d-flex justify-content-between align-items-center">
+                                <a href="/category/{{this.id}}/products" >{{this.name}}</a>
+                                {{#if count}}
+                                <span class="badge badge-danger d-flex align-items-center my-size-small justify-content-center">{{count}}</span>
+                                {{/if}}
+                                {{#if this.haveSub}}
+                                <ul class="sub_menu">
+                                    {{#each this.subcategory}}
+                                    <li class="d-flex justify-content-between align-items-center">
+                                        <a href="/category/{{this.id}}/products" class="child-category">{{this.name}}</a>
+                                        {{#if count}}
+                                        <span class="badge badge-danger d-flex align-items-center my-size-small justify-content-center">{{count}}</span>
+                                        {{/if}}
+                                    </li>
+                                    {{/each}}
+                                </ul>
+                                {{/if}}
+                            </li>
+                            {{/each}}
+                        </ul>
+                        {{/if}}
+                    </li>
+
+                    {{/each}}
+                    {{!-- <li>
                         <a href="" class="my-button-list d-flex justify-content-center"> <i class="fas fa-laptop"></i>&nbsp;&nbsp;LAPTOP</a>
                         <ul class="sub_menu">
                             <li><a href="/MSIcatgory">MSI</a>
@@ -283,7 +313,7 @@
                                 </ul>
                             </li>
                         </ul>
-                    </li>
+                    </li> --}}
                     <li><a href="/star" class="my-button-list d-flex justify-content-center">&#11088;&nbsp;YÊU THÍCH</a>
                     </li>
                 </ul>
@@ -479,7 +509,9 @@
 
 </section>
 
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/static/javascript/category.js"></script>
+{{{_section.js}}}
 </body>

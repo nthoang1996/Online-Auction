@@ -1,6 +1,8 @@
 const express = require('express');
 const exphbs = require('express-handlebars');
+const express_handlebars_sections = require('express-handlebars-sections');
 const morgan = require('morgan');
+const numeral = require('numeral');
 require('express-async-errors');
 
 const app = express();
@@ -10,7 +12,12 @@ app.use(express.static(__dirname));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.engine('handlebars', exphbs());
+app.engine('handlebars', exphbs({
+    helpers: {
+        format: val => numeral(val).format('0,0') + " ₫",
+        section: express_handlebars_sections()
+    },
+}));
 app.set('view engine', 'handlebars');
 
 app.get('/', function(req, res) {
@@ -57,10 +64,10 @@ app.get('/profile', function(req, res) {
     res.render('admin/profile', { layout: false });
 });
 
-app.use('/admin/category', require('./routes/admin/category.route'));
-app.use('/admin/user', require('./routes/admin/user.route'));
-app.use('/category', require('./routes/category.routes'));
-app.use('/admin/product', require('./routes/admin/product.route'));
+// app.use(require('./middlewares/locals.mdw'));
+require('./middlewares/locals.mdw')(app);
+require('./middlewares/routes.mdw')(app);
+
 
 app.use((err, req, res, next) => {
     console.error(err.stack);

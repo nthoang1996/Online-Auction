@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th12 05, 2019 lúc 02:17 AM
+-- Thời gian đã tạo: Th12 14, 2019 lúc 07:23 PM
 -- Phiên bản máy phục vụ: 10.4.8-MariaDB
 -- Phiên bản PHP: 7.3.11
 
@@ -202,25 +202,34 @@ CREATE TABLE `tbluser` (
   `phone` varchar(11) COLLATE utf8_vietnamese_ci NOT NULL,
   `address` varchar(200) COLLATE utf8_vietnamese_ci NOT NULL,
   `email` varchar(100) COLLATE utf8_vietnamese_ci NOT NULL,
-  `role` int(11) NOT NULL,
-  `point` varchar(10) COLLATE utf8_vietnamese_ci NOT NULL,
-  `is_active` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_vietnamese_ci;
+  `role` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL
+) ;
 
 --
 -- Đang đổ dữ liệu cho bảng `tbluser`
 --
 
 INSERT INTO `tbluser` (`id`, `name`, `phone`, `address`, `email`, `role`, `point`, `is_active`) VALUES
-(1, 'Nguyễn Thái Hoàng', '0936252722', 'c4/6d Lê Đình Chi H.Bình Chánh TP.Hồ Chí Minh', 'nthoang1996@gmail.com', 1, '0/0', 1),
-(2, 'Võ Thanh Hiếu', '0901234567', '33/29 ĐHT 21 quận 12 TP.Hồ Chí Minh', 'zannaghazi123@gmail.com', 2, '6/8', 1),
-(3, 'Phan Dương Phi', '0378561472', '801 Trần Xuân Soạn quận 7 TP.Hồ Chí Minh', 'phidk96@gmail.com', 3, '3/5', 1),
-(4, 'Trần Hoàng Anh Thư', '0947874515', 'k24/7 Nguyễn Trường Tộ quận Hải Châu TP.Đà Nẵng', 'thuconheo99@gmail.com', 2, '8/10', 1),
-(5, 'Nguyễn Văn Bảo', '0338013415', '123 Phạm Thế Hiển quận 8 TP.Hồ Chí Minh', 'nvbao62@gmail.com', 3, '10/10', 1),
-(6, 'Nguyễn Thị Hiền', '0377385619', '325 Nguyễn Trãi quận 1 TP.Hồ Chí Minh', 'nthien67@gmail.com', 3, '12/0', 1),
-(7, 'Cái Nhân Đức', '0975904514', '455 Lũy Bán Bích quận Tân Phú TP.Hồ Chí Minh', 'cnduc96@gmail.com', 3, '5/8', 1),
-(8, 'Võ Lê Công Kết', '0869741265', '564 Võ Văn Vân H.Bình Chánh TP.Hồ Chí Minh', 'vlcket96@gmail.com', 3, '7/5', 1),
-(9, 'Trịnh Đại Phát', '0125647569', '756 Trần Văn Giàu H.Bình Chánh TP.Hồ Chí Minh', 'tdphat96@gmail.com', 3, '12/10', 1);
+(1, 'Nguyễn Thái Hoàng', '0936252722', 'c4/6d Lê Đình Chi H.Bình Chánh TP.Hồ Chí Minh', 'nthoang1996@gmail.com', '[1]', '0/0', 1),
+(2, 'Võ Thanh Hiếu', '0901234567', '33/29 ĐHT 21 quận 12 TP.Hồ Chí Minh', 'zannaghazi123@gmail.com', '[2]', '6/8', 1),
+(3, 'Phan Dương Phi', '0378561472', '801 Trần Xuân Soạn quận 7 TP.Hồ Chí Minh', 'phidk96@gmail.com', '[3]', '3/5', 1),
+(4, 'Trần Hoàng Anh Thư', '0947874515', 'k24/7 Nguyễn Trường Tộ quận Hải Châu TP.Đà Nẵng', 'thuconheo99@gmail.com', '[2]', '8/10', 1),
+(5, 'Nguyễn Văn Bảo', '0338013415', '123 Phạm Thế Hiển quận 8 TP.Hồ Chí Minh', 'nvbao62@gmail.com', '[3]', '10/10', 1),
+(6, 'Nguyễn Thị Hiền', '0377385619', '325 Nguyễn Trãi quận 1 TP.Hồ Chí Minh', 'nthien67@gmail.com', '[3]', '12/0', 1),
+(7, 'Cái Nhân Đức', '0975904514', '455 Lũy Bán Bích quận Tân Phú TP.Hồ Chí Minh', 'cnduc96@gmail.com', '[2,3]', '5/8', 1),
+(8, 'Võ Lê Công Kết', '0869741265', '564 Võ Văn Vân H.Bình Chánh TP.Hồ Chí Minh', 'vlcket96@gmail.com', '[3]', '7/5', 1),
+(9, 'Trịnh Đại Phát', '0125647569', '756 Trần Văn Giàu H.Bình Chánh TP.Hồ Chí Minh', 'tdphat96@gmail.com', '[3]', '12/10', 1),
+(10, 'Lê Xuân Kha', '(08) 3920 0', '106C Nguyễn Văn Cừ, Phường Nguyễn Cư Trinh, Quận 1, Sài Gòn - TP HCM, Việt Nam', 'lxkha@gmail.com', '[3]', '8/6', 1),
+(11, 'Trần Đình Khải', '(08) 3827 3', '33B Phùng Khắc Khoan, Phường Ða Kao, Quận 1, Sài Gòn - TP HCM, Việt Nam', 'tdkhai@gmail.com', '[3]', '15/20', 1),
+(12, 'Phạm Minh Khải', '(08) 3822 0', '223 Lý Tự Trọng, Phường Bình Thạnh, Quận 1, Sài Gòn - TP HCM, Việt Nam', 'pmkhai@gmail.com', '[3]', '20/10', 1),
+(13, 'Nguyễn Khắc Nguyên Khang', '(08) 3839 1', '201 Nguyễn Thị Minh Khai, Quận 1, Sài Gòn - TP HCM, Việt Nam', 'nknkhang@gmail.com', '[3]', '20/30', 1),
+(14, 'Tô Ánh Kiệt', '(08) 3960 1', '184 Phan Văn Khỏe, Phường 5, Quận 1, Sài Gòn - TP HCM, Việt Nam', 'takiet@gmail.com', '[3]', '10/10', 1),
+(15, 'Nguyễn Thanh Lâm', '(08) 3821 0', '40/34 Calmette, Phường NTB, Quận 1, Sài Gòn - TP HCM, Việt Nam', 'ntlam@gmail.com', '[3]', '100/0', 1),
+(16, 'Tô Đồng Lưu', '(08) 3837 1', '156X Bến Chương Dương, Phường Cầu Ông Lãnh, Quận 1, Sài Gòn - TP HCM, Việt Nam', 'tdluu@gmail.com', '[3]', '30/25', 1),
+(17, 'Lê Đinh Ngọc', '(08) 3839 2', '284 Cống Quỳnh, Phuờng Phạm Ngũ Lão, Quận 1, Sài Gòn - TP HCM, Việt Nam', 'ldngoc@gmail.com', '[3]', '35/40', 1),
+(18, 'Nguyễn Xuân Nguyên', '(08) 3823 8', '82 Nguyễn Du, Phường Bến Nghé, Quận 1, Sài Gòn - TP HCM, Việt Nam', 'nxnguyen@gmail.com', '[3]', '43/43', 1),
+(19, 'Châu Văn Nhật', '(08) 3848 3', '27A/1 Nguyễn Văn Nguyễn, Phường TĐ, Quận 1, Sài Gòn - TP HCM, Việt Nam', 'cvnhat@gmail.com', '[3]', '20/0', 1),
+(20, 'Hoàng Thị Hoài Nhi', '(08) 3845 3', '27A2 Trần Nhật Duật, Quận 1, Sài Gòn - TP HCM, Việt Nam', 'hthnhi@gmail.com', '[3]', '200/61', 1);
 
 --
 -- Chỉ mục cho các bảng đã đổ
@@ -230,12 +239,6 @@ INSERT INTO `tbluser` (`id`, `name`, `phone`, `address`, `email`, `role`, `point
 -- Chỉ mục cho bảng `tblcategory`
 --
 ALTER TABLE `tblcategory`
-  ADD PRIMARY KEY (`id`);
-
---
--- Chỉ mục cho bảng `tbluser`
---
-ALTER TABLE `tbluser`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -252,7 +255,7 @@ ALTER TABLE `tblcategory`
 -- AUTO_INCREMENT cho bảng `tbluser`
 --
 ALTER TABLE `tbluser`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

@@ -6,9 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="/static/css/register.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <title>Đăng ký</title>
 </head>
 
@@ -17,7 +14,7 @@
         <div class="row">
             <div class="main-center">
                 <h3>Vui lòng cung cấp thông tin của bạn</h3>
-                <form method="post" action="#">
+                <form onsubmit="return validate()" method="post" action="#" novalidate id="formRegister" name="formRegiste">
 
                     <div class="form-group">
                         <label for="name" class="cols-sm-2 control-label">Tên</label>
@@ -38,19 +35,19 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="email" class="cols-sm-2 control-label">Email</label>
+                        <label for="username" class="cols-sm-2 control-label">Địa chỉ</label>
                         <div class="cols-sm-10">
                             <div class="input-group">
-                                <input type="text" class="form-control" name="email" id="email" placeholder="abc@gmail.com" />
+                                <input type="text" class="form-control" name="address" id="address" placeholder="123 Nguyễn Trãi Quận 1 TP.Hồ Chí Minh" />
                             </div>
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label for="username" class="cols-sm-2 control-label">Địa chỉ</label>
+                        <label for="email" class="cols-sm-2 control-label">Email</label>
                         <div class="cols-sm-10">
                             <div class="input-group">
-                                <input type="text" class="form-control" name="username" id="username" placeholder="123 Nguyễn Trãi Quận 1 TP.Hồ Chí Minh" />
+                                <input type="text" class="form-control" name="email" id="email" placeholder="abc@gmail.com" />
                             </div>
                         </div>
                     </div>
@@ -74,13 +71,21 @@
                     </div>
 
                     <div class="form-group ">
-                        <a href="https://www.google.com" target="_blank" type="button" id="button" class="btn btn-primary btn-lg btn-block login-button">Đăng ký</a>
+                        <button target="_blank" type="submit" id="button" class="btn btn-primary btn-lg btn-block login-button">Đăng ký</button>
                     </div>
 
                 </form>
             </div>
         </div>
     </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+     <script>
+        function validate(){
+            return true;
+        }
+    </script>
 </body>
 
 </html>
