@@ -26,6 +26,7 @@ router.get('/:id/products', async(req, res) => {
     ]);
     let disable_prev = false;
     let disable_next = false;
+    let dt = new Date();
 
     if (rows.length == 0) {
         const catRows = await categoryModel.single_by_id('tblcategory', id);
@@ -36,7 +37,6 @@ router.get('/:id/products', async(req, res) => {
                 let product = await categoryModel.all_product_by_cat('tblproduct', subCats[i].id);
                 result.push.apply(result, product);
             }
-            console.log(offset);
             let rowsCombine = result.slice(offset, offset + limit);
             let nPage = Math.floor(result.length / limit);
             if (result.length % limit > 0) {
@@ -58,6 +58,23 @@ router.get('/:id/products', async(req, res) => {
             for (let i = 0; i < rowsCombine.length; i++) {
                 let list_bidder_json = rowsCombine[i]["list_bidder"];
                 let list_bidder_object = JSON.parse(list_bidder_json);
+                let minPriceIndex = 0;
+                for (let j = 0; j < list_bidder_object.length - 1; j++) {
+                    minPriceIndex = j;
+                    for (let k = j + 1; k < list_bidder_object.length; k++) {
+                        if (list_bidder_object[k].price < list_bidder_object[minPriceIndex].price) {
+                            let temp = {...list_bidder_object[minPriceIndex] };
+                            list_bidder_object[minPriceIndex] = {...list_bidder_object[k] };
+                            list_bidder_object[k] = {...temp };
+                        } else if (list_bidder_object[k].price == list_bidder_object[minPriceIndex].price) {
+                            if (list_bidder_object[k].date > list_bidder_object[minPriceIndex].date) {
+                                let temp = {...list_bidder_object[minPriceIndex] };
+                                list_bidder_object[minPriceIndex] = {...list_bidder_object[k] };
+                                list_bidder_object[k] = {...temp };
+                            }
+                        }
+                    }
+                }
                 let bidder_name = "";
                 bidder_name = list_bidder_object[list_bidder_object.length - 1].name;
                 bidder_name = bidder_name.substring(bidder_name.lastIndexOf(" ") + 1);
@@ -66,7 +83,25 @@ router.get('/:id/products', async(req, res) => {
                 rowsCombine[i]["bidder"] = bidder_name;
                 rowsCombine[i]["top_price"] = top_price;
                 rowsCombine[i]["count_bid"] = list_bidder_object.length + " lượt";
-                rowsCombine[i]["date_time"] = moment(rowsCombine[i].end_date).format('DD-MM-YYYY HH:mm:ss');
+                let difference_in_time = rowsCombine[i].end_date.getTime() - dt.getTime();
+                let difference_in_date = difference_in_time / (1000 * 3600 * 24);
+                if (difference_in_date >= 1 && difference_in_date < 4) {
+                    rowsCombine[i]["date_time"] = "" + parseInt(difference_in_date) + " ngày nữa";
+                } else if (difference_in_date < 1) {
+                    let difference_in_hour = difference_in_time / (1000 * 3600);
+                    if (difference_in_hour < 1) {
+                        let difference_in_minute = difference_in_time / (1000 * 60);
+                        if (difference_in_minute < 1) {
+                            rowsCombine[i]["date_time"] = "" + parseInt(difference_in_time / (1000)) + " giây nữa";
+                        } else {
+                            rowsCombine[i]["date_time"] = "" + parseInt(difference_in_minute) + " phút nữa";
+                        }
+                    } else {
+                        rowsCombine[i]["date_time"] = "" + parseInt(difference_in_hour) + " giờ nữa";
+                    }
+                } else {
+                    rowsCombine[i]["date_time"] = moment(rowsCombine[i].end_date).format('DD-MM-YYYY HH:mm:ss');
+                }
             }
             res.render('products/allByCat', {
                 products: rowsCombine,
@@ -99,17 +134,50 @@ router.get('/:id/products', async(req, res) => {
             for (let i = 0; i < rows.length; i++) {
                 let list_bidder_json = rows[i]["list_bidder"];
                 let list_bidder_object = JSON.parse(list_bidder_json);
-                // console.log(list_bidder_object[list_bidder_object.length - 1].name);
+                let minPriceIndex = 0;
+                for (let j = 0; j < list_bidder_object.length - 1; j++) {
+                    minPriceIndex = j;
+                    for (let k = j + 1; k < list_bidder_object.length; k++) {
+                        if (list_bidder_object[k].price < list_bidder_object[minPriceIndex].price) {
+                            let temp = {...list_bidder_object[minPriceIndex] };
+                            list_bidder_object[minPriceIndex] = {...list_bidder_object[k] };
+                            list_bidder_object[k] = {...temp };
+                        } else if (list_bidder_object[k].price == list_bidder_object[minPriceIndex].price) {
+                            if (list_bidder_object[k].date > list_bidder_object[minPriceIndex].date) {
+                                let temp = {...list_bidder_object[minPriceIndex] };
+                                list_bidder_object[minPriceIndex] = {...list_bidder_object[k] };
+                                list_bidder_object[k] = {...temp };
+                            }
+                        }
+                    }
+                }
                 let bidder_name = "";
                 bidder_name = list_bidder_object[list_bidder_object.length - 1].name;
                 bidder_name = bidder_name.substring(bidder_name.lastIndexOf(" ") + 1);
                 top_price = list_bidder_object[list_bidder_object.length - 1].price;
                 bidder_name = "****" + bidder_name;
-                // console.log(rows[i].end_date);
                 rows[i]["bidder"] = bidder_name;
                 rows[i]["top_price"] = top_price;
                 rows[i]["count_bid"] = list_bidder_object.length + " lượt";
-                rows[i]["date_time"] = moment(rows[i].end_date).format('DD-MM-YYYY HH:mm:ss');
+                let difference_in_time = rowsCombine[i].end_date.getTime() - dt.getTime();
+                let difference_in_date = difference_in_time / (1000 * 3600 * 24);
+                if (difference_in_date >= 1 && difference_in_date < 4) {
+                    rowsCombine[i]["date_time"] = "" + parseInt(difference_in_date) + " ngày nữa";
+                } else if (difference_in_date < 1) {
+                    let difference_in_hour = difference_in_time / (1000 * 3600);
+                    if (difference_in_hour < 1) {
+                        let difference_in_minute = difference_in_time / (1000 * 60);
+                        if (difference_in_minute < 1) {
+                            rowsCombine[i]["date_time"] = "" + parseInt(difference_in_time / (1000)) + " giây nữa";
+                        } else {
+                            rowsCombine[i]["date_time"] = "" + parseInt(difference_in_minute) + " phút nữa";
+                        }
+                    } else {
+                        rowsCombine[i]["date_time"] = "" + parseInt(difference_in_hour) + " giờ nữa";
+                    }
+                } else {
+                    rowsCombine[i]["date_time"] = moment(rowsCombine[i].end_date).format('DD-MM-YYYY HH:mm:ss');
+                }
             }
             // console.log(rows);
             res.render('products/allByCat', {
@@ -143,7 +211,23 @@ router.get('/:id/products', async(req, res) => {
         for (let i = 0; i < rows.length; i++) {
             let list_bidder_json = rows[i]["list_bidder"];
             let list_bidder_object = JSON.parse(list_bidder_json);
-            // console.log(list_bidder_object[list_bidder_object.length - 1].name);
+            let minPriceIndex = 0;
+            for (let j = 0; j < list_bidder_object.length - 1; j++) {
+                minPriceIndex = j;
+                for (let k = j + 1; k < list_bidder_object.length; k++) {
+                    if (list_bidder_object[k].price < list_bidder_object[minPriceIndex].price) {
+                        let temp = {...list_bidder_object[minPriceIndex] };
+                        list_bidder_object[minPriceIndex] = {...list_bidder_object[k] };
+                        list_bidder_object[k] = {...temp };
+                    } else if (list_bidder_object[k].price == list_bidder_object[minPriceIndex].price) {
+                        if (list_bidder_object[k].date > list_bidder_object[minPriceIndex].date) {
+                            let temp = {...list_bidder_object[minPriceIndex] };
+                            list_bidder_object[minPriceIndex] = {...list_bidder_object[k] };
+                            list_bidder_object[k] = {...temp };
+                        }
+                    }
+                }
+            }
             let bidder_name = "";
             bidder_name = list_bidder_object[list_bidder_object.length - 1].name;
             bidder_name = bidder_name.substring(bidder_name.lastIndexOf(" ") + 1);
@@ -153,10 +237,28 @@ router.get('/:id/products', async(req, res) => {
             rows[i]["bidder"] = bidder_name;
             rows[i]["top_price"] = top_price;
             rows[i]["count_bid"] = list_bidder_object.length + " lượt";
-            rows[i]["date_time"] = moment(rows[i].end_date).format('DD-MM-YYYY HH:mm:ss');
+            let difference_in_time = rowsCombine[i].end_date.getTime() - dt.getTime();
+            let difference_in_date = difference_in_time / (1000 * 3600 * 24);
+            if (difference_in_date >= 1 && difference_in_date < 4) {
+                rowsCombine[i]["date_time"] = "" + parseInt(difference_in_date) + " ngày nữa";
+            } else if (difference_in_date < 1) {
+                let difference_in_hour = difference_in_time / (1000 * 3600);
+                if (difference_in_hour < 1) {
+                    let difference_in_minute = difference_in_time / (1000 * 60);
+                    if (difference_in_minute < 1) {
+                        rowsCombine[i]["date_time"] = "" + parseInt(difference_in_time / (1000)) + " giây nữa";
+                    } else {
+                        rowsCombine[i]["date_time"] = "" + parseInt(difference_in_minute) + " phút nữa";
+                    }
+                } else {
+                    rowsCombine[i]["date_time"] = "" + parseInt(difference_in_hour) + " giờ nữa";
+                }
+            } else {
+                rowsCombine[i]["date_time"] = moment(rowsCombine[i].end_date).format('DD-MM-YYYY HH:mm:ss');
+            }
         }
         // console.log(rows);
-        res.render('products/allByCat', {
+        res.render('product/allByCat', {
             products: rows,
             empty: rows.length === 0,
             page_numbers,
@@ -166,7 +268,51 @@ router.get('/:id/products', async(req, res) => {
             disable_next
         });
     }
-})
+});
+
+router.get('/products/:id', async(req, res) => {
+    const rows = await categoryModel.single_by_id('tblproduct', req.params.id);
+    const product = rows[0];
+    const rowsUser = await categoryModel.single_by_id('tbluser', product.id_seller);
+    product["seller_name"] = rowsUser[0].name;
+    product["seller_phone"] = rowsUser[0].phone;
+    product["seller_email"] = rowsUser[0].email;
+    product["seller_point"] = rowsUser[0].point;
+    product["start_date_format"] = moment(product.start_date).format('DD-MM-YYYY HH:mm:ss');
+    product["end_date_format"] = moment(product.end_date).format('DD-MM-YYYY HH:mm:ss');
+    listBidder1 = JSON.parse(product.list_bidder);
+    product["list_bidder_object"] = [...listBidder1];
+    console.log(product["list_bidder_object"]);
+    for (let i = 0; i < product.list_bidder_object.length; i++) {
+        product.list_bidder_object[i].date = moment(product.list_bidder_object[i].date).format('DD-MM-YYYY HH:mm:ss');
+        product.list_bidder_object[i].name = "****" + product.list_bidder_object[i].name.substring(product.list_bidder_object[i].name.lastIndexOf(" ") + 1);;
+    }
+    let minPriceIndex = 0;
+    for (let j = 0; j < listBidder1.length - 1; j++) {
+        minPriceIndex = j;
+        for (let k = j + 1; k < listBidder1.length; k++) {
+            if (listBidder1[k].price < listBidder1[minPriceIndex].price) {
+                let temp = {...listBidder1[minPriceIndex] };
+                listBidder1[minPriceIndex] = {...listBidder1[k] };
+                listBidder1[k] = {...temp };
+            } else if (listBidder1[k].price == listBidder1[minPriceIndex].price) {
+                if (listBidder1[k].date > listBidder1[minPriceIndex].date) {
+                    let temp = {...listBidder1[minPriceIndex] };
+                    listBidder1[minPriceIndex] = {...listBidder1[k] };
+                    listBidder1[k] = {...temp };
+                }
+            }
+        }
+    }
+    bidder_name = listBidder1[listBidder1.length - 1].name;
+    bidder_name = bidder_name.substring(bidder_name.lastIndexOf(" ") + 1);
+    bidder_name = "****" + bidder_name;
+    product["top_bidder"] = bidder_name;
+    product["top_price"] = listBidder1[listBidder1.length - 1].price;
+    res.render('products/detailProduct', {
+        product
+    });
+});
 
 
 module.exports = router;

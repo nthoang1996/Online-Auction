@@ -271,6 +271,7 @@ body {
 }
 
 .bottom-right {
+    width: 200px;
     position: absolute;
     bottom: 0px;
     right: 0px;
@@ -381,12 +382,6 @@ body {
     padding-top: 5px;
 }
 
-.mark-star {
-    position: absolute;
-    right: 15px;
-    bottom: 20px;
-}
-
 .container-button {
     height: 40px;
 }
@@ -446,4 +441,33 @@ body {
     width: 254px !important;
     height: 420px;
     display: inline-block;
+}
+
+.my-star {
+    font-size: 15px !important;
+    padding: 3px !important;
+    border-radius: 5px !important;
+}
+
+.max-high-caro {
+    max-height: 513px;
+}
+
+.max-high-end-pic {
+    max-height: 155px;
+}
+
+.size-first-top-price-pic {
+    height: 270px;
+    width: 270px;
+}
+
+.size-top-price-pic {
+    height: 193px;
+    width: 216px;
+}
+
+.size-popular-pic {
+    height: 193px;
+    width: 217px;
 }

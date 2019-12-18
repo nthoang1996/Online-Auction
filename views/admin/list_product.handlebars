@@ -104,9 +104,9 @@
                                 <th scope="col" width="5%" style="font-weight:bold;">Giá khởi điểm</th>
                                 <th scope="col" width="5%" style="font-weight:bold;">Giá mua ngay</th>
                                 <th scope="col" width="5%" style="font-weight:bold;">Giá cao nhất</th>
-                                <th scope="col" width="5%" style="font-weight:bold;">Bước nhảy</th>
-                                <th scope="col" width="10%" style="font-weight:bold;">Ngày kết thúc</th>
+                                <th scope="col" width="5%" style="font-weight:bold;">Bội số</th>
                                 <th scope="col" width="10%" style="font-weight:bold;">Ngày bắt đầu</th>
+                                <th scope="col" width="10%" style="font-weight:bold;">Ngày kết thúc</th>
                                 <th scope="col" width="5%" style="font-weight:bold;">Trạng thái</th>
                                 <th scope="col" width="10%" style="font-weight:bold;"></th>
                             </tr>
@@ -117,12 +117,12 @@
                                     <th scope="row" class="text-center">{{id}}</th>
                                     <td>{{name}}</td>
                                     <td>{{cat_name}}</td>
-                                    <td>{{start_price}}</td>
-                                    <td>{{buynow_price}}</td>
-                                    <td>0</td>
-                                    <td>{{min_increase}}</td>
-                                    <td>{{start_date}}</td>
-                                    <td>{{end_date}}</td>
+                                    <td>{{format start_price}}</td>
+                                    <td>{{format buynow_price}}</td>
+                                    <td>{{format top_price}}</td>
+                                    <td>{{format min_increase}}</td>
+                                    <td>{{start_date_format}}</td>
+                                    <td>{{end_date_format}}</td>
                                     <td>{{status}}</td>
                                     <td>
                                         {{#if can_disable}}

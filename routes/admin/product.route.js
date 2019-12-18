@@ -1,4 +1,5 @@
 var express = require('express');
+var moment = require('moment');
 const categoryModel = require('../../models/category.model');
 
 const router = express.Router();
@@ -14,6 +15,10 @@ router.get('/', async(req, res) => {
         for (let j = 0; j < rowscat.length; j++) {
             if (rowscat[j].id === rows[i].cat_id) {
                 rows[i]['cat_name'] = rowscat[j].name;
+                rows[i]["start_date_format"] = moment(rows[i].start_date).format('DD-MM-YYYY HH:mm:ss');
+                rows[i]["end_date_format"] = moment(rows[i].end_date).format('DD-MM-YYYY HH:mm:ss');
+                let listBidder = JSON.parse(rows[i].list_bidder);
+                rows[i]["top_price"] = listBidder[listBidder.length - 1].price;
                 break;
             }
         }
