@@ -8,9 +8,7 @@
 <div class="listings-title">
     <div class="container">
         <div class="wrap-title">
-            <h1 class="title-product">Laptop MSI GF63 Thin 9RCX 646VN Geforce GTX1050Ti 4GB Intel Core i5 9300H 8GB
-                512GB 15.6” IPS Backlight
-                Keyboard Win 10</h1>
+            <h1 class="title-product">{{this.product.name}}</h1>
         </div>
     </div>
 </div>
@@ -53,7 +51,7 @@
                                         <div class="info">
                                             <label>Điểm:</label>
                                             <label>{{this.product.seller_point}}&nbsp;<img width="20" height="20" style="display: inline-block;"
-                                                    src="/picture/icon/smile.png" /></label>
+                                                    src="{{#if this.product.react_haha}}/picture/icon/smile.png{{else}}/picture/icon/sad.jpg{{/if}}" /></label>
                                         </div>
 
                                         <div class="info">
@@ -109,6 +107,16 @@
                                                 <label>{{this.product.top_bidder}}</label>
                                             </div>
                                         </div>
+
+                                        <div class="row">
+                                            <div class="col-sm-7">
+                                                <label>Điểm:</label>
+                                            </div>
+                                            <div class="col-sm-5 ">
+                                                <label>{{this.product.bidder_point}}&nbsp;<img width="20" height="20" style="display: inline-block;"
+                                                    src="{{#if this.product.bidder_react_haha}}/picture/icon/smile.png{{else}}/picture/icon/sad.jpg{{/if}}" /></label>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                                 <hr>
@@ -117,7 +125,7 @@
                                         Mô tả thêm:
                                     </div>
                                     <div class="content-description">
-                                        {{this.product.description}}
+                                        {{{this.product.description}}}
                                     </div>
                                 </div>
                             </div>
@@ -149,16 +157,13 @@
                     </button>
                 </div>
 
-                <div class="col-sm-8 d-flex justify-content-around">
+                <div class="col-sm-8 d-flex justify-content-center">
                     <div class="container-button ">
-                        <button class="button-favorite button-left-right">&#9754;</button>
-                        <input type="text" class="text-price text-right" />
-                        <button class="button-favorite button-left-right">&#9755;</button>
-                        <button class="button-favorite" style="margin-left:10px;" data-toggle="modal"
+                        <button class="button-favorite" style="margin-left:10px; margin-right:10px;" data-toggle="modal"
                             data-target="#modal_confirm_price">&#10004;&nbsp;Ra giá</button>
                     </div>
                     <div class="container-button">
-                        <button class="button-favorite">&#11088;&nbsp;Thêm vào mục yêu thích</button>
+                        <button class="button-favorite" style="margin-left:10px;">&#11088;&nbsp;Thêm vào mục yêu thích</button>
                     </div>
                 </div>
             </div>
@@ -199,15 +204,16 @@
                     </table>
                 </div>
                 <div class="col-sm-8">
+                    {{#each this.categoryProduct}}
                     <div class="container-each-other-product">
                         <div class="products-entry item-wrap clearfix ">
                             <div class="item-detail">
                                 <div class="item-img products-thumb ">
-                                    <div class="bidder-name">****Nghĩa</div>
-                                    <div class="count-bid">7 lượt</div>
+                                    <div class="bidder-name">{{bidder}}</div>
+                                    <div class="count-bid">{{count_bid}}</div>
                                     <a href="#">
                                         <div class="product-thumb-hover d-flex justify-content-center"><img width="193 "
-                                                height="193 " src="/picture/MSI/msi_8.jpg "
+                                                height="193 " src="/picture/product/{{id}}/main1.jpg"
                                                 class="attachment-shop_catalog size-shop_catalog wp-post-image lazyloaded ">
                                         </div>
                                     </a>
@@ -219,7 +225,7 @@
                                                     class="berocket_better_labels_inline berocket_better_labels_inline_1 text-center">
                                                     <span class="content-date ">
                                                         <i
-                                                            class="template-i-after  font-date"></i><b>26/12/2019</b></span>
+                                                            class="template-i-after  font-date"></i><b>{{date_time}}</b></span>
                                                 </div>
                                             </div>
                                         </div>
@@ -231,77 +237,20 @@
                                         <div class="star "></div>
 
                                     </div>
-                                    <h4><a href="#">Laptop Gaming MSI GF63 Thin 9SC 070VN Geforce GTX1650 Intel Core i7
-                                            9750H
-                                            8GB 256GB 15.6” IPS Backlight Keyboard Win 10</a></h4>
+                                    <h4><a href="#">{{name}}/a></h4>
                                     <div class="row">
                                         <div class="col-sm-6">
                                             <div>Khởi điểm:</div>
                                             <div>Cao nhất:</div>
                                             <div>Mua ngay:</div>
-                                            <div>Bước nhảy:</div>
+                                            <div>Bội số:</div>
 
                                         </div>
                                         <div class="col-sm-6">
-                                            <div>15.000.000₫</div>
-                                            <div>17.990.000₫</div>
-                                            <div>24.490.000₫</div>
-                                            <div>500.000₫</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="container-each-other-product">
-                        <div class="products-entry item-wrap clearfix ">
-                            <div class="item-detail">
-                                <div class="item-img products-thumb ">
-                                    <div class="bidder-name">****Nghĩa</div>
-                                    <div class="count-bid">7 lượt</div>
-                                    <a href="#">
-                                        <div class="product-thumb-hover d-flex justify-content-center"><img width="193 "
-                                                height="193 " src="/picture/MSI/msi_8.jpg "
-                                                class="attachment-shop_catalog size-shop_catalog wp-post-image lazyloaded ">
-                                        </div>
-                                    </a>
-                                    <div class="berocket_better_labels berocket_better_labels_image ">
-                                        <div
-                                            class="berocket_better_labels_position berocket_better_labels_position_right ">
-                                            <div class="berocket_better_labels_line berocket_better_labels_line_1 ">
-                                                <div
-                                                    class="berocket_better_labels_inline berocket_better_labels_inline_1 text-center">
-                                                    <span class="content-date ">
-                                                        <i
-                                                            class="template-i-after  font-date"></i><b>26/12/2019</b></span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="item-content products-content ">
-                                    <div class="reviews-content ">
-
-                                        <div class="star "></div>
-
-                                    </div>
-                                    <h4><a href="#">Laptop Gaming MSI GF63 Thin 9SC 070VN Geforce GTX1650 Intel Core
-                                            i7
-                                            9750H
-                                            8GB 256GB 15.6” IPS Backlight Keyboard Win 10</a></h4>
-                                    <div class="row">
-                                        <div class="col-sm-6">
-                                            <div>Khởi điểm:</div>
-                                            <div>Cao nhất:</div>
-                                            <div>Mua ngay:</div>
-                                            <div>Bước nhảy:</div>
-
-                                        </div>
-                                        <div class="col-sm-6">
-                                            <div>15.000.000₫</div>
-                                            <div>17.990.000₫</div>
-                                            <div>24.490.000₫</div>
-                                            <div>500.000₫</div>
+                                            <div>{{format start_price}}</div>
+                                            <div>{{format top_price}}</div>
+                                            <div>{{format buynow_price}}</div>
+                                            <div>{{format min_increase}}</div>
                                         </div>
                                     </div>
                                 </div>
@@ -309,7 +258,8 @@
                         </div>
                     </div>
 
-                    <div class="container-each-other-product">
+                    {{/each}}
+                    {{!-- <div class="container-each-other-product">
                         <div class="products-entry item-wrap clearfix ">
                             <div class="item-detail">
                                 <div class="item-img products-thumb ">
@@ -476,6 +426,62 @@
                             </div>
                         </div>
                     </div>
+
+                    <div class="container-each-other-product">
+                        <div class="products-entry item-wrap clearfix ">
+                            <div class="item-detail">
+                                <div class="item-img products-thumb ">
+                                    <div class="bidder-name">****Nghĩa</div>
+                                    <div class="count-bid">7 lượt</div>
+                                    <a href="#">
+                                        <div class="product-thumb-hover d-flex justify-content-center"><img width="193 "
+                                                height="193 " src="/picture/MSI/msi_8.jpg "
+                                                class="attachment-shop_catalog size-shop_catalog wp-post-image lazyloaded ">
+                                        </div>
+                                    </a>
+                                    <div class="berocket_better_labels berocket_better_labels_image ">
+                                        <div
+                                            class="berocket_better_labels_position berocket_better_labels_position_right ">
+                                            <div class="berocket_better_labels_line berocket_better_labels_line_1 ">
+                                                <div
+                                                    class="berocket_better_labels_inline berocket_better_labels_inline_1 text-center">
+                                                    <span class="content-date ">
+                                                        <i
+                                                            class="template-i-after  font-date"></i><b>26/12/2019</b></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="item-content products-content ">
+                                    <div class="reviews-content ">
+
+                                        <div class="star "></div>
+
+                                    </div>
+                                    <h4><a href="#">Laptop Gaming MSI GF63 Thin 9SC 070VN Geforce GTX1650 Intel Core
+                                            i7
+                                            9750H
+                                            8GB 256GB 15.6” IPS Backlight Keyboard Win 10</a></h4>
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div>Khởi điểm:</div>
+                                            <div>Cao nhất:</div>
+                                            <div>Mua ngay:</div>
+                                            <div>Bước nhảy:</div>
+
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div>15.000.000₫</div>
+                                            <div>17.990.000₫</div>
+                                            <div>24.490.000₫</div>
+                                            <div>500.000₫</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div> --}}
                 </div>
             </div>
         </div>
@@ -491,7 +497,12 @@
                     </button>
                 </div>
                 <div class="modal-body normal-fontsize">
-                    <p>Bạn chắc chắn muốn đấu giá sản phẩm với giá này?</p>
+                    <p style="color: black; font-weight:bold">Đấu giá sản phẩm {{this.product.name}} với mức giá:</p>
+                    <div>
+                        
+                    </div>
+                    <input class="text-price" type="text" placeholder="100000" />&nbsp;₫
+                    <p style="color: black;">Đây là đấu giá tự động. Vui lòng nhập mức giá tối đa bạn có thể ra giá.</p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-primary normal-fontsize">Tôi chắc chắn</button>

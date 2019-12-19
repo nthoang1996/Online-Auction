@@ -394,7 +394,7 @@ body {
 
 .button-favorite {
     display: inline-block;
-    padding: 0px 20px;
+    width: 300px;
     font-size: 15px;
     margin: 0 0.3em 0.3em 0;
     border-radius: 2em;
@@ -431,6 +431,7 @@ body {
     border-bottom: 3px double black;
     width: 150px;
     font-size: 20px;
+    margin: 10px;
 }
 
 .normal-fontsize {

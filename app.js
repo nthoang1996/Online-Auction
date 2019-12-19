@@ -43,10 +43,6 @@ app.get('/user_manament', function(req, res) {
     res.render('admin/list_user', { layout: false });
 });
 
-app.get('/register', function(req, res) {
-    res.render('guest/register', { layout: false });
-});
-
 app.get('/product_manament', function(req, res) {
     res.render('admin/list_product', { layout: false });
 });

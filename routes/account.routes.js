@@ -7,6 +7,7 @@ router.get('/register', async(req, res) => {
 });
 
 router.post('/register', async(req, res) => {
+    console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
     const N = 10;
     const hash = bcrypt.hashSync(req.body.password, N);
 
