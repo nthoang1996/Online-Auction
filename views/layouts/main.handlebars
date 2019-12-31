@@ -19,22 +19,26 @@
                 <ul id="main_menu">
                     {{#each lcCategories}}
                     <li>
-                        <a href="javascript:;" class="my-button-list d-flex justify-content-center"> <i class="{{icon}}"></i>&nbsp;&nbsp;{{name}}</a>
+                        <a href="javascript:;" class="my-button-list d-flex justify-content-center"> <i
+                                class="{{icon}}"></i>&nbsp;&nbsp;{{name}}</a>
                         {{#if haveSub}}
                         <ul class="sub_menu">
                             {{#each subcategory}}
                             <li class="d-flex justify-content-between align-items-center">
-                                <a href="/category/{{this.id}}/products" >{{this.name}}</a>
+                                <a href="/category/{{this.id}}/products">{{this.name}}</a>
                                 {{#if count}}
-                                <span class="badge badge-danger d-flex align-items-center my-size-small justify-content-center">{{count}}</span>
+                                <span
+                                    class="badge badge-danger d-flex align-items-center my-size-small justify-content-center">{{count}}</span>
                                 {{/if}}
                                 {{#if this.haveSub}}
                                 <ul class="sub_menu">
                                     {{#each this.subcategory}}
                                     <li class="d-flex justify-content-between align-items-center">
-                                        <a href="/category/{{this.id}}/products" class="child-category">{{this.name}}</a>
+                                        <a href="/category/{{this.id}}/products"
+                                            class="child-category">{{this.name}}</a>
                                         {{#if count}}
-                                        <span class="badge badge-danger d-flex align-items-center my-size-small justify-content-center">{{count}}</span>
+                                        <span
+                                            class="badge badge-danger d-flex align-items-center my-size-small justify-content-center">{{count}}</span>
                                         {{/if}}
                                     </li>
                                     {{/each}}
@@ -338,27 +342,67 @@
                                             <div class="top-form top-search non-category">
                                                 <div class="topsearch-entry">
                                                     <form method="GET" action="https://xgear.vn/">
-                                                        <div id="sw_woo_search_1" class="search search-group" data-height_image="50" data-width_image="50" data-show_image="1" data-show_price="1" data-character="3" data-limit="5" data-admin_url="/?wc-ajax=%%endpoint%%" data-ajax_search="1" data-no_result="No Result"
+                                                        <div id="sw_woo_search_1" class="search search-group"
+                                                            data-height_image="50" data-width_image="50"
+                                                            data-show_image="1" data-show_price="1" data-character="3"
+                                                            data-limit="5" data-admin_url="/?wc-ajax=%%endpoint%%"
+                                                            data-ajax_search="1" data-no_result="No Result"
                                                             data-text_price="Price">
                                                             <div class="content-search d-inline-block">
-                                                                <input class="autosearch-input" type="text" value="" size="50" autocomplete="off" placeholder="Tìm kiếm sản phẩm..." name="s">
-                                                                <button type="submit" class="fa fa-search button-search-pro form-button"><i class="fas fa-search"></i>&nbsp;&nbsp;Tìm Kiếm</button>
-                                                            </div>
-                                                            <div class="widget sw_top-3 sw_top d-inline-block">
-                                                                <a class="my-shopping-cart" href="#"><i class="fas fa-shopping-cart"></i></a>
+                                                                <input class="autosearch-input" type="text" value=""
+                                                                    size="50" autocomplete="off"
+                                                                    placeholder="Tìm kiếm sản phẩm..." name="s">
+                                                                <button type="submit"
+                                                                    class="fa fa-search button-search-pro form-button"><i
+                                                                        class="fas fa-search"></i>&nbsp;&nbsp;Tìm
+                                                                    Kiếm</button>
                                                             </div>
                                                             <div class="widget sw_top-4 sw_top d-inline-block">
                                                                 <div class="widget-inner">
                                                                     <div>
-                                                                        <ul>
-                                                                            <li>
-                                                                                <a href="/login"><span><b>Đăng nhập/<b>&nbsp;Đăng ký</b></b></span></a>
+                                                                        {{#if isAuthenticated}}
+                                                                        <ul class="">
+                                                                            <li class="nav-item dropdown">
+                                                                                <a class="nav-link dropdown-toggle"
+                                                                                    href="#" id="navbarDropdown"
+                                                                                    role="button" data-toggle="dropdown"
+                                                                                    aria-haspopup="true"
+                                                                                    aria-expanded="false">
+                                                                                    Hi, <b>{{authUser.name}}!</b>
+                                                                                </a>
+                                                                                <div class="dropdown-menu dropdown-menu-right my-dropdown-item"
+                                                                                    aria-labelledby="navbarDropdown">
+                                                                                    <a class="dropdown-item"
+                                                                                        href="/account/profile">
+                                                                                        <i class="fa fa-user"
+                                                                                            aria-hidden="true"></i>
+                                                                                        Profile
+                                                                                    </a>
+                                                                                    <a class="dropdown-item"
+                                                                                        href="javascript: $('#frmLogout').submit();">
+                                                                                        <i class="fas fa-tasks"></i>
+                                                                                        Quản lý
+                                                                                    </a>
+                                                                                    <a class="dropdown-item"
+                                                                                        href="javascript: $('#frmLogout').submit();">
+                                                                                        <i class="fas fa-sign-out-alt"></i>
+                                                                                        Logout
+                                                                                    </a>
+                                                                                </div>
                                                                             </li>
                                                                         </ul>
+                                                                        {{else}}
+                                                                        <ul>
+                                                                            <li>
+                                                                                <a href="/account/login"><span><b>Đăng
+                                                                                            nhập/<b>&nbsp;Đăng
+                                                                                                ký</b></b></span></a>
+                                                                            </li>
+                                                                        </ul>
+                                                                        {{/if}}
                                                                     </div>
                                                                 </div>
                                                             </div>
-
                                                         </div>
                                                     </form>
                                                 </div>
@@ -375,143 +419,169 @@
     </div>
     {{{body}}}
     <div class="container">
-    <div id="service-Xgear">
+        <div id="service-Xgear">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-4 d-flex justify-content-end">
+                        <div>
+                            <img class=" lazyloaded animated slideInLeft infinite slower" src="/picture/logo.png"
+                                data-src="/picture/logo.png" alt="Online Auction" style=" margin-left: -20px; ">
+                        </div>
+                    </div>
+                    <div class="col-md-3 d-flex align-items-center">
+                        <div class="d-flex">
+                            <div class="float-left"><img class=" ls-is-cached lazyloaded" width="64"
+                                    src="https://xgear.vn/wp-content/uploads/2019/02/support-64x64.png"
+                                    alt=" Hỗ trợ và tư vấn 24/7" height="auto"></div>
+                            <div class="float-left label-image-footer">HỖ TRỢ 24/7</div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 d-flex align-items-center">
+                        <div class="d-flex">
+                            <div><img class=" lazyloaded" width="64"
+                                    src="https://xgear.vn/wp-content/uploads/2019/02/delivery-truck-64x64.png"
+                                    alt="Giao hàng siêu tốc, và miễn phí toàn quốc" height="auto"></div>
+                            <div class="label-image-footer">MIỄN PHÍ VẬN CHUYỂN</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <section id="sec-thong-tin-Xgear">
+
         <div class="container">
             <div class="row">
-                <div class="col-md-4 d-flex justify-content-end">
-                    <div>
-                        <img class=" lazyloaded animated slideInLeft infinite slower" src="/picture/logo.png" data-src="/picture/logo.png" alt="Online Auction" style=" margin-left: -20px; ">
+                <div class="col-md-12">
+                    <div class="container-subtitle">Đấu trường đọ tỉ giá của máy tính PC, Laptop Gaming MSI &amp; Asus
+                        chính hãng. Mang đến cho khách hàng những sản phẩm chất lượng với giá tốt nhất.</div>
+                </div>
+            </div>
+
+            <div class="row " style=" margin-bottom: 30px; ">
+                <div class="col-md-6">
+                    <div id="chinhanhHaNoi" style=" margin-top: 10px; ">
+                        <div style=" font-size: 18px;font-weight: bold;padding-bottom: 10px; ">HÀ NỘI</div>
+                        <div style=" font-size: 16px; line-height: 1.5;"><b>Địa chỉ</b>: 10A1 Ngõ 49, Linh Lang, Q. Ba
+                            Đình</div>
+                        <div style=" font-size: 16px; line-height: 1.5;">Điện thoại: <b>(028) 7108 1881</b> –
+                            <b>Hotline: 097 232 1881</b></div>
+                        <div style=" font-size: 16px; line-height: 1.5;">Phản ánh chất lượng dịch vụ: 093 183 4446</div>
+                        <div style=" font-size: 16px; line-height: 1.5;"><b>Thời gian làm việc</b>: 9AM – 6h30PM, <b>Chủ
+                                nhật:</b> 10AM – 4PM</div>
                     </div>
                 </div>
-                <div class="col-md-3 d-flex align-items-center">
-                    <div class="d-flex">
-                        <div class="float-left"><img class=" ls-is-cached lazyloaded" width="64" src="https://xgear.vn/wp-content/uploads/2019/02/support-64x64.png" alt=" Hỗ trợ và tư vấn 24/7" height="auto"></div>
-                        <div class = "float-left label-image-footer">HỖ TRỢ 24/7</div>
+                <div class="col-md-6">
+                    <div id="chinhanhHCM" style=" margin-top: 10px; ">
+                        <div style=" font-size: 18px;font-weight: bold;padding-bottom: 10px; ">TP. HỒ CHÍ MINH</div>
+                        <div style=" font-size: 16px; line-height: 1.5;"><b>Địa chỉ</b>: 73 Tự Cường, Phường 4, Q.Tân
+                            Bình</div>
+                        <div style=" font-size: 16px; line-height: 1.5;">Điện thoại: <b>(028) 7108 1881 – Hotline: 093
+                                373 1881</b></div>
+                        <div style=" font-size: 16px; line-height: 1.5;">Phản ánh chất lượng dịch vụ: 093 183 4446</div>
+                        <div style=" font-size: 16px; line-height: 1.5;"><b>Thời gian làm việc</b>: 9AM – 8PM, <b>Chủ
+                                nhật:</b> 10AM – 7PM</div>
                     </div>
                 </div>
-                <div class="col-md-3 d-flex align-items-center">
-                    <div class="d-flex">
-                        <div><img class=" lazyloaded" width="64" src="https://xgear.vn/wp-content/uploads/2019/02/delivery-truck-64x64.png" alt="Giao hàng siêu tốc, và miễn phí toàn quốc" height="auto"></div>
-                        <div class="label-image-footer">MIỄN PHÍ VẬN CHUYỂN</div>
+            </div>
+
+            <div class="row" style=" border-top: 1px solid #adadad; ">
+                <div class="col-md-4" style="margin-top: 40px;margin-bottom: 10px;">
+                    <div class="titleFootX">THÔNG TIN VỀ ONLINE Auction</div>
+                    <div class="khungList">
+                        <ul>
+                            <li><a href="#">Trang chủ</a></li>
+                            <li><a href="#" target="_blank" rel="noopener">Các đối tác</a></li>
+                            <li>Tuyển dụng</li>
+                        </ul>
                     </div>
                 </div>
-            </div>
-        </div>
-    </div>
-</div>
+                <div class="col-md-4" style="margin-top: 40px;margin-bottom: 10px;">
+                    <div class="titleFootX">CHÍNH SÁCH</div>
+                    <div class="khungList">
+                        <ul>
+                            <li><a href="#" target="_blank" rel="noopener">Chính sách giao hàng</a></li>
+                            <li><a href="#" target="_blank" rel="noopener">Phương thức giao dịch &amp; thanh toán</a>
+                            </li>
+                            <li><a href="#" target="_blank" rel="noopener">Điều khoản mua bán</a></li>
+                            <li><a href="#" target="_blank" rel="noopener">Qui định bảo hành</a></li>
+                            <li><a href="#" target="_blank" rel="noopener">Chính sách đổi trả hàng hóa</a></li>
+                            <li><a href="#" target="_blank" rel="noopener">Chính sách bảo mật thông tin</a></li>
+                        </ul>
+                    </div>
 
-<section id="sec-thong-tin-Xgear">
-
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="container-subtitle">Đấu trường đọ tỉ giá của máy tính PC, Laptop Gaming MSI &amp; Asus chính hãng. Mang đến cho khách hàng những sản phẩm chất lượng với giá tốt nhất.</div>
-            </div>
-        </div>
-
-        <div class="row " style=" margin-bottom: 30px; ">
-            <div class="col-md-6">
-                <div id="chinhanhHaNoi" style=" margin-top: 10px; ">
-                    <div style=" font-size: 18px;font-weight: bold;padding-bottom: 10px; ">HÀ NỘI</div>
-                    <div style=" font-size: 16px; line-height: 1.5;"><b>Địa chỉ</b>: 10A1 Ngõ 49, Linh Lang, Q. Ba Đình</div>
-                    <div style=" font-size: 16px; line-height: 1.5;">Điện thoại: <b>(028) 7108 1881</b> – <b>Hotline: 097 232 1881</b></div>
-                    <div style=" font-size: 16px; line-height: 1.5;">Phản ánh chất lượng dịch vụ: 093 183 4446</div>
-                    <div style=" font-size: 16px; line-height: 1.5;"><b>Thời gian làm việc</b>: 9AM – 6h30PM, <b>Chủ nhật:</b> 10AM – 4PM</div>
                 </div>
-            </div>
-            <div class="col-md-6">
-                <div id="chinhanhHCM" style=" margin-top: 10px; ">
-                    <div style=" font-size: 18px;font-weight: bold;padding-bottom: 10px; ">TP. HỒ CHÍ MINH</div>
-                    <div style=" font-size: 16px; line-height: 1.5;"><b>Địa chỉ</b>: 73 Tự Cường, Phường 4, Q.Tân Bình</div>
-                    <div style=" font-size: 16px; line-height: 1.5;">Điện thoại: <b>(028) 7108 1881 –  Hotline: 093 373 1881</b></div>
-                    <div style=" font-size: 16px; line-height: 1.5;">Phản ánh chất lượng dịch vụ: 093 183 4446</div>
-                    <div style=" font-size: 16px; line-height: 1.5;"><b>Thời gian làm việc</b>: 9AM – 8PM, <b>Chủ nhật:</b> 10AM – 7PM</div>
+                <div class="col-md-4" style="margin-top: 40px;margin-bottom: 10px;">
+                    <div class="titleFootX">CỘNG ĐỒNG</div>
+                    <div class="khungList">
+                        <ul>
+                            <li><a href="#" target="_blank">Facebook page</a></li>
+                            <li><a href="#" target="_blank">Youtube channel</a></li>
+                        </ul>
+                    </div>
+
                 </div>
             </div>
         </div>
 
-        <div class="row" style=" border-top: 1px solid #adadad; ">
-            <div class="col-md-4" style="margin-top: 40px;margin-bottom: 10px;">
-                <div class="titleFootX">THÔNG TIN VỀ ONLINE Auction</div>
-                <div class="khungList">
-                    <ul>
-                        <li><a href="#">Trang chủ</a></li>
-                        <li><a href="#" target="_blank" rel="noopener">Các đối tác</a></li>
-                        <li>Tuyển dụng</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="col-md-4" style="margin-top: 40px;margin-bottom: 10px;">
-                <div class="titleFootX">CHÍNH SÁCH</div>
-                <div class="khungList">
-                    <ul>
-                        <li><a href="#" target="_blank" rel="noopener">Chính sách giao hàng</a></li>
-                        <li><a href="#" target="_blank" rel="noopener">Phương thức giao dịch &amp; thanh toán</a></li>
-                        <li><a href="#" target="_blank" rel="noopener">Điều khoản mua bán</a></li>
-                        <li><a href="#" target="_blank" rel="noopener">Qui định bảo hành</a></li>
-                        <li><a href="#" target="_blank" rel="noopener">Chính sách đổi trả hàng hóa</a></li>
-                        <li><a href="#" target="_blank" rel="noopener">Chính sách bảo mật thông tin</a></li>
-                    </ul>
+        <div class="jeowayContactAllInOne_layer my-quick-toolbar">
+
+            <div class="jeowayContactAllInOne_container">
+
+
+                <div onclick="_paq.push(['trackEvent', 'Contact_All_In_All', 'ClickBtnCall']);"
+                    class="jeoway_btn_call my-toolbar" data-tooltip="Gọi ngay (028) 7108 1881 "
+                    data-tooltip-location="left">
+                    <a href="tel:02871081881">
+                        <img src="https://platform.jeoway.com/images/icon_click_to_call.svg" width="48" height="48">
+                    </a>
                 </div>
 
-            </div>
-            <div class="col-md-4" style="margin-top: 40px;margin-bottom: 10px;">
-                <div class="titleFootX">CỘNG ĐỒNG</div>
-                <div class="khungList">
-                    <ul>
-                        <li><a href="#" target="_blank">Facebook page</a></li>
-                        <li><a href="#" target="_blank">Youtube channel</a></li>
-                    </ul>
+                <div onclick="_paq.push(['trackEvent', 'Contact_All_In_All', 'ClickBtnChinhSachShip']);"
+                    class="jeoway_btn_ship my-toolbar" data-tooltip="Chính sách giao hàng" data-tooltip-location="left">
+                    <a href="https://hotro.xgear.vn/hc/vi/articles/360020631194-Ch%C3%ADnh-s%C3%A1ch-giao-h%C3%A0ng-">
+                        <img src="https://platform.jeoway.com/images/delivery-truck.svg" width="48" height="48">
+                    </a>
                 </div>
 
+
+                <div onclick="_paq.push(['trackEvent', 'Contact_All_In_All', 'ClickBtnDichVuTangKem']);"
+                    id="myBtn_Ship my-toolbar" class="jeoway_btn_map" data-tooltip="Dịch vụ tặng kèm"
+                    data-tooltip-location="left">
+                    <img src="https://platform.jeoway.com/images/qua-shop.svg" width="48" height="48">
+                </div>
+
+                <div onclick="_paq.push(['trackEvent', 'Contact_All_In_All', 'ClickBtnDiaChi']);"
+                    class="jeoway_btn_DiaChi my-toolbar" data-tooltip="Địa chỉ của Online Auction"
+                    data-tooltip-location="left">
+                    <a href="https://xgear.vn/lien-he-xgear/">
+                        <img src="https://platform.jeoway.com/images/placeholder.svg" width="48" height="48">
+                    </a>
+                </div>
+
+                <div onclick="_paq.push(['trackEvent', 'Contact_All_In_All', 'ClickBtnChatFB']);"
+                    class="jeoway_btn_fb_chat my-toolbar" data-tooltip="Chat với Online Auction để được tư vấn"
+                    data-tooltip-location="left">
+                    <a href="https://www.messenger.com/t/xgearvietnam" target="_blank">
+                        <img src="https://platform.jeoway.com/images/icon_messenger.svg" width="48" height="48">
+                    </a>
+                </div>
+
+
             </div>
-        </div>
-    </div>
-
-    <div class="jeowayContactAllInOne_layer my-quick-toolbar">
-
-        <div class="jeowayContactAllInOne_container">
-
-
-            <div onclick="_paq.push(['trackEvent', 'Contact_All_In_All', 'ClickBtnCall']);" class="jeoway_btn_call my-toolbar" data-tooltip="Gọi ngay (028) 7108 1881 " data-tooltip-location="left">
-                <a href="tel:02871081881">
-                    <img src="https://platform.jeoway.com/images/icon_click_to_call.svg" width="48" height="48">
-                </a>
-            </div>
-
-            <div onclick="_paq.push(['trackEvent', 'Contact_All_In_All', 'ClickBtnChinhSachShip']);" class="jeoway_btn_ship my-toolbar" data-tooltip="Chính sách giao hàng" data-tooltip-location="left">
-                <a href="https://hotro.xgear.vn/hc/vi/articles/360020631194-Ch%C3%ADnh-s%C3%A1ch-giao-h%C3%A0ng-">
-                    <img src="https://platform.jeoway.com/images/delivery-truck.svg" width="48" height="48">
-                </a>
-            </div>
-
-
-            <div onclick="_paq.push(['trackEvent', 'Contact_All_In_All', 'ClickBtnDichVuTangKem']);" id="myBtn_Ship my-toolbar" class="jeoway_btn_map" data-tooltip="Dịch vụ tặng kèm" data-tooltip-location="left">
-                <img src="https://platform.jeoway.com/images/qua-shop.svg" width="48" height="48">
-            </div>
-
-            <div onclick="_paq.push(['trackEvent', 'Contact_All_In_All', 'ClickBtnDiaChi']);" class="jeoway_btn_DiaChi my-toolbar" data-tooltip="Địa chỉ của Online Auction" data-tooltip-location="left">
-                <a href="https://xgear.vn/lien-he-xgear/">
-                    <img src="https://platform.jeoway.com/images/placeholder.svg" width="48" height="48">
-                </a>
-            </div>
-
-            <div onclick="_paq.push(['trackEvent', 'Contact_All_In_All', 'ClickBtnChatFB']);" class="jeoway_btn_fb_chat my-toolbar" data-tooltip="Chat với Online Auction để được tư vấn" data-tooltip-location="left">
-                <a href="https://www.messenger.com/t/xgearvietnam" target="_blank">
-                    <img src="https://platform.jeoway.com/images/icon_messenger.svg" width="48" height="48">
-                </a>
-            </div>
-
 
         </div>
 
-    </div>
+    </section>
 
-</section>
-
-<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-<script type="text/javascript" src="/static/javascript/category.js"></script>
-{{{_sections.js}}}
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+    <script type="text/javascript" src="/static/javascript/category.js"></script>
+    {{{_sections.js}}}
 </body>

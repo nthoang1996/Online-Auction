@@ -1,6 +1,7 @@
 const express = require('express');
 const exphbs = require('express-handlebars');
 const handlebars_sections = require('express-handlebars-sections');
+const session = require('express-session')
 const morgan = require('morgan');
 const numeral = require('numeral');
 require('express-async-errors');
@@ -9,6 +10,14 @@ const categoryModel = require('./models/category.model');
 
 const app = express();
 app.use(morgan('dev'));
+
+app.use(session({
+    secret: 'keyboard cat',
+    resave: false,
+    saveUninitialized: true,
+    // cookie: { secure: true }
+}))
+
 app.use(express.static(__dirname));
 
 app.use(express.json());
@@ -31,12 +40,13 @@ app.get('/msi-gaming-series-1', function(req, res) {
     res.render('layouts/Laptop/MSI/msi-gaming-series-1');
 });
 
-app.get('/post_product', function(req, res) {
-    res.render('seller/post_product', { layout: false });
-});
-
-app.get('/login', function(req, res) {
-    res.render('guest/login', { layout: false });
+app.get('/post_product', async(req, res) => {
+    rows = await categoryModel.getAllChildCatByLevel('tblcategory', 3);
+    console.log(rows);
+    res.render('seller/post_product', {
+        category: rows,
+        layout: false
+    });
 });
 
 app.get('/user_manament', function(req, res) {

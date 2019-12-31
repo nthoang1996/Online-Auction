@@ -25,4 +25,41 @@ router.post('/register', async(req, res) => {
     res.render('guest/register', { layout: false });
 });
 
+router.get('/login', async(req, res) => {
+    res.render('guest/login', { layout: false });
+});
+
+router.post('/login', async(req, res) => {
+    // const user = {
+    //     email: req.body.email,
+    //     password: req.body.password
+    // };
+
+    console.log(req.body.email);
+
+    const user = await categoryModel.single_by_email('tbluser', req.body.email);
+    if (user === null) {
+        return res.render('guest/login', {
+            layout: false,
+            showError: true,
+            err_message: 'Email không tồn tại'
+        });
+    }
+
+    const rs = bcrypt.compareSync(req.body.password, user.password);
+    if (rs === false) {
+        return res.render('guest/login', {
+            layout: false,
+            showError: true,
+            err_message: 'Mật khẩu bạn nhập vào sai'
+        });
+    }
+
+    delete user.password;
+    req.session.isAuthenticated = true;
+    req.session.authUser = user;
+
+    res.redirect('/');
+});
+
 module.exports = router;

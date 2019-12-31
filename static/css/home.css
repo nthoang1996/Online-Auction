@@ -472,3 +472,9 @@ body {
     height: 193px;
     width: 217px;
 }
+
+.my-dropdown-item {
+    max-width: 157px;
+    position: absolute;
+    z-index: 10;
+}

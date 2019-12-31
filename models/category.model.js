@@ -19,5 +19,13 @@ module.exports = {
     allWithDetail: _ => {
         const sql = `SELECT c.id, c.name, c.parent_id, c.level, count(p.id) as num_of_products from tblcategory c left JOIN tblproduct p on c.id = p.cat_id GROUP BY c.id, c.name`;
         return db.load(sql);
-    }
+    },
+    getAllChildCatByLevel: (table, level) => { return db.load(`select * from ${table} where level = ${level};`) },
+    single_by_email: async(table, email) => {
+        const rows = await db.load(`select * from ${table} where email = '${email}'`);
+        if (rows.length === 0) {
+            return null;
+        }
+        return rows[0];
+    },
 };

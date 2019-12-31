@@ -89,6 +89,13 @@ module.exports = function(app) {
             }
         }
         res.locals.lcCategories = category;
+
+        if (typeof(req.session.isAuthenticated) === 'undefined') {
+            req.session.isAuthenticated = false;
+        }
+
+        res.locals.isAuthenticated = req.session.isAuthenticated;
+        res.locals.authUser = req.session.authUser;
         // console.log(res.locals.lcCategories);
         next();
     })
