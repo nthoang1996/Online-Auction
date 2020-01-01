@@ -376,16 +376,17 @@
                                                                                         href="/account/profile">
                                                                                         <i class="fa fa-user"
                                                                                             aria-hidden="true"></i>
-                                                                                        Profile
+                                                                                        Thông tin các nhân
                                                                                     </a>
                                                                                     <a class="dropdown-item"
-                                                                                        href="javascript: $('#frmLogout').submit();">
+                                                                                        href="/account/profile">
                                                                                         <i class="fas fa-tasks"></i>
                                                                                         Quản lý
                                                                                     </a>
                                                                                     <a class="dropdown-item"
-                                                                                        href="javascript: $('#frmLogout').submit();">
-                                                                                        <i class="fas fa-sign-out-alt"></i>
+                                                                                        href="javascript: logOut()">
+                                                                                        <i
+                                                                                            class="fas fa-sign-out-alt"></i>
                                                                                         Logout
                                                                                     </a>
                                                                                 </div>
@@ -583,5 +584,15 @@
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
         crossorigin="anonymous"></script>
     <script type="text/javascript" src="/static/javascript/category.js"></script>
+    <script>
+        function logOut() {
+            $.ajax({
+                async: false,
+                type: "POST",
+                url: '/account/logout',
+            });
+            location.reload();
+        }
+    </script>
     {{{_sections.js}}}
 </body>

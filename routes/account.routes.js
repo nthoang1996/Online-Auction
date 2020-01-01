@@ -2,12 +2,12 @@ const express = require('express');
 const bcrypt = require('bcryptjs');
 const router = express.Router();
 const categoryModel = require('../models/category.model');
+const restrict = require('../middlewares/auth.mdw');
 router.get('/register', async(req, res) => {
     res.render('guest/register', { layout: false });
 });
 
 router.post('/register', async(req, res) => {
-    console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
     const N = 10;
     const hash = bcrypt.hashSync(req.body.password, N);
 
@@ -41,7 +41,6 @@ router.post('/login', async(req, res) => {
     if (user === null) {
         return res.render('guest/login', {
             layout: false,
-            showError: true,
             err_message: 'Email không tồn tại'
         });
     }
@@ -50,7 +49,6 @@ router.post('/login', async(req, res) => {
     if (rs === false) {
         return res.render('guest/login', {
             layout: false,
-            showError: true,
             err_message: 'Mật khẩu bạn nhập vào sai'
         });
     }
@@ -59,7 +57,20 @@ router.post('/login', async(req, res) => {
     req.session.isAuthenticated = true;
     req.session.authUser = user;
 
-    res.redirect('/');
+    const url = req.query.retUrl || '/';
+    res.redirect(url);
+    // res.redirect(req.headers.referer);
+});
+
+router.post('/logout', (req, res) => {
+    req.session.isAuthenticated = false;
+    req.session.authUser = null;
+    res.redirect(req.headers.referer);
+});
+
+router.get('/profile', restrict, (req, res) => {
+    res.render('admin/profile', { layout: false });
+
 });
 
 module.exports = router;

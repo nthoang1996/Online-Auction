@@ -40,25 +40,12 @@ app.get('/msi-gaming-series-1', function(req, res) {
     res.render('layouts/Laptop/MSI/msi-gaming-series-1');
 });
 
-app.get('/post_product', async(req, res) => {
-    rows = await categoryModel.getAllChildCatByLevel('tblcategory', 3);
-    console.log(rows);
-    res.render('seller/post_product', {
-        category: rows,
-        layout: false
-    });
-});
-
 app.get('/user_manament', function(req, res) {
     res.render('admin/list_user', { layout: false });
 });
 
 app.get('/product_manament', function(req, res) {
     res.render('admin/list_product', { layout: false });
-});
-
-app.get('/profile', function(req, res) {
-    res.render('admin/profile', { layout: false });
 });
 
 app.get('/auto_generate_list_bidder', async(req, res) => {
@@ -171,7 +158,7 @@ app.get('/', async(req, res) => {
             rows[i]["end_date_format"] = moment(rows[i].end_date).format('DD-MM-YYYY HH:mm:ss');
         }
     }
-    console.log(rows);
+    // console.log(rows);
     let list_ended1 = [];
     let list_ended2 = [];
     let activeItem = {};

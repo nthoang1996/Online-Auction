@@ -1866,3 +1866,7 @@ h3 {
     padding-top: 0 !important;
     margin-bottom: 10px;
 }
+
+.my-small-font {
+    font-size: 12px;
+}

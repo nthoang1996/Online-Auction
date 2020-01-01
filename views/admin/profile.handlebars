@@ -50,7 +50,7 @@
                 </div>
 
                 <ul class="nav">
-                    <li class="active pl-3 my-li-dashboard">
+                    <li class="my-active pl-3 my-li-dashboard">
                         <a href="/profile">
                             <i class="pe-7s-graph"></i>
                             <p class="mb-0">Thông tin cá nhân</p>
@@ -97,93 +97,47 @@
                 <div class="form-group row">
                     <label for="staticName" class="col-sm-2 col-form-label text-right">Họ Tên</label>
                     <div class="col-sm-8">
-                        <input type="text" class="form-control" id="staticName">
+                        <input type="text" class="form-control" id="name" name="name">
                     </div>
                 </div>
                 <div class="form-group row">
                     <label for="staticSdt" class="col-sm-2 col-form-label text-right">SĐT</label>
                     <div class="col-sm-8">
-                        <input type="text" class="form-control" id="staticSdt">
+                        <input type="text" class="form-control" id="phone" name="phone">
                     </div>
                 </div>
                 <div class="form-group row">
                     <label for="staticEmail" class="col-sm-2 col-form-label text-right">Email</label>
                     <div class="col-sm-8">
-                        <input type="text" class="form-control" id="staticEmail" placeholder="email@example.com">
+                        <input type="text" class="form-control" id="email" placeholder="email@example.com" name="email">
                     </div>
                 </div>
 
                 <div class="form-group row">
-                    <label for="inputGender" class="col-sm-2 col-form-label text-right">Giới tính</label>
-                    <div class="gender col-sm-8">
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" id="inlineCheckbox1" value="option1">
-                            <label class="form-check-label" for="inlineCheckbox1">Nam</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" id="inlineCheckbox2" value="option2">
-                            <label class="form-check-label" for="inlineCheckbox2">Nữ</label>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label for="staticDate" class="col-sm-2 col-form-label text-right">Ngày sinh</label>
-                    <div class="col-sm-10">
-                        <form>
-                            <div class="form-row">
-                                <div class="form-group col-md-1">
-                                    <select id="inputDay" class="form-control">
-                                        <script type="text/javascript">
-                                            for (var i = 1; i <= 31; i++) {
-                                                var html = `<option value="${i}">${i}</option>`;
-                                                document.writeln(html);
-                                            }
-                                        </script>
-                                    </select>
-                                </div>
-                                <div class="form-group col-md-1">
-                                    <select id="inputMonth" class="form-control">
-                                        <script type="text/javascript">
-                                            for (var i = 1; i <= 12; i++) {
-                                                var html = `<option value="${i}">${i}</option>`;
-                                                document.writeln(html);
-                                            }
-                                        </script>
-                                    </select>
-                                </div>
-                                <div class="form-group col-md-1">
-                                    <select id="inputYear" class="form-control">
-                                        <script type="text/javascript">
-                                            for (var i = 1899; i <= 2020; i++) {
-                                                var html = `<option value="${i}">${i}</option>`;
-                                                document.writeln(html);
-                                            }
-                                        </script>
-                                    </select>
-                                </div>
-                            </div>
-                        </form>
+                    <label for="staticAddress" class="col-sm-2 col-form-label text-right">Địa chỉ</label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" id="address" name="address" placeholder="123 Nguyễn Trãi Quân 1 Thàn phố Hồ Chí Minh">
                     </div>
                 </div>
 
                 <div class="form-group row">
                     <label for="staticSdt" class="col-sm-2 col-form-label text-right">Mật khẩu cũ</label>
                     <div class="col-sm-8">
-                        <input type="password" class="form-control" id="staticOldPass"
+                        <input type="password" class="form-control" id="old_password" name="old_password"
                             placeholder="Enter your Password">
                     </div>
                 </div>
                 <div class="form-group row">
                     <label for="staticSdt" class="col-sm-2 col-form-label text-right">Mật khẩu mới</label>
                     <div class="col-sm-8">
-                        <input type="password" class="form-control" id="staticNewPass"
+                        <input type="password" class="form-control" id="new_password" name="new_password"
                             placeholder="Enter your Password">
                     </div>
                 </div>
                 <div class="form-group row">
                     <label for="staticSdt" class="col-sm-2 col-form-label text-right">Nhập lại</label>
                     <div class="col-sm-8">
-                        <input type="password" class="form-control" id="confirm" placeholder="Confirm your Password">
+                        <input type="password" class="form-control" id="confirm_password" name="confirm_password" placeholder="Confirm your Password">
                     </div>
                 </div>
                 <div class="row mt-2">
