@@ -32,21 +32,10 @@ app.engine('handlebars', exphbs({
             val = val.slice(0, 4) + " " + val.slice(4, 7) + " " + val.slice(7);
             return val;
         },
+        getContent: content => { return JSON.stringify(content); }
     },
 }));
 app.set('view engine', 'handlebars');
-
-app.get('/msi-gaming-series-1', function(req, res) {
-    res.render('layouts/Laptop/MSI/msi-gaming-series-1');
-});
-
-app.get('/user_manament', function(req, res) {
-    res.render('admin/list_user', { layout: false });
-});
-
-app.get('/product_manament', function(req, res) {
-    res.render('admin/list_product', { layout: false });
-});
 
 app.get('/auto_generate_list_bidder', async(req, res) => {
     const rows = await categoryModel.all('tblproduct');
@@ -137,7 +126,11 @@ app.get('/', async(req, res) => {
                 }
             }
         }
-        rows[i]["top_price"] = listBidder1[listBidder1.length - 1].price;
+        if (listBidder1.length > 0) {
+            rows[i]["top_price"] = listBidder1[listBidder1.length - 1].price;
+        } else {
+            rows[i]["top_price"] = rows[i].start_price;
+        }
         let difference_in_time = rows[i].end_date.getTime() - dt.getTime();
         let difference_in_date = difference_in_time / (1000 * 3600 * 24);
         if (difference_in_date >= 1 && difference_in_date < 4) {
@@ -229,11 +222,23 @@ app.get('/', async(req, res) => {
                     }
                 }
             }
-            if (parseInt(listBidder2[listBidder2.length - 1].price) > parseInt(listBidder1[listBidder1.length - 1].price)) {
+            let topPriceList1 = 0;
+            let topPriceList2 = 0;
+            if (listBidder1.length > 0) {
+                topPriceList1 = parseInt(listBidder1[listBidder1.length - 1].price);
+            } else {
+                topPriceList1 = parseInt(rows[index].start_price);
+            }
+            if (listBidder2.length > 0) {
+                topPriceList2 = parseInt(listBidder2[listBidder2.length - 1].price);
+            } else {
+                topPriceList2 = parseInt(rows[j].start_price);
+            }
+            if (topPriceList2 > topPriceList1) {
                 let temp = {...rows[index] };
                 rows[index] = {...rows[j] };
                 rows[j] = {...temp };
-                rows[index]["top_price"] = listBidder2[listBidder2.length - 1].price;
+                rows[index]["top_price"] = "" + topPriceList2;
             }
         }
     }

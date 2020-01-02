@@ -81,15 +81,48 @@ router.get('/', async(req, res) => {
 //     }
 // })
 
-router.post('/edit', async(req, res) => {
-    let entityId = {
-        "id": parseInt(req.body.id)
+router.get('/edit/:id', async(req, res) => {
+    const rows = await categoryModel.single_by_id('tblproduct', parseInt(req.params.id));
+    rows[0]["end_date_format"] = moment(rows[0].end_date).format('DD-MM-YYYY HH:mm:ss');
+    // console.log(rows);
+    delete rows[0].list_bidder;
+
+    rowsCat = await categoryModel.getAllChildCatByLevel('tblcategory', 3);
+    for (let i = 0; i < rowsCat.length; i++) {
+        if (rowsCat[i].id == rows[0].cat_id) {
+            rowsCat[i]["checked"] = true;
+        } else {
+            rowsCat[i]["checked"] = false;
+        }
     }
-    let entity = {
-        "is_active": req.body.is_active
+
+    if (rows[0].is_trusted == 1) {
+        rows[0].trusted = true;
+    } else {
+        rows[0].trusted = false;
     }
-    const data = await categoryModel.edit("tblproduct", entity, entityId);
-    res.redirect('/seller/product');
+
+    res.render('seller/edit_product_des', {
+        product: rows[0],
+        category: rowsCat,
+        layout: false,
+    });
+});
+
+router.post('/edit/:id', async(req, res) => {
+    console.log(req.body.description);
+    const rows = await categoryModel.single_by_id('tblproduct', parseInt(req.params.id));
+    let oldDes = rows[0].description;
+
+    let today = new Date(new Date().getTime());
+    let date = moment(today).format('DD-MM-YYYY HH:mm:ss');
+
+    oldDes += "<br><br><i class='icon-pencil'></i>&nbsp;" + date + "<br><br>" + req.body.description;
+    let entityId = { id: req.params.id };
+    let entity = { description: oldDes };
+    const result = await categoryModel.edit('tblproduct', entity, entityId);
+
+    res.redirect('/seller/product/');
 });
 
 router.post('/delete', async(req, res) => {
@@ -114,7 +147,7 @@ router.post('/post_product', async(req, res) => {
     let offsetGMT = +7;
     let today = new Date(new Date().getTime() + offsetGMT * 3600 * 1000);
     entity["id_seller"] = res.locals.authUser.id;
-    entity["start_date"] = moment(res.locals.authUser.id).format('YYYY-MM-DD HH:mm:ss');
+    entity["start_date"] = moment(today).format('YYYY-MM-DD HH:mm:ss');
     delete entity.trusted;
     if (req.body.trusted === "1") {
         entity["is_trusted"] = true;
