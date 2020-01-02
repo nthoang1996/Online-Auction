@@ -96,8 +96,8 @@ module.exports = function(app) {
 
         res.locals.isAuthenticated = req.session.isAuthenticated;
         res.locals.authUser = req.session.authUser;
-        console.log(req.session.authUser);
-        console.log(res.locals.isAuthenticated);
+        // console.log(req.session.authUser);
+        // console.log(res.locals.isAuthenticated);
         next();
     })
 }

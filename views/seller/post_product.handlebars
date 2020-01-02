@@ -11,8 +11,7 @@
     <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
     <meta name="viewport" content="width=device-width" />
 
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"
         crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
         integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
@@ -104,13 +103,14 @@
                     </div>
                 </div>
             </nav>
-            <form method="POST">
+
+            <form method="POST" id="formPostProduct" action="/seller/product/post_product">
                 <div class="row mt-5">
                     <div class="col-sm-3 text-right">
                         <label>Tên sản phẩm:</label>
                     </div>
                     <div class="col-sm-6">
-                        <input type="text" class="my-product-input" />
+                        <input type="text" class="my-product-input" name="name" />
                     </div>
                 </div>
                 <div class="row mt-2">
@@ -118,7 +118,7 @@
                         <label>Chuyên mục</label>
                     </div>
                     <div class="col-sm-6">
-                        <select id="selectbox" class="my-product-select" data-selected="">
+                        <select id="selectbox" class="my-product-select" data-selected="" name="cat_id">
                             <option value="" selected="selected" disabled="disabled">Vui lòng chọn 1 chuyên mục</option>
                             {{#each this.category}}
                             <option value="{{id}}">{{name}}</option>
@@ -134,10 +134,40 @@
 
                 <div class="row mt-2">
                     <div class="col-sm-3 text-right">
+                        <label>Tin tưởng</label>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-check">
+                            <label class="form-check-label">
+                                <input type="radio" class="form-check-input" name="trusted" checked="checked"
+                                    value="1">Chỉ cho
+                                những người có độ tin cậy cao đấu giá
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <label class="form-check-label">
+                                <input type="radio" class="form-check-input" name="trusted" value="2">Ai đấu giá cũng
+                                được
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mt-2">
+                    <div class="col-sm-3 text-right">
                         <label>Giá khởi điểm</label>
                     </div>
-                    <div class="col-sm-1">
-                        <input type="text" class="my-product-input text-right" />
+                    <div class="col-sm-2">
+                        <input type="text" class="my-product-input text-right" name="start_price" />
+                    </div>
+                </div>
+
+                <div class="row mt-2">
+                    <div class="col-sm-3 text-right">
+                        <label>Giá mua ngay</label>
+                    </div>
+                    <div class="col-sm-2">
+                        <input type="text" class="my-product-input text-right" name="buynow_price" />
                     </div>
                 </div>
 
@@ -145,8 +175,8 @@
                     <div class="col-sm-3 text-right">
                         <label>Bước nhảy:</label>
                     </div>
-                    <div class="col-sm-1">
-                        <input type="text" class="my-product-input text-right" />
+                    <div class="col-sm-2">
+                        <input type="text" class="my-product-input text-right" name="min_increase" />
                     </div>
                 </div>
 
@@ -155,24 +185,35 @@
                         <label>Ngày kết thúc</label>
                     </div>
                     <div class="col-sm-2">
-                        <input size="16" type="text" value="" id='datetimepicker1' class="my-product-input">
+                        <input size="16" type="text" value="" id='datetimepicker1' class="my-product-input"
+                            name="end_date">
                     </div>
                 </div>
 
+                <div class="row mt-2 ">
+                    <div class="col-sm-3 text-right">
+                        <label>Mô tả</label>
+                    </div>
+                    <div class="col-sm-6">
+                        <div id="editor" class="my-text-area-product"></div>
+                    </div>
+                </div>
+
+            </form>
+
+            <form action="/seller/product/upload" id="upload" enctype="multipart/form-data" method="POST">
                 <div class="row mt-2">
                     <div class="col-sm-3 text-right">
                         <label>Ảnh đại diện</label>
                     </div>
                     <div class="col-sm-6">
-                        <form method="POST" novalidate enctype="multipart/form-data">
-                            <div class="card-body">
-                                <div class="form-group">
-                                    <div class="file-loading">
-                                        <input id="fuMain" name="fuMain" type="file" class="file" multiple>
-                                    </div>
+                        <div class="card-body">
+                            <div class="form-group">
+                                <div class="file-loading">
+                                    <input id="fuMain" name="fuMain" type="file" class="file" multiple>
                                 </div>
                             </div>
-                        </form>
+                        </div>
                     </div>
                     {{!-- <div class="col-sm-1">
                         <label for="upload-image" class="btn btn-danger">Tải lên
@@ -188,22 +229,13 @@
                     </div> --}}
                 </div>
 
-                <div class="row mt-2 ">
-                    <div class="col-sm-3 text-right">
-                        <label>Mô tả</label>
-                    </div>
-                    <div class="col-sm-6">
-                        <div id="editor" class="my-text-area-product"></div>
-                    </div>
-                </div>
-
                 <div class="row mt-2">
                     <div class="col-sm-9 d-flex justify-content-end">
-                        <button class="btn btn-success mr-3"><i class="fa fa-save"></i>&nbsp;Lưu</button>
-                        <button class="btn btn-danger"><i class="fa fa fa-arrow-left"></i>&nbsp;Quay lại</button>
+                        <button type="submit" class="btn btn-success mr-3"><i class="fa fa-save"></i>&nbsp;Lưu</button>
+                        <button class="btn btn-danger" onclick="javascript: window.history.back();"><i
+                                class="fa fa fa-arrow-left"></i>&nbsp;Quay lại</button>
                     </div>
                 </div>
-
             </form>
 
             <footer class="footer mt-2">
@@ -253,13 +285,39 @@
         ];
         $(document).ready(function () {
             $('#datetimepicker1').datetimepicker({});
-            var quill = new Quill('#editor', {
-                modules: {
-                    toolbar: toolbarOptions
-                },
-                theme: 'snow'
-            });
         });
+
+        let quill = new Quill('#editor', {
+            modules: {
+                toolbar: toolbarOptions
+            },
+            theme: 'snow'
+        });
+
+        $("#upload").on("submit", function () {
+            let rs= {};
+            let data = {
+                name : $('input[name$="name"]').val(),
+                cat_id : $('select[name="cat_id"]').val(),
+                trusted : $('input[name$="trusted"]:checked').val(),
+                start_price : $('input[name$="start_price"]').val(),
+                buynow_price : $('input[name$="buynow_price"]').val(),
+                min_increase : $('input[name$="min_increase"]').val(),
+                end_date : $('input[name$="end_date"]').val(),
+                description : quill.container.firstChild.innerHTML,
+            }
+            console.log(data);
+            $.ajax({
+                type: "POST",
+                async: false,
+                url: '/seller/product/post_product',
+                data: data,
+                success: function(result){
+                    rs = result;
+                },
+            });
+        })
+
     </script>
 
 </body>
