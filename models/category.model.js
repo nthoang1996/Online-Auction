@@ -6,6 +6,7 @@ module.exports = {
     single_by_id: (table, id) => { return db.load(`select * from ${table} where id = ${id}`) },
     all_by_pid: (table, id) => { return db.load(`select * from ${table} where parent_id = ${id}`) },
     all_product_by_cat: (table, id) => { return db.load(`select * from ${table} where cat_id = ${id}`) },
+    all_product_by_seller: (table, id) => { return db.load(`select * from ${table} where id_seller = ${id}`) },
     count_product_by_cat: async(table, id) => {
         const rows = await db.load(`select count(*) as total from ${table} where cat_id = ${id}`);
         return rows[0].total;
@@ -28,4 +29,5 @@ module.exports = {
         }
         return rows[0];
     },
+    full_text_search: (table, keyword) => { return db.load(`SELECT * FROM ${table} WHERE MATCH(name) Against("${keyword}");`) },
 };

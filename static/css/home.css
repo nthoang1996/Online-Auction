@@ -478,3 +478,8 @@ body {
     position: absolute;
     z-index: 10;
 }
+
+.my-select-search {
+    min-height: 42px;
+    font-size: 14px;
+}

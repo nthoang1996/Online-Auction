@@ -341,17 +341,17 @@
                                         <div class="revo_top swsearch-wrapper clearfix">
                                             <div class="top-form top-search non-category">
                                                 <div class="topsearch-entry">
-                                                    <form method="GET" action="https://xgear.vn/">
-                                                        <div id="sw_woo_search_1" class="search search-group"
-                                                            data-height_image="50" data-width_image="50"
-                                                            data-show_image="1" data-show_price="1" data-character="3"
-                                                            data-limit="5" data-admin_url="/?wc-ajax=%%endpoint%%"
-                                                            data-ajax_search="1" data-no_result="No Result"
-                                                            data-text_price="Price">
+                                                    <form method="POST" action="/search">
+                                                        <div id="sw_woo_search_1" class="search search-group">
                                                             <div class="content-search d-inline-block">
+                                                                <select class="my-select-search" name="style">
+                                                                    <option value="0" selected>Tên sản phẩm</option>
+                                                                    <option value="1">Tên chuyên mục</option>
+                                                                    <option value="2">Tên người đăng</option>
+                                                                </select>
                                                                 <input class="autosearch-input" type="text" value=""
                                                                     size="50" autocomplete="off"
-                                                                    placeholder="Tìm kiếm sản phẩm..." name="s">
+                                                                    placeholder="Tìm kiếm..." name="search_text">
                                                                 <button type="submit"
                                                                     class="fa fa-search button-search-pro form-button"><i
                                                                         class="fas fa-search"></i>&nbsp;&nbsp;Tìm
@@ -362,7 +362,7 @@
                                                                     <div>
                                                                         {{#if isAuthenticated}}
                                                                         <ul class="">
-                                                                            <li class="nav-item dropdown">
+                                                                            <li class="nav-item dropdown p-0">
                                                                                 <a class="nav-link dropdown-toggle"
                                                                                     href="#" id="navbarDropdown"
                                                                                     role="button" data-toggle="dropdown"

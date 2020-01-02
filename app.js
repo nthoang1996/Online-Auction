@@ -262,6 +262,84 @@ app.get('/', async(req, res) => {
     });
 });
 
+app.post('/search', async(req, res) => {
+    let table = "";
+    let result = [];
+    if (req.body.style === "0") {
+        table = "tblproduct";
+        let rows = await categoryModel.full_text_search(table, req.body.search_text);
+        result = rows;
+        console.log(rows)
+    } else if (req.body.style === "1") {
+        table = "tblcategory";
+        let rows = await categoryModel.full_text_search(table, req.body.search_text);
+        for (let i = 0; i < rows.length; i++) {
+            let data = await categoryModel.all_product_by_cat('tblproduct', rows[i].id);
+            result = result.concat(data);
+        }
+    } else {
+        table = "tbluser";
+        let rows = await categoryModel.full_text_search(table, req.body.search_text);
+        for (let i = 0; i < rows.length; i++) {
+            let data = await categoryModel.all_product_by_seller('tblproduct', rows[i].id);
+            result = result.concat(data);
+        }
+    }
+    console.log(result);
+    let dt = new Date();
+    for (let i = 0; i < result.length; i++) {
+        let list_bidder_json = result[i]["list_bidder"];
+        let list_bidder_object = JSON.parse(list_bidder_json);
+        let minPriceIndex = 0;
+        for (let j = 0; j < list_bidder_object.length - 1; j++) {
+            minPriceIndex = j;
+            for (let k = j + 1; k < list_bidder_object.length; k++) {
+                if (list_bidder_object[k].price < list_bidder_object[minPriceIndex].price) {
+                    let temp = {...list_bidder_object[minPriceIndex] };
+                    list_bidder_object[minPriceIndex] = {...list_bidder_object[k] };
+                    list_bidder_object[k] = {...temp };
+                } else if (list_bidder_object[k].price == list_bidder_object[minPriceIndex].price) {
+                    if (list_bidder_object[k].date > list_bidder_object[minPriceIndex].date) {
+                        let temp = {...list_bidder_object[minPriceIndex] };
+                        list_bidder_object[minPriceIndex] = {...list_bidder_object[k] };
+                        list_bidder_object[k] = {...temp };
+                    }
+                }
+            }
+        }
+        let bidder_name = "";
+        bidder_name = list_bidder_object[list_bidder_object.length - 1].name;
+        bidder_name = bidder_name.substring(bidder_name.lastIndexOf(" ") + 1);
+        top_price = list_bidder_object[list_bidder_object.length - 1].price;
+        bidder_name = "****" + bidder_name;
+        result[i]["bidder"] = bidder_name;
+        result[i]["top_price"] = top_price;
+        result[i]["count_bid"] = list_bidder_object.length + " lượt";
+        let difference_in_time = result[i].end_date.getTime() - dt.getTime();
+        let difference_in_date = difference_in_time / (1000 * 3600 * 24);
+        if (difference_in_date >= 1 && difference_in_date < 4) {
+            result[i]["date_time"] = "" + parseInt(difference_in_date) + " ngày nữa";
+        } else if (difference_in_date < 1) {
+            let difference_in_hour = difference_in_time / (1000 * 3600);
+            if (difference_in_hour < 1) {
+                let difference_in_minute = difference_in_time / (1000 * 60);
+                if (difference_in_minute < 1) {
+                    result[i]["date_time"] = "" + parseInt(difference_in_time / (1000)) + " giây nữa";
+                } else {
+                    result[i]["date_time"] = "" + parseInt(difference_in_minute) + " phút nữa";
+                }
+            } else {
+                result[i]["date_time"] = "" + parseInt(difference_in_hour) + " giờ nữa";
+            }
+        } else {
+            result[i]["date_time"] = moment(result[i].end_date).format('DD-MM-YYYY HH:mm:ss');
+        }
+    }
+    res.render('products/allByCat', {
+        products: result,
+    });
+});
+
 app.get('/star', function(req, res) {
     res.render('layouts/Laptop/star');
 });
