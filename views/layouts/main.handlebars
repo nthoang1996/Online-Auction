@@ -341,17 +341,17 @@
                                         <div class="revo_top swsearch-wrapper clearfix">
                                             <div class="top-form top-search non-category">
                                                 <div class="topsearch-entry">
-                                                    <form method="POST" action="/search">
+                                                    <form onsubmit="false" method="GET" action="/search">
                                                         <div id="sw_woo_search_1" class="search search-group">
                                                             <div class="content-search d-inline-block">
-                                                                <select class="my-select-search" name="style">
+                                                                <select class="my-select-search" name="style" id="style">
                                                                     <option value="0" selected>Tên sản phẩm</option>
                                                                     <option value="1">Tên chuyên mục</option>
                                                                     <option value="2">Tên người đăng</option>
                                                                 </select>
                                                                 <input class="autosearch-input" type="text" value=""
                                                                     size="50" autocomplete="off"
-                                                                    placeholder="Tìm kiếm..." name="search_text">
+                                                                    placeholder="Tìm kiếm..." name="search_text" id="search_text">
                                                                 <button type="submit"
                                                                     class="fa fa-search button-search-pro form-button"><i
                                                                         class="fas fa-search"></i>&nbsp;&nbsp;Tìm

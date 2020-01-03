@@ -70,7 +70,6 @@ router.post('/logout', (req, res) => {
 
 router.get('/profile', restrict, (req, res) => {
     res.render('admin/profile', { layout: false });
-
 });
 
 module.exports = router;

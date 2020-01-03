@@ -483,3 +483,10 @@ body {
     min-height: 42px;
     font-size: 14px;
 }
+
+.my-filter-sort {
+    height: 34px;
+    padding: 0px 20px;
+    border-bottom-right-radius: 5px;
+    border-top-right-radius: 5px;
+}

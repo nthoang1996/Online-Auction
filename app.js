@@ -7,6 +7,7 @@ const numeral = require('numeral');
 require('express-async-errors');
 var moment = require('moment');
 const categoryModel = require('./models/category.model');
+const config = require('./config/default.json')
 
 const app = express();
 app.use(morgan('dev'));
@@ -32,7 +33,8 @@ app.engine('handlebars', exphbs({
             val = val.slice(0, 4) + " " + val.slice(4, 7) + " " + val.slice(7);
             return val;
         },
-        getContent: content => { return JSON.stringify(content); }
+        getContent: content => { return JSON.stringify(content); },
+        getValue: content => { return content; }
     },
 }));
 app.set('view engine', 'handlebars');
@@ -262,33 +264,62 @@ app.get('/', async(req, res) => {
     });
 });
 
-app.post('/search', async(req, res) => {
+app.get('/search', async(req, res) => {
     let table = "";
-    let result = [];
-    if (req.body.style === "0") {
+    let resultTotal = [];
+    if (req.query.style === "0") {
         table = "tblproduct";
-        let rows = await categoryModel.full_text_search(table, req.body.search_text);
-        result = rows;
+        let rows = await categoryModel.full_text_search(table, req.query.search_text);
+        resultTotal = rows;
         console.log(rows)
-    } else if (req.body.style === "1") {
+    } else if (req.query.style === "1") {
         table = "tblcategory";
-        let rows = await categoryModel.full_text_search(table, req.body.search_text);
+        let rows = await categoryModel.full_text_search(table, req.query.search_text);
         for (let i = 0; i < rows.length; i++) {
             let data = await categoryModel.all_product_by_cat('tblproduct', rows[i].id);
-            result = result.concat(data);
+            resultTotal = resultTotal.concat(data);
         }
     } else {
         table = "tbluser";
-        let rows = await categoryModel.full_text_search(table, req.body.search_text);
+        let rows = await categoryModel.full_text_search(table, req.query.search_text);
         for (let i = 0; i < rows.length; i++) {
             let data = await categoryModel.all_product_by_seller('tblproduct', rows[i].id);
-            result = result.concat(data);
+            resultTotal = resultTotal.concat(data);
         }
     }
-    console.log(result);
+    // console.log(result);
     let dt = new Date();
-    for (let i = 0; i < result.length; i++) {
-        let list_bidder_json = result[i]["list_bidder"];
+    const limit = config.paginate.limit;
+    const page = req.query.page || 1;
+    const sortOrder = req.query.sortOrder || 1;
+    const sortFillter = req.query.sortFillter || 1;
+    const offset = (page - 1) * limit;
+    let disable_prev = false;
+    let disable_next = false;
+    let isIncrease = true;
+    let isSortdate = true;
+    if (page < 1) {
+        page = 1;
+    }
+    let nPage = Math.floor(resultTotal.length / limit);
+    if (resultTotal.length % limit > 0) {
+        nPage++;
+    }
+    let page_numbers = [];
+    for (let i = 1; i <= nPage; i++) {
+        page_numbers.push({
+            "value": i,
+            isCurrentPage: i === +page
+        })
+    }
+    if (page == 1) {
+        disable_prev = true;
+    }
+    if (page == page_numbers.length) {
+        disable_next = true;
+    }
+    for (let i = 0; i < resultTotal.length; i++) {
+        let list_bidder_json = resultTotal[i]["list_bidder"];
         let list_bidder_object = JSON.parse(list_bidder_json);
         let minPriceIndex = 0;
         for (let j = 0; j < list_bidder_object.length - 1; j++) {
@@ -308,37 +339,131 @@ app.post('/search', async(req, res) => {
             }
         }
         let bidder_name = "";
-        bidder_name = list_bidder_object[list_bidder_object.length - 1].name;
-        bidder_name = bidder_name.substring(bidder_name.lastIndexOf(" ") + 1);
-        top_price = list_bidder_object[list_bidder_object.length - 1].price;
-        bidder_name = "****" + bidder_name;
-        result[i]["bidder"] = bidder_name;
-        result[i]["top_price"] = top_price;
-        result[i]["count_bid"] = list_bidder_object.length + " lượt";
-        let difference_in_time = result[i].end_date.getTime() - dt.getTime();
+        if (list_bidder_object.length > 0) {
+            bidder_name = list_bidder_object[list_bidder_object.length - 1].name;
+            bidder_name = bidder_name.substring(bidder_name.lastIndexOf(" ") + 1);
+            top_price = list_bidder_object[list_bidder_object.length - 1].price;
+            bidder_name = "****" + bidder_name;
+            resultTotal[i]["bidder"] = bidder_name;
+            resultTotal[i]["top_price"] = top_price;
+            resultTotal[i]["count_bid"] = list_bidder_object.length + " lượt";
+        } else {
+            resultTotal[i]["bidder"] = "Chưa có người ra giá";
+            resultTotal[i]["top_price"] = resultTotal[i].start_price;
+            resultTotal[i]["count_bid"] = list_bidder_object.length + " lượt";
+        }
+        let difference_in_time = resultTotal[i].end_date.getTime() - dt.getTime();
         let difference_in_date = difference_in_time / (1000 * 3600 * 24);
         if (difference_in_date >= 1 && difference_in_date < 4) {
-            result[i]["date_time"] = "" + parseInt(difference_in_date) + " ngày nữa";
+            resultTotal[i]["date_time"] = "" + parseInt(difference_in_date) + " ngày nữa";
         } else if (difference_in_date < 1) {
             let difference_in_hour = difference_in_time / (1000 * 3600);
             if (difference_in_hour < 1) {
                 let difference_in_minute = difference_in_time / (1000 * 60);
                 if (difference_in_minute < 1) {
-                    result[i]["date_time"] = "" + parseInt(difference_in_time / (1000)) + " giây nữa";
+                    resultTotal[i]["date_time"] = "" + parseInt(difference_in_time / (1000)) + " giây nữa";
                 } else {
-                    result[i]["date_time"] = "" + parseInt(difference_in_minute) + " phút nữa";
+                    resultTotal[i]["date_time"] = "" + parseInt(difference_in_minute) + " phút nữa";
                 }
             } else {
-                result[i]["date_time"] = "" + parseInt(difference_in_hour) + " giờ nữa";
+                resultTotal[i]["date_time"] = "" + parseInt(difference_in_hour) + " giờ nữa";
             }
         } else {
-            result[i]["date_time"] = moment(result[i].end_date).format('DD-MM-YYYY HH:mm:ss');
+            resultTotal[i]["date_time"] = moment(resultTotal[i].end_date).format('DD-MM-YYYY HH:mm:ss');
         }
     }
-    res.render('products/allByCat', {
+
+    if (sortFillter == 1) {
+        if (sortOrder == 1) {
+            sortDateInrease(resultTotal);
+        } else {
+            isIncrease = false;
+            sortDateDecrease(resultTotal);
+        }
+    } else {
+        if (sortOrder == 1) {
+            sortPriceIncrease(resultTotal);
+        } else {
+            isIncrease = false
+            sortPriceDecrease(resultTotal);
+        }
+        isSortdate = false;
+    }
+    let result = resultTotal.slice(offset, offset + limit);
+
+    res.render('products/allBySearch', {
         products: result,
+        empty: result.length === 0,
+        page_numbers,
+        prev_value: +page - 1,
+        next_value: +page + 1,
+        keyword: req.query.search_text,
+        style: req.query.style,
+        sortOrder,
+        sortFillter,
+        disable_prev,
+        disable_next,
+        isIncrease,
+        isSortdate
     });
 });
+
+function sortDateInrease(listItem) {
+    let index = 0;
+    for (let i = 0; i < listItem.length - 1; i++) {
+        index = i;
+        for (let j = i + 1; j < listItem.length; j++) {
+            if (listItem[j].end_date < listItem[index].end_date) {
+                let temp = {...listItem[index] };
+                listItem[index] = {...listItem[j] };
+                listItem[j] = {...temp };
+            }
+        }
+    }
+}
+
+function sortDateDecrease(listItem) {
+    let index = 0;
+    for (let i = 0; i < listItem.length - 1; i++) {
+        index = i;
+        for (let j = i + 1; j < listItem.length; j++) {
+            if (listItem[j].end_date > listItem[index].end_date) {
+                let temp = {...listItem[index] };
+                listItem[index] = {...listItem[j] };
+                listItem[j] = {...temp };
+            }
+        }
+    }
+}
+
+
+function sortPriceIncrease(listItem) {
+    let index = 0;
+    for (let i = 0; i < listItem.length - 1; i++) {
+        index = i;
+        for (let j = i + 1; j < listItem.length; j++) {
+            if (listItem[j].top_price < listItem[index].top_price) {
+                let temp = {...listItem[index] };
+                listItem[index] = {...listItem[j] };
+                listItem[j] = {...temp };
+            }
+        }
+    }
+}
+
+function sortPriceDecrease(listItem) {
+    let index = 0;
+    for (let i = 0; i < listItem.length - 1; i++) {
+        index = i;
+        for (let j = i + 1; j < listItem.length; j++) {
+            if (listItem[j].top_price > listItem[index].top_price) {
+                let temp = {...listItem[index] };
+                listItem[index] = {...listItem[j] };
+                listItem[j] = {...temp };
+            }
+        }
+    }
+}
 
 app.get('/star', function(req, res) {
     res.render('layouts/Laptop/star');
