@@ -268,6 +268,26 @@ app.get('/', async(req, res) => {
     });
 });
 
+app.post('/fav', async(req, res) => {
+
+    let list_productTemp = {};
+    console.log("log req body page fav post:",req.body.id);
+    const rows = await categoryModel.single_by_id('tblproduct',req.body.id);
+    const tempUser = await categoryModel.single_by_id('tbluser',req.session.authUser.id);
+    list_productTemp = JSON.parse(tempUser[0].list_product);
+   // console.log('list product log:',list_productTemp);
+    list_productTemp.push(rows[0]);
+    let entity = { "list_product": JSON.stringify(list_productTemp) };
+    let entityID = { "id": req.session.authUser.id };
+    const update = await categoryModel.edit('tbluser', entity, entityID);
+
+
+    // res.render('bidder/favouriteProducts', {
+       
+    //     layout:false,
+       
+    //     });
+});
 app.get('/search', async(req, res) => {
     let table = "";
     let resultTotal = [];
