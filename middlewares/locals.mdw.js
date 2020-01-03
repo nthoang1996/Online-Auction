@@ -97,11 +97,15 @@ module.exports = function(app) {
         res.locals.isAuthenticated = req.session.isAuthenticated;
         res.locals.authUser = req.session.authUser;
         let role = "";
+        res.locals.isAdmin = false;
+        res.locals.isSeller = false;
+        res.locals.isBidder = false;
         if (res.locals.authUser != null) {
             role = res.locals.authUser.role;
             role = role.substring(1, role.length - 1);
             let listRole = [];
             listRole = role.split(",");
+
             for (let i = 0; i < listRole.length; i++) {
                 if (listRole[i] === "1") {
                     res.locals.isAdmin = true;

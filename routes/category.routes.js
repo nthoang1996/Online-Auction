@@ -505,5 +505,9 @@ router.get('/products/:id', async(req, res) => {
     });
 });
 
+router.post('/product/bid_product', async(req, res) => {
+    console.log(req.body.id);
+})
+
 
 module.exports = router;

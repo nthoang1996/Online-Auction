@@ -1,7 +1,34 @@
 {{#section 'js'}}
 <script>
-    function showImage(str){
-        $("#img-container").attr("src",str);
+    function showImage(str) {
+        $("#img-container").attr("src", str);
+    }
+
+    let count = 0;
+    function bid(id) {
+        data = {id: id};
+        if (count == 0) {
+            $('.modal-body').append('<p class ="text-danger">Bạn có chắc chắn đấy gía sản phẩm này không</p>');
+            $("#text-price").prop("disabled", true);
+            count++;
+        }
+        else {
+            $.ajax({
+                type: "POST",
+                url: '/category/product/bid_product',
+                data: data,
+                success: function(result){
+                    rs = result;
+                },
+            });
+        }
+    }
+
+    function bidButtonClicked(isBidder, isAuthenticated){
+        console.log("AAAAAAAAAAAAAAAAAAAAAAAA");
+        if(!isBidder || !isAuthenticated){
+            window.location.href = '/account/login';
+        }
     }
 </script>
 {{/section}}
@@ -22,8 +49,8 @@
                         <div class="woocommerce-product-gallery__image slick-slide slick-active" data-slick-index="0"
                             aria-hidden="false"
                             style="width: 370px; position: relative; left: 0px; top: 0px; z-index: 900; opacity: 1;">
-                            <a href="javascript:;"><img
-                                    id="img-container" width="568" height="568" src="/picture/product/{{this.product.id}}/main1.jpg"
+                            <a href="javascript:;"><img id="img-container" width="568" height="568"
+                                    src="/picture/product/{{this.product.id}}/main1.jpg"
                                     class="wp-post-image lazyloaded" alt=""></a>
                         </div>
 
@@ -50,7 +77,8 @@
 
                                         <div class="info">
                                             <label>Điểm:</label>
-                                            <label>{{this.product.seller_point}}&nbsp;<img width="20" height="20" style="display: inline-block;"
+                                            <label>{{this.product.seller_point}}&nbsp;<img width="20" height="20"
+                                                    style="display: inline-block;"
                                                     src="{{#if this.product.react_haha}}/picture/icon/smile.png{{else}}/picture/icon/sad.jpg{{/if}}" /></label>
                                         </div>
 
@@ -95,7 +123,7 @@
                                                 <label>Bội số:</label>
                                             </div>
                                             <div class="col-sm-5 d-flex justify-content-end">
-                                                <label >{{format this.product.min_increase}}</label>
+                                                <label>{{format this.product.min_increase}}</label>
                                             </div>
                                         </div>
 
@@ -113,8 +141,9 @@
                                                 <label>Điểm:</label>
                                             </div>
                                             <div class="col-sm-5 ">
-                                                <label>{{this.product.bidder_point}}&nbsp;<img width="20" height="20" style="display: inline-block;"
-                                                    src="{{#if this.product.bidder_react_haha}}/picture/icon/smile.png{{else}}/picture/icon/sad.jpg{{/if}}" /></label>
+                                                <label>{{this.product.bidder_point}}&nbsp;<img width="20" height="20"
+                                                        style="display: inline-block;"
+                                                        src="{{#if this.product.bidder_react_haha}}/picture/icon/smile.png{{else}}/picture/icon/sad.jpg{{/if}}" /></label>
                                             </div>
                                         </div>
                                     </div>
@@ -135,23 +164,28 @@
             </div>
             <div class="row">
                 <div class="col-sm-4">
-                    <button class="image-button container-thumbnails" onclick="showImage('/picture/product/{{this.product.id}}/main1.jpg')">
+                    <button class="image-button container-thumbnails"
+                        onclick="showImage('/picture/product/{{this.product.id}}/main1.jpg')">
                         <img width="100" height="100" src="/picture/product/{{this.product.id}}/main1.jpg"
                             class="attachment-shop_thumbnail size-shop_thumbnail lazyloaded" alt="" />
                     </button>
-                    <button class="image-button container-thumbnails" onclick="showImage('/picture/product/{{this.product.id}}/main2.jpg')">
+                    <button class="image-button container-thumbnails"
+                        onclick="showImage('/picture/product/{{this.product.id}}/main2.jpg')">
                         <img width="100" height="100" src="/picture/product/{{this.product.id}}/main2.jpg"
                             class="attachment-shop_thumbnail size-shop_thumbnail lazyloaded" alt="" />
                     </button>
-                    <button class="image-button container-thumbnails" onclick="showImage('/picture/product/{{this.product.id}}/main3.jpg')">
+                    <button class="image-button container-thumbnails"
+                        onclick="showImage('/picture/product/{{this.product.id}}/main3.jpg')">
                         <img width="100" height="100" src="/picture/product/{{this.product.id}}/main3.jpg"
                             class="attachment-shop_thumbnail size-shop_thumbnail lazyloaded" alt="" />
                     </button>
-                    <button class="image-button container-thumbnails" onclick="showImage('/picture/product/{{this.product.id}}/main4.jpg')">
+                    <button class="image-button container-thumbnails"
+                        onclick="showImage('/picture/product/{{this.product.id}}/main4.jpg')">
                         <img width="100" height="100" src="/picture/product/{{this.product.id}}/main4.jpg"
                             class="attachment-shop_thumbnail size-shop_thumbnail lazyloaded" alt="" />
                     </button>
-                    <button class="image-button container-thumbnails" onclick="showImage('/picture/product/{{this.product.id}}/main5.jpg')">
+                    <button class="image-button container-thumbnails"
+                        onclick="showImage('/picture/product/{{this.product.id}}/main5.jpg')">
                         <img width="100" height="100" src="/picture/product/{{this.product.id}}/main5.jpg"
                             class="attachment-shop_thumbnail size-shop_thumbnail lazyloaded" alt="" />
                     </button>
@@ -160,10 +194,11 @@
                 <div class="col-sm-8 d-flex justify-content-center">
                     <div class="container-button ">
                         <button class="button-favorite" style="margin-left:10px; margin-right:10px;" data-toggle="modal"
-                            data-target="#modal_confirm_price">&#10004;&nbsp;Ra giá</button>
+                            data-target="#modal_confirm_price" onclick="bidButtonClicked({{isBidder}}, {{isAuthenticated}})">&#10004;&nbsp;Ra giá</button>
                     </div>
                     <div class="container-button">
-                        <button class="button-favorite" style="margin-left:10px;">&#11088;&nbsp;Thêm vào mục yêu thích</button>
+                        <button class="button-favorite" style="margin-left:10px;">&#11088;&nbsp;Thêm vào mục yêu
+                            thích</button>
                     </div>
                 </div>
             </div>
@@ -173,10 +208,10 @@
                     <table class="table table-striped">
                         <thead>
                             <tr>
-                                <th scope="col" width = "5%" class="normal-fontsize font-weight-bold">#</th>
-                                <th scope="col" width = "30%" class="normal-fontsize font-weight-bold">Thời điểm</th>
-                                <th scope="col" width = "30%" class="normal-fontsize font-weight-bold">Người mua</th>
-                                <th scope="col" width = "35%" class="normal-fontsize font-weight-bold">Giá</th>
+                                <th scope="col" width="5%" class="normal-fontsize font-weight-bold">#</th>
+                                <th scope="col" width="30%" class="normal-fontsize font-weight-bold">Thời điểm</th>
+                                <th scope="col" width="30%" class="normal-fontsize font-weight-bold">Người mua</th>
+                                <th scope="col" width="35%" class="normal-fontsize font-weight-bold">Giá</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -184,7 +219,7 @@
                             <tr>
                                 <th scope="row" class="normal-fontsize">{{number}}</button></th>
                                 <td class="normal-fontsize">{{date}}</td>
-                                <td class="normal-fontsize">{{name}} ({{point}})</td>
+                                <td class="normal-fontsize">{{name}}</td>
                                 <td class="normal-fontsize">{{format price}}</td>
                             </tr>
                             {{/each}}
@@ -501,14 +536,12 @@
                 </div>
                 <div class="modal-body normal-fontsize">
                     <p style="color: black; font-weight:bold">Đấu giá sản phẩm {{this.product.name}} với mức giá:</p>
-                    <div>
-                        
-                    </div>
-                    <input class="text-price" type="text" placeholder="100000" />&nbsp;₫
+                    <input class="text-price" type="text" placeholder="100000" id="text-price"/>&nbsp;₫
                     <p style="color: black;">Đây là đấu giá tự động. Vui lòng nhập mức giá tối đa bạn có thể ra giá.</p>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary normal-fontsize">Tôi chắc chắn</button>
+                    <button type="button" class="btn btn-primary normal-fontsize" onclick="bid({{this.product.id}})">Tôi
+                        chắc chắn</button>
                     <button type="button" class="btn btn-secondary normal-fontsize" data-dismiss="modal">Khoan
                         đã</button>
                 </div>

@@ -99,23 +99,23 @@ router.post('/logout', (req, res) => {
 });
 
 router.get('/profile', restrict, (req, res) => {
-   var temp = req.session.authUser ;
-   
-    console.log('Day la email:',temp)
+    let temp = req.session.authUser;
+
+    console.log('Day la email:', temp)
     res.render('admin/profile', {
-       
-        layout:false,
-        profile:temp
-        });
-       
+
+        layout: false,
+        profile: temp
+    });
+
 });
 
-router.post('/profile',  async(req, res) => {
-   
+router.post('/profile', async(req, res) => {
+    let entityId = { id: req.session.authUser.id };
     const hash = bcrypt.hashSync(req.body.new_password, 10);
-     const user = await categoryModel.single_by_email('tbluser', req.body.email);
-     console.log('Day la userID:',req.body);
-     const entity = {
+    const user = await categoryModel.single_by_email('tbluser', req.body.email);
+    console.log('Day la userID:', req.body);
+    const entity = {
         "name": req.body.name,
         "phone": req.body.phone,
         "address": req.body.address,
@@ -126,14 +126,14 @@ router.post('/profile',  async(req, res) => {
         "is_active": 1
     };
     const rs = bcrypt.compareSync(req.body.old_password, user.password);
-     if (rs === false) {
-         return res.render('admin/profile', {
-             layout: false,
-             err_message: 'Mật khẩu bạn nhập vào sai'
-         });
-     }
-    const data = await categoryModel.edit("tbluser", entity, user.id);
+    if (rs === false) {
+        return res.render('admin/profile', {
+            layout: false,
+            err_message: 'Mật khẩu bạn nhập vào sai'
+        });
+    }
+    const data = await categoryModel.edit("tbluser", entity, entityId);
 
-   res.redirect('/admin/category');
- });
+    res.redirect('/admin/category');
+});
 module.exports = router;
