@@ -69,7 +69,41 @@ router.post('/logout', (req, res) => {
 });
 
 router.get('/profile', restrict, (req, res) => {
-    res.render('admin/profile', { layout: false });
+   var temp = req.session.authUser ;
+   
+    console.log('Day la email:',temp)
+    res.render('admin/profile', {
+       
+        layout:false,
+        profile:temp
+        });
+       
 });
 
+router.post('/profile',  async(req, res) => {
+   
+    const hash = bcrypt.hashSync(req.body.new_password, 10);
+     const user = await categoryModel.single_by_email('tbluser', req.body.email);
+     console.log('Day la userID:',req.body);
+     const entity = {
+        "name": req.body.name,
+        "phone": req.body.phone,
+        "address": req.body.address,
+        "email": req.body.email,
+        "password": hash,
+        "role": user.role,
+        "point": user.point,
+        "is_active": 1
+    };
+    const rs = bcrypt.compareSync(req.body.old_password, user.password);
+     if (rs === false) {
+         return res.render('admin/profile', {
+             layout: false,
+             err_message: 'Mật khẩu bạn nhập vào sai'
+         });
+     }
+    const data = await categoryModel.edit("tbluser", entity, user.id);
+
+   res.redirect('/admin/category');
+ });
 module.exports = router;

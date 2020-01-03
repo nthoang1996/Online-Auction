@@ -81,6 +81,7 @@ app.get('/auto_generate_list_bidder', async(req, res) => {
         let entityID = { "id": rows[i].id };
         const update = await categoryModel.edit('tblproduct', entity, entityID);
     }
+   // console.log('1234040404')
     res.render('admin/profile', { layout: false });
 });
 
