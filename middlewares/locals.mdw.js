@@ -96,6 +96,24 @@ module.exports = function(app) {
 
         res.locals.isAuthenticated = req.session.isAuthenticated;
         res.locals.authUser = req.session.authUser;
+        let role = "";
+        if (res.locals.authUser != null) {
+            role = res.locals.authUser.role;
+            role = role.substring(1, role.length - 1);
+            let listRole = [];
+            listRole = role.split(",");
+            for (let i = 0; i < listRole.length; i++) {
+                if (listRole[i] === "1") {
+                    res.locals.isAdmin = true;
+                }
+                if (listRole[i] === "2") {
+                    res.locals.isSeller = true;
+                }
+                if (listRole[i] === "3") {
+                    res.locals.isBidder = true;
+                }
+            }
+        }
         // console.log(req.session.authUser);
         // console.log(res.locals.isAuthenticated);
         next();

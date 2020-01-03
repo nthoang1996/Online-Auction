@@ -5,11 +5,13 @@ const categoryModel = require('../../models/category.model');
 const router = express.Router();
 
 router.get('/', async(req, res) => {
-    // try {
+    if (!res.locals.isAdmin) {
+        return res.render('error_permission', { layout: false });
+    }
     const rows = await categoryModel.all("tblproduct");
     const rowscat = await categoryModel.all("tblcategory");
     const rowsUser = await categoryModel.all('tbluser');
-    // console.log(rowscat);
+
     for (let i = 0; i < rows.length; i++) {
         rows[i]["status"] = rows[i].is_active == 1 ? "Bình thường" : "Vô hiệu hóa";
         rows[i]["can_disable"] = rows[i].is_active == 1 ? true : false;
@@ -19,7 +21,11 @@ router.get('/', async(req, res) => {
                 rows[i]["start_date_format"] = moment(rows[i].start_date).format('DD-MM-YYYY HH:mm:ss');
                 rows[i]["end_date_format"] = moment(rows[i].end_date).format('DD-MM-YYYY HH:mm:ss');
                 let listBidder = JSON.parse(rows[i].list_bidder);
-                rows[i]["top_price"] = listBidder[listBidder.length - 1].price;
+                if (listBidder.length > 0) {
+                    rows[i]["top_price"] = listBidder[listBidder.length - 1].price;
+                } else {
+                    rows[i]["top_price"] = rows[i].start_price;
+                }
                 break;
             }
         }
@@ -29,52 +35,17 @@ router.get('/', async(req, res) => {
             }
         }
     }
-    console.log(rows);
     res.render('admin/list_product', {
         listProduct: rows,
         empty: rows.length === 0,
         layout: false
     });
-    // } catch (err) {
-    //     console.log(err);
-    //     res.end('View error log in console.');
-    // }
 })
 
-// router.get('/get_user/:id', async(req, res) => {
-//     try {
-//         const rows = await categoryModel.single_by_id("tbluser", req.params.id);
-//         res.send(rows[0]);
-
-//     } catch (err) {
-//         console.log(err);
-//         //     res.end('View error log in console.');
-//     }
-// })
-
-// router.get('/get_userrole', async(req, res) => {
-//     try {
-//         const rows = await categoryModel.all("tblrole");
-//         res.send(rows);
-
-//     } catch (err) {
-//         console.log(err);
-//         //     res.end('View error log in console.');
-//     }
-// })
-
-// router.get('/get_userstatus', async(req, res) => {
-//     try {
-//         const rows = await categoryModel.all("tblstatus");
-//         res.send(rows);
-
-//     } catch (err) {
-//         console.log(err);
-//         //     res.end('View error log in console.');
-//     }
-// })
-
 router.post('/edit', async(req, res) => {
+    if (!res.locals.isAdmin) {
+        return res.render('error_permission', { layout: false });
+    }
     let entityId = {
         "id": parseInt(req.body.id)
     }
@@ -86,6 +57,9 @@ router.post('/edit', async(req, res) => {
 });
 
 router.post('/delete', async(req, res) => {
+    if (!res.locals.isAdmin) {
+        return res.render('error_permission', { layout: false });
+    }
     let entityId = {
         "id": req.body.id
     }
