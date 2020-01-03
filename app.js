@@ -40,6 +40,7 @@ app.engine('handlebars', exphbs({
 app.set('view engine', 'handlebars');
 
 app.get('/auto_generate_list_bidder', async(req, res) => {
+    const listComment = ["Hàng ngon đấy", "Xài cũng tạm được", "Hàng giả, hàng cũ"];
     const rows = await categoryModel.all('tblproduct');
     const user = await categoryModel.all('tbluser');
     let list_list_bidder = [];
@@ -56,6 +57,8 @@ app.get('/auto_generate_list_bidder', async(req, res) => {
             let countRan = parseInt((rows[i].buynow_price - rows[i].start_price) / rows[i].min_increase);
             let price = Math.floor(Math.random() * countRan) * rows[i].min_increase + rows[i].start_price;
             bidder["price"] = price;
+            bidder["comment"] = listComment[Math.floor(Math.random() * 3)];
+            bidder["point"] = user[idUser].point;
             list_bidder.push(bidder);
         }
         list_list_bidder.push(list_bidder);

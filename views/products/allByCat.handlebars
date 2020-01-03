@@ -44,7 +44,7 @@
                                             <div class="item-img products-thumb ">
                                                 <div class="bidder-name">{{bidder}}</div>
                                                 <div class="count-bid">{{count_bid}}</div>
-                                                <a href="#">
+                                                <a href="/category/products/{{id}}">
                                                     <div class="product-thumb-hover ">
                                                         <img class="my-image" src="/picture/product/{{id}}/main1.jpg " class="attachment-shop_catalog size-shop_catalog wp-post-image lazyloaded ">
                                                     </div>
@@ -66,7 +66,7 @@
                                                     <div class="star "></div>
 
                                                 </div>
-                                                <h4><a href="#">{{name}}</a></h4>
+                                                <h4><a href="/category/products/{{id}}">{{name}}</a></h4>
                                                 <div class="row">
                                                     <div class="col-sm-6">
                                                         <div>Khởi điểm:</div>
@@ -84,7 +84,7 @@
                                                 </div>
                                             </div>
                                             <div class="card-footer">
-                                                <a class="btn btn-outline-primary" href="#" role="button">
+                                                <a class="btn btn-outline-primary" href="/category/products/{{id}}" role="button">
                                                     <i class="fa fa-eye" aria-hidden="true"></i>
                                                     Chi tiết
                                                 </a>
@@ -761,5 +761,5 @@
                 window.location.href =`?style={{{getValue this.style}}}&search_text={{{getValue this.keyword}}}&sortOrder=${sortOrder}&sortFillter=${sortFilter}&page=${page}`;
             }
         </script>
-        {{/section}}
+        {{/section}}\
     </div>

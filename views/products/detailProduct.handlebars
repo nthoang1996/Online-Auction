@@ -182,9 +182,9 @@
                         <tbody>
                             {{#each this.product.list_bidder_object}}
                             <tr>
-                                <th scope="row" class="normal-fontsize">{{number}}</th>
+                                <th scope="row" class="normal-fontsize">{{number}}</button></th>
                                 <td class="normal-fontsize">{{date}}</td>
-                                <td class="normal-fontsize">{{name}}</td>
+                                <td class="normal-fontsize">{{name}} ({{point}})</td>
                                 <td class="normal-fontsize">{{format price}}</td>
                             </tr>
                             {{/each}}
@@ -486,6 +486,9 @@
             </div>
         </div>
     </figure>
+
+    <!-- Button trigger modal -->
+
     <hr class="footer-landing " />
     <div class="modal" id="modal_confirm_price" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">

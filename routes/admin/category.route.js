@@ -4,7 +4,9 @@ const categoryModel = require('../../models/category.model');
 const router = express.Router();
 
 router.get('/', async(req, res) => {
-    // try {
+    if (!res.locals.isAdmin) {
+        return res.render('error_permission', { layout: false });
+    }
     const rows = await categoryModel.all_by_level("tblcategory", 1);
     for (let i = 0; i < rows.length; i++) {
         rows[i]['number'] = i + 1;
@@ -14,17 +16,15 @@ router.get('/', async(req, res) => {
         empty: rows.length === 0,
         layout: false
     });
-    // } catch (err) {
-    //     console.log(err);
-    //     res.end('View error log in console.');
-    // }
 })
 
 router.get('/get_category/:id', async(req, res) => {
+    if (!res.locals.isAdmin) {
+        return res.render('error_permission', { layout: false });
+    }
     try {
         const rows = await categoryModel.all_by_pid("tblcategory", req.params.id);
         res.send(rows);
-
     } catch (err) {
         console.log(err);
         //     res.end('View error log in console.');
@@ -32,6 +32,9 @@ router.get('/get_category/:id', async(req, res) => {
 })
 
 router.get('/get_all_category', async(req, res) => {
+    if (!res.locals.isAdmin) {
+        return res.render('error_permission', { layout: false });
+    }
     try {
         const rows = await categoryModel.all("tblcategory");
         res.send(rows);
@@ -43,6 +46,9 @@ router.get('/get_all_category', async(req, res) => {
 })
 
 router.get('/create_category', async(req, res) => {
+    if (!res.locals.isAdmin) {
+        return res.render('error_permission', { layout: false });
+    }
     let rowsLevel1 = await categoryModel.all_by_level("tblcategory", 1);
     let rowsLevel2 = await categoryModel.all_by_level("tblcategory", 2);
     let rowsResult = rowsLevel1.concat(rowsLevel2);
@@ -55,11 +61,11 @@ router.get('/create_category', async(req, res) => {
 });
 
 router.post('/create_category', async(req, res) => {
-    console.log(req.body);
+    if (!res.locals.isAdmin) {
+        return res.render('error_permission', { layout: false });
+    }
     let pid = parseInt(req.body.parent_id);
-    console.log(pid);
     const dataParent = await categoryModel.single_by_id("tblcategory", pid);
-    console.log(dataParent);
     let lv = dataParent[0].level + 1;
 
     const entity = {
@@ -77,6 +83,9 @@ router.post('/create_category', async(req, res) => {
 });
 
 router.get('/edit_category/:id', async(req, res) => {
+    if (!res.locals.isAdmin) {
+        return res.render('error_permission', { layout: false });
+    }
     const data = await categoryModel.single_by_id("tblcategory", req.params.id);
     if (data.length === 0) {
         throw new Error('Invalid category id');
@@ -91,6 +100,9 @@ router.get('/edit_category/:id', async(req, res) => {
 })
 
 router.post('/edit', async(req, res) => {
+    if (!res.locals.isAdmin) {
+        return res.render('error_permission', { layout: false });
+    }
     let entityId = {
         "id": req.body.id
     }
@@ -103,21 +115,14 @@ router.post('/edit', async(req, res) => {
 });
 
 router.post('/delete', async(req, res) => {
+    if (!res.locals.isAdmin) {
+        return res.render('error_permission', { layout: false });
+    }
     let entityId = {
         "id": req.body.id
     }
     const data = await categoryModel.del("tblcategory", entityId);
     res.redirect('/admin/category');
-});
-
-router.get('/err', (req, res) => {
-    throw new Error('error occured');
-    // try {
-    //     throw new Error('error occured');
-    // } catch (err) {
-    //     console.log(err.stack);
-    //     res.send('View error on console');
-    // }
 });
 
 module.exports = router;

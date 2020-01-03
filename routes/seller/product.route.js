@@ -8,11 +8,13 @@ const categoryModel = require('../../models/category.model');
 const router = express.Router();
 
 router.get('/', async(req, res) => {
-    // try {
-    const rows = await categoryModel.all("tblproduct");
+    if (!res.locals.isSeller) {
+        return res.render('error_permission', { layout: false });
+    }
+    const rows = await categoryModel.all_product_by_seller("tblproduct", res.locals.authUser.id);
     const rowscat = await categoryModel.all("tblcategory");
     const rowsUser = await categoryModel.all('tbluser');
-    // console.log(rowscat);
+
     for (let i = 0; i < rows.length; i++) {
         rows[i]["status"] = rows[i].is_active == 1 ? "Bình thường" : "Vô hiệu hóa";
         rows[i]["can_disable"] = rows[i].is_active == 1 ? true : false;
@@ -36,55 +38,21 @@ router.get('/', async(req, res) => {
             }
         }
     }
-    // console.log(rows);
+
     res.render('seller/list_product', {
         listProduct: rows,
         empty: rows.length === 0,
         layout: false
     });
-    // } catch (err) {
-    //     console.log(err);
-    //     res.end('View error log in console.');
-    // }
+
 })
 
-// router.get('/get_user/:id', async(req, res) => {
-//     try {
-//         const rows = await categoryModel.single_by_id("tbluser", req.params.id);
-//         res.send(rows[0]);
-
-//     } catch (err) {
-//         console.log(err);
-//         //     res.end('View error log in console.');
-//     }
-// })
-
-// router.get('/get_userrole', async(req, res) => {
-//     try {
-//         const rows = await categoryModel.all("tblrole");
-//         res.send(rows);
-
-//     } catch (err) {
-//         console.log(err);
-//         //     res.end('View error log in console.');
-//     }
-// })
-
-// router.get('/get_userstatus', async(req, res) => {
-//     try {
-//         const rows = await categoryModel.all("tblstatus");
-//         res.send(rows);
-
-//     } catch (err) {
-//         console.log(err);
-//         //     res.end('View error log in console.');
-//     }
-// })
-
 router.get('/edit/:id', async(req, res) => {
+    if (!res.locals.isSeller) {
+        return res.render('error_permission', { layout: false });
+    }
     const rows = await categoryModel.single_by_id('tblproduct', parseInt(req.params.id));
-    rows[0]["end_date_format"] = moment(rows[0].end_date).format('DD-MM-YYYY HH:mm:ss');
-    // console.log(rows);
+    rows[0]["end_date_format"] = moment(rows[0].end_date).format('DD-MM-YYYY HH:mm:ss');;
     delete rows[0].list_bidder;
 
     rowsCat = await categoryModel.getAllChildCatByLevel('tblcategory', 3);
@@ -110,7 +78,9 @@ router.get('/edit/:id', async(req, res) => {
 });
 
 router.post('/edit/:id', async(req, res) => {
-    console.log(req.body.description);
+    if (!res.locals.isSeller) {
+        return res.render('error_permission', { layout: false });
+    }
     const rows = await categoryModel.single_by_id('tblproduct', parseInt(req.params.id));
     let oldDes = rows[0].description;
 
@@ -126,6 +96,9 @@ router.post('/edit/:id', async(req, res) => {
 });
 
 router.post('/delete', async(req, res) => {
+    if (!res.locals.isSeller) {
+        return res.render('error_permission', { layout: false });
+    }
     let entityId = {
         "id": req.body.id
     }
@@ -134,8 +107,10 @@ router.post('/delete', async(req, res) => {
 });
 
 router.get('/post_product', async(req, res) => {
+    if (!res.locals.isSeller) {
+        return res.render('error_permission', { layout: false });
+    }
     rows = await categoryModel.getAllChildCatByLevel('tblcategory', 3);
-    // console.log(rows);
     res.render('seller/post_product', {
         category: rows,
         layout: false
@@ -143,6 +118,9 @@ router.get('/post_product', async(req, res) => {
 });
 
 router.post('/post_product', async(req, res) => {
+    if (!res.locals.isSeller) {
+        return res.render('error_permission', { layout: false });
+    }
     let entity = req.body;
     let offsetGMT = +7;
     let today = new Date(new Date().getTime() + offsetGMT * 3600 * 1000);
@@ -161,6 +139,9 @@ router.post('/post_product', async(req, res) => {
 });
 
 router.post('/upload', async(req, res) => {
+    if (!res.locals.isSeller) {
+        return res.render('error_permission', { layout: false });
+    }
     const rows = await categoryModel.all('tblproduct');
     let minid = 0;
     for (let i = 0; i < rows.length - 1; i++) {

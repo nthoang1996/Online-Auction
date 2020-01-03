@@ -4,9 +4,10 @@ const categoryModel = require('../../models/category.model');
 const router = express.Router();
 
 router.get('/', async(req, res) => {
-    // try {
+    if (!res.locals.isAdmin) {
+        return res.render('error_permission', { layout: false });
+    }
     const rows = await categoryModel.all("tbluser");
-    // console.log(rows);
     for (let i = 0; i < rows.length; i++) {
         let listRole = JSON.parse(rows[i].role);
         rows[i]["role_name"] = "";
@@ -33,13 +34,12 @@ router.get('/', async(req, res) => {
         empty: rows.length === 0,
         layout: false
     });
-    // } catch (err) {
-    //     console.log(err);
-    //     res.end('View error log in console.');
-    // }
 })
 
 router.get('/get_user/:id', async(req, res) => {
+    if (!res.locals.isAdmin) {
+        return res.render('error_permission', { layout: false });
+    }
     try {
         const rows = await categoryModel.single_by_id("tbluser", req.params.id);
         res.send(rows[0]);
@@ -51,6 +51,9 @@ router.get('/get_user/:id', async(req, res) => {
 })
 
 router.get('/get_userrole', async(req, res) => {
+    if (!res.locals.isAdmin) {
+        return res.render('error_permission', { layout: false });
+    }
     try {
         const rows = await categoryModel.all("tblrole");
         res.send(rows);
@@ -62,6 +65,9 @@ router.get('/get_userrole', async(req, res) => {
 })
 
 router.get('/get_userstatus', async(req, res) => {
+    if (!res.locals.isAdmin) {
+        return res.render('error_permission', { layout: false });
+    }
     try {
         const rows = await categoryModel.all("tblstatus");
         res.send(rows);
@@ -73,6 +79,9 @@ router.get('/get_userstatus', async(req, res) => {
 })
 
 router.post('/edit', async(req, res) => {
+    if (!res.locals.isAdmin) {
+        return res.render('error_permission', { layout: false });
+    }
     let entityId = {
         "id": parseInt(req.body.user_id)
     }
@@ -98,6 +107,9 @@ router.post('/edit', async(req, res) => {
 });
 
 router.post('/delete', async(req, res) => {
+    if (!res.locals.isAdmin) {
+        return res.render('error_permission', { layout: false });
+    }
     let entityId = {
         "id": req.body.id
     }
