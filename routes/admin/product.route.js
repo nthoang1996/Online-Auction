@@ -71,7 +71,18 @@ router.get('/fav', async(req, res) => {
     // let temp_list = [];
     //  temp_list = JSON.parse(req.session.authUser.list_product);
     // console.log("log req body page fav get :",temp_list.length);
-    const rows = JSON.parse(req.session.authUser.list_product);
+    var idProducts =JSON.parse(req.session.authUser.list_product);
+    const rows = [];
+    idProducts.forEach(async(element) => {
+        console.log("id product: ",element);
+        var tempProduct = await categoryModel.single_by_id("tblproduct",element);
+        console.log(" product: ",tempProduct[0]);
+        rows.push(tempProduct[0])
+    });
+    console.log("log row page fav get :",rows);
+
+  //  const rows = await categoryModel.single_by_id("tblproduct");
+    // const rows = JSON.parse(req.session.authUser.list_product);
     
     const rowscat = await categoryModel.all("tblcategory");
     const rowsUser = await categoryModel.all('tbluser');
@@ -100,8 +111,7 @@ router.get('/fav', async(req, res) => {
                 rows[i]['seller'] = rowsUser[j].name;
             }
         }
-        // console.log("log req body page fav get :",rows[i]);
-    }
+   }
     
     res.render('bidder/favouriteProducts', {
         listProduct: rows,
