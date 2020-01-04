@@ -100,11 +100,65 @@ router.post('/logout', (req, res) => {
 router.get('/profile', restrict, (req, res) => {
     let temp = req.session.authUser;
     temp["not_seller"] = !res.locals.isSeller;
+   // console.log('co phai la seller ko? ', temp["not_seller"]);
+
+   temp["is_seller"] = res.locals.isSeller;
+   temp["is_bidder"] = res.locals.isBidder;
+ 
+     var listDanhGia1 = JSON.parse(temp.point);
+    var listDanhGia =listDanhGia1[0];
+       // console.log('Day la Danh gia foreach :', listDanhGia);
+    //     var arr = [];
+    //     for (var key in listDanhGia) {
+    //         if (listDanhGia.hasOwnProperty(key)) {
+    //             arr.push(key + '=' + listDanhGia[key]);
+    //         }
+    //     };
+    //    // var result = arr.join(',');
+    //     console.log(arr[0]);
+    let tempKeyPair =Object.entries(listDanhGia).map(([key, value]) => ({ key, value }))
+    var likeSel = parseInt(tempKeyPair[0].value.split("-")[0]);
+    var unlikeSel =parseInt(tempKeyPair[0].value.split("-")[1]);
+    var seller = likeSel+unlikeSel;
+     //   console.log("Key Value: ",like+unlike);
+        if( seller==0 )
+        {
+            temp["likeSel"] = 100;
+            temp["unlikeSel"] = 100; 
+        }
+        if( seller > 0 )
+        {
+            temp["likeSel"] = Math.ceil(likeSel/seller*100);
+            temp["unlikeSel"]  = unlikeSel/seller*100; 
+        }
+
+
+        var likeBid = parseInt(tempKeyPair[1].value.split("-")[0]);
+        var unlikeBid =parseInt(tempKeyPair[1].value.split("-")[1]);
+        var bidder = likeBid+unlikeBid;
+         //   console.log("Key Value: ",like+unlike);
+            if( bidder==0 )
+            {
+                temp["likeBid"]  = 100;
+                temp["unlikeBid"] = 100; 
+            }
+            if( bidder > 0 )
+            {
+                temp["likeBid"] = Math.ceil(likeBid/bidder*100);
+                temp["unlikeBid"]  = unlikeBid/bidder*100; 
+            }
+    // listDanhGia.forEach(element => {
+       
+    // });
+    
+
+
 
     res.render('admin/profile', {
 
         layout: false,
-        profile: temp
+        profile: temp,
+       
     });
 
 });
@@ -113,7 +167,7 @@ router.post('/profile', async(req, res) => {
     let entityId = { id: req.session.authUser.id };
     const hash = bcrypt.hashSync(req.body.new_password, 10);
     const user = await categoryModel.single_by_email('tbluser', req.body.email);
-    console.log('Day la userID:', req.body);
+   
     const entity = {
         "name": req.body.name,
         "phone": req.body.phone,
@@ -124,6 +178,7 @@ router.post('/profile', async(req, res) => {
         "point": user.point,
         "is_active": 1
     };
+   
     const rs = bcrypt.compareSync(req.body.old_password, user.password);
     if (rs === false) {
         return res.render('admin/profile', {

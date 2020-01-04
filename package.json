@@ -24,6 +24,8 @@
     "numeral": "^2.0.6",
     "request": "^2.88.0"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "nodemon": "^2.0.2"
+  },
   "description": ""
 }
