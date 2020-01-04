@@ -122,8 +122,15 @@ require('./middlewares/locals.mdw')(app);
 require('./middlewares/routes.mdw')(app);
 
 app.get('/', async(req, res) => {
-    let dt = new Date();
-    const rows = await categoryModel.all('tblproduct');
+    let offsetGMT = 7;
+    let today = new Date(new Date().getTime() + offsetGMT * 3600 * 1000);
+    const rows1 = await categoryModel.all('tblproduct', today);
+    let rows = [];
+    for (let i = 0; i < rows1.length; i++) {
+        if (rows1[i].end_date > today) {
+            rows.push(rows1[i]);
+        }
+    }
     let index = 0;
     for (let i = 0; i < rows.length - 1; i++) {
         index = i;
@@ -161,11 +168,11 @@ app.get('/', async(req, res) => {
         } else {
             rows[i]["top_price"] = rows[i].start_price;
         }
-        let difference_in_time = rows[i].end_date.getTime() - dt.getTime();
+        let difference_in_time = rows[i].end_date.getTime() - today.getTime();
         let difference_in_date = difference_in_time / (1000 * 3600 * 24);
         if (difference_in_date >= 1 && difference_in_date < 4) {
             rows[i]["end_date_format"] = "" + parseInt(difference_in_date) + " ngày nữa";
-        } else if (difference_in_date < 1) {
+        } else if (difference_in_date < 1 && difference_in_date > 0) {
             let difference_in_hour = difference_in_time / (1000 * 3600);
             if (difference_in_hour < 1) {
                 let difference_in_minute = difference_in_time / (1000 * 60);
@@ -297,7 +304,17 @@ app.get('/search', async(req, res) => {
     let resultTotal = [];
     if (req.query.style === "0") {
         table = "tblproduct";
-        let rows = await categoryModel.full_text_search(table, req.query.search_text);
+        let rows1 = await categoryModel.full_text_search(table, req.query.search_text);
+        let offsetGMT = 7;
+        let today = new Date(new Date().getTime() + offsetGMT * 3600 * 1000);
+        let rows = [];
+        for (let i = 0; i < rows1.length; i++) {
+            rows1[i].end_date = new Date(rows1[i].end_date.getTime() + offsetGMT * 3600 * 1000);
+            rows1[i].start_date = new Date(rows1[i].start_date.getTime() + offsetGMT * 3600 * 1000);
+            if (rows1[i].end_date > today) {
+                rows.push(rows1[i]);
+            }
+        }
         resultTotal = rows;
         console.log(rows)
     } else if (req.query.style === "1") {
@@ -305,18 +322,39 @@ app.get('/search', async(req, res) => {
         let rows = await categoryModel.full_text_search(table, req.query.search_text);
         for (let i = 0; i < rows.length; i++) {
             let data = await categoryModel.all_product_by_cat('tblproduct', rows[i].id);
-            resultTotal = resultTotal.concat(data);
+            let offsetGMT = 7;
+            let today = new Date(new Date().getTime() + offsetGMT * 3600 * 1000);
+            let rows1 = [];
+            for (let j = 0; j < data.length; j++) {
+                data[j].end_date = new Date(data[j].end_date.getTime() + offsetGMT * 3600 * 1000);
+                data[j].start_date = new Date(data[j].start_date.getTime() + offsetGMT * 3600 * 1000);
+                if (data[j].end_date > today) {
+                    rows1.push(data[j]);
+                }
+            }
+            resultTotal = resultTotal.concat(rows1);
         }
     } else {
         table = "tbluser";
         let rows = await categoryModel.full_text_search(table, req.query.search_text);
         for (let i = 0; i < rows.length; i++) {
             let data = await categoryModel.all_product_by_seller('tblproduct', rows[i].id);
-            resultTotal = resultTotal.concat(data);
+            let offsetGMT = 7;
+            let today = new Date(new Date().getTime() + offsetGMT * 3600 * 1000);
+            let rows1 = [];
+            for (let j = 0; j < data.length; j++) {
+                data[j].end_date = new Date(data[j].end_date.getTime() + offsetGMT * 3600 * 1000);
+                data[j].start_date = new Date(data[j].start_date.getTime() + offsetGMT * 3600 * 1000);
+                if (data[j].end_date > today) {
+                    rows1.push(data[j]);
+                }
+            }
+            resultTotal = resultTotal.concat(rows1);
         }
     }
     // console.log(result);
-    let dt = new Date();
+    let offsetGMT = 7;
+    let dt = new Date(new Date().getTime() + offsetGMT * 3600 * 1000);
     const limit = config.paginate.limit;
     const page = req.query.page || 1;
     const sortOrder = req.query.sortOrder || 1;
@@ -384,7 +422,7 @@ app.get('/search', async(req, res) => {
         let difference_in_date = difference_in_time / (1000 * 3600 * 24);
         if (difference_in_date >= 1 && difference_in_date < 4) {
             resultTotal[i]["date_time"] = "" + parseInt(difference_in_date) + " ngày nữa";
-        } else if (difference_in_date < 1) {
+        } else if (difference_in_date < 1 && difference_in_date > 0) {
             let difference_in_hour = difference_in_time / (1000 * 3600);
             if (difference_in_hour < 1) {
                 let difference_in_minute = difference_in_time / (1000 * 60);
@@ -398,6 +436,14 @@ app.get('/search', async(req, res) => {
             }
         } else {
             resultTotal[i]["date_time"] = moment(resultTotal[i].end_date).format('DD-MM-YYYY HH:mm:ss');
+        }
+        let isNew = false;
+        let start_date = resultTotal[i].start_date;
+        difference_in_time = dt.getTime() - start_date;
+        let difference_in_minute_start_date = difference_in_time / (1000 * 60);
+        console.log(start_date);
+        if (difference_in_minute_start_date < 60) {
+            resultTotal[i]["is_new"] = true;
         }
     }
 

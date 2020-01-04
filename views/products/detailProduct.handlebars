@@ -12,13 +12,13 @@
             count++;
         }
         else {
-            let data = {id: id, price: $("#text-price").val()};
+            let data = { id: id, price: $("#text-price").val() };
             $.ajax({
                 type: "POST",
                 url: '/bidder/product/bid_product',
                 data: data,
-                success: function(result){
-                    if(result.success){
+                success: function (result) {
+                    if (result.success) {
                         location.reload();
                     }
                 },
@@ -26,23 +26,23 @@
         }
     }
 
-    function addToFav(id){
+    function addToFav(id) {
         event.preventDefault();
-            $.ajax({
-                global: false,
-                type: 'POST',
-                url: '/bidder/product/fav',
-                dataType: 'html',
-                data: {
-                    id
-                },
-                success: function (result) {
-                    console.log(result);
-                },
-                error: function (request, status, error) {
-                    serviceError();
-                }
-            });
+        $.ajax({
+            global: false,
+            type: 'POST',
+            url: '/bidder/product/fav',
+            dataType: 'html',
+            data: {
+                id
+            },
+            success: function (result) {
+                console.log(result);
+            },
+            error: function (request, status, error) {
+                serviceError();
+            }
+        });
     }
 </script>
 {{/section}}
@@ -208,14 +208,32 @@
                 <div class="col-sm-8 d-flex justify-content-center">
                     <div class="container-button ">
                         <button class="button-favorite" style="margin-left:10px; margin-right:10px;" data-toggle="modal"
-                            data-target="#modal_confirm_price" {{#if isBidder}}{{else}}disabled{{/if}}>&#10004;&nbsp;Ra giá</button>
+                            data-target="#modal_confirm_price" {{#if isBidder}}{{else}}disabled{{/if}} {{#if this.validValidate}}{{else}}disabled{{/if}}>&#10004;&nbsp;Ra
+                            giá</button>
                     </div>
                     <div class="container-button">
-                        <button class="button-favorite" style="margin-left:10px;" onclick="addToFav({{this.product.id}})" {{#if isBidder}}{{else}}disabled{{/if}}>&#11088;&nbsp;Thêm vào mục yêu
+                        <button class="button-favorite" style="margin-left:10px;"
+                            onclick="addToFav({{this.product.id}})"
+                            {{#if isBidder}}{{else}}disabled{{/if}}>&#11088;&nbsp;Thêm vào mục yêu
                             thích</button>
                     </div>
                 </div>
             </div>
+            {{#if isAuthenticated}}
+            {{else}}
+            <div class="row">
+                <div class="col-sm-4"></div>
+                <div class="col-sm-8 d-flex justify-content-center text-danger">Bạn phải đăng nhập mới có thể ra giá
+                    hoặc thêm sản phẩm vào chuyên mục yêu thích của mình</div>
+            </div>
+            {{/if}}
+            {{#if this.validValidate}}
+            {{else}}
+            <div class="row">
+                <div class="col-sm-4"></div>
+                <div class="col-sm-8 d-flex justify-content-center text-danger">Điểm đánh giá của bạn quá thấp không thể đấu giá sản phẩm</div>
+            </div>
+            {{/if}}
             <div class="row container-other">
                 {{#if isBidder}}
                 <div class="col-sm-4" style="max-height: 840px; overflow-y: scroll">
@@ -253,7 +271,7 @@
                     </table>
                 </div>
                 {{/if}}
-                
+
                 <div class="col-sm-8">
                     {{#each this.categoryProduct}}
                     <div class="container-each-other-product">
@@ -552,7 +570,8 @@
                 </div>
                 <div class="modal-body normal-fontsize">
                     <p style="color: black; font-weight:bold">Đấu giá sản phẩm {{this.product.name}} với mức giá:</p>
-                <input class="text-price" type="text"  value="{{this.product.recommend_price}}" id="text-price"/>&nbsp;₫
+                    <input class="text-price" type="text" value="{{this.product.recommend_price}}"
+                        id="text-price" />&nbsp;₫
                     <p style="color: black;">Đây là đấu giá tự động. Vui lòng nhập mức giá tối đa bạn có thể ra giá.</p>
                 </div>
                 <div class="modal-footer">
