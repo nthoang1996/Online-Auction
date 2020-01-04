@@ -349,9 +349,11 @@ CREATE TABLE IF NOT EXISTS `tbluser` (
   `point` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL DEFAULT '[{"seller": "0-0","bidder":"0-0"}]',
 `list_product` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL DEFAULT '[]',
 `list_product_bidding` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL DEFAULT '[]',
+`list_product_winner` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL DEFAULT '[]',
 `list_product_selled` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL DEFAULT '[]',
   `is_approve_seller` tinyint(1) NOT NULL,
-  `is_active` tinyint(1) NOT NULL
+  `is_active` tinyint(1) NOT NULL,
+PRIMARY KEY (`id`)
 ) ;
 
 --

@@ -443,6 +443,7 @@ router.get('/products/:id', async(req, res) => {
         product["bidder_react_haha"] = false;
     }
     product["top_price"] = listBidder1[listBidder1.length - 1].price;
+    product["recommend_price"] = parseInt(product["top_price"]) + parseInt(product["min_increase"]);
 
     let categoryProduct = await categoryModel.all_product_by_cat('tblproduct', product.cat_id);
     console.log(categoryProduct.length);
@@ -508,10 +509,6 @@ router.get('/products/:id', async(req, res) => {
         categoryProduct
     });
 });
-
-router.post('/product/bid_product', async(req, res) => {
-    console.log(req.body.id);
-})
 
 
 module.exports = router;

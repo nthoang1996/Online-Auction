@@ -147,6 +147,7 @@ router.get('/winner', async(req, res) => {
         listProductWinner[i]["date_bid"] = product[0].date_bid;
 
     }
+
     // let offsetGMT = +7;
     // let today = new Date(new Date().getTime() + offsetGMT * 3600 * 1000);
     // console.log(today);
@@ -191,4 +192,95 @@ router.get('/winner', async(req, res) => {
     });
 
 })
+
+router.get('/fav', async(req, res) => {
+    // let temp_list = [];
+    //  temp_list = JSON.parse(req.session.authUser.list_product);
+    // console.log("log req body page fav get :",temp_list.length);
+    var idProducts = JSON.parse(req.session.authUser.list_product);
+    const rows = [];
+    idProducts.forEach(async(element) => {
+        console.log("id product: ", element);
+        var tempProduct = await categoryModel.single_by_id("tblproduct", element);
+        console.log(" product: ", tempProduct[0]);
+        rows.push(tempProduct[0])
+    });
+    console.log("log row page fav get :", rows);
+
+    //  const rows = await categoryModel.single_by_id("tblproduct");
+    // const rows = JSON.parse(req.session.authUser.list_product);
+
+    const rowscat = await categoryModel.all("tblcategory");
+    const rowsUser = await categoryModel.all('tbluser');
+
+    for (let i = 0; i < rows.length; i++) {
+
+
+        rows[i]["status"] = rows[i].is_active == 1 ? "Bình thường" : "Vô hiệu hóa";
+        rows[i]["can_disable"] = rows[i].is_active == 1 ? true : false;
+        for (let j = 0; j < rowscat.length; j++) {
+            if (rowscat[j].id === rows[i].cat_id) {
+                rows[i]['cat_name'] = rowscat[j].name;
+                rows[i]["start_date_format"] = moment(rows[i].start_date).format('DD-MM-YYYY HH:mm:ss');
+                rows[i]["end_date_format"] = moment(rows[i].end_date).format('DD-MM-YYYY HH:mm:ss');
+                let listBidder = JSON.parse(rows[i].list_bidder);
+                if (listBidder.length > 0) {
+                    rows[i]["top_price"] = listBidder[listBidder.length - 1].price;
+                } else {
+                    rows[i]["top_price"] = rows[i].start_price;
+                }
+                break;
+            }
+        }
+        for (let j = 0; j < rowsUser.length; j++) {
+            if (rowsUser[j].id == rows[i].id_seller) {
+                rows[i]['seller'] = rowsUser[j].name;
+            }
+        }
+    }
+
+    res.render('bidder/favouriteProducts', {
+        listProduct: rows,
+        empty: rows.length === 0,
+        layout: false
+    });
+
+});
+
+router.post('/bid_product', async(req, res) => {
+    const product = await categoryModel.single_by_id('tblproduct', req.body.id);
+    const user = await categoryModel.single_by_id('tbluser', res.locals.authUser.id);
+
+    let listProductBidding = JSON.parse(user[0].list_product_bidding);
+    let productItem = {};
+    productItem["id"] = product[0].id;
+    productItem["price"] = parseInt(req.body.price);
+
+    let today = new Date(new Date().getTime() + offsetGMT * 3600 * 1000);
+    productItem["date"] = today;
+    listProductBidding.push(productItem);
+
+    let entityID = { id: user[0].id };
+    let entity = { list_product_bidding: JSON.stringify(listProductBidding) };
+
+    let result = await categoryModel.edit('tbluser', entity, entityID);
+
+    let listBidder = JSON.parse(product[0].list_bidder);
+    let bidderItem = {};
+    bidderItem["number"] = listBidder.length;
+    bidderItem["id"] = user[0].id;
+    bidderItem["name"] = user[0].name;
+    bidderItem["date"] = today;
+    bidderItem["price"] = parseInt(req.body.price);
+    let point = JSON.parse(user[0].point);
+    productItem["point"] = point[0].bidder;
+    listBidder.push(bidderItem);
+
+    entityID = { id: product[0].id };
+    entity = { list_bidder: JSON.stringify(listBidder) };
+    result = await categoryModel.edit('tblproduct', entity, entityID);
+
+    res.send({ success: true });
+})
+
 module.exports = router;
