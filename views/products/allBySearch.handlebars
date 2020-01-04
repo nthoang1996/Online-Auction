@@ -760,6 +760,26 @@
                 page = page - 1;
                 window.location.href =`?style={{{getValue this.style}}}&search_text={{{getValue this.keyword}}}&sortOrder=${sortOrder}&sortFillter=${sortFilter}&page=${page}`;
             }
+
+            $('.my-star').click(function (event) {
+            event.preventDefault();
+            var id = this.id;
+            $.ajax({
+                global: false,
+                type: 'POST',
+                url: '/bidder/product/fav',
+                dataType: 'html',
+                data: {
+                    id
+                },
+                success: function (result) {
+                    console.log(result);
+                },
+                error: function (request, status, error) {
+                    serviceError();
+                }
+            });
+        });
         </script>
         {{/section}}
     </div>

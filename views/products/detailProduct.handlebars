@@ -30,6 +30,25 @@
             window.location.href = '/account/login';
         }
     }
+
+    function addToFav(id){
+        event.preventDefault();
+            $.ajax({
+                global: false,
+                type: 'POST',
+                url: '/bidder/product/fav',
+                dataType: 'html',
+                data: {
+                    id
+                },
+                success: function (result) {
+                    console.log(result);
+                },
+                error: function (request, status, error) {
+                    serviceError();
+                }
+            });
+    }
 </script>
 {{/section}}
 <div class="listings-title">
@@ -197,7 +216,7 @@
                             data-target="#modal_confirm_price" onclick="bidButtonClicked({{isBidder}}, {{isAuthenticated}})">&#10004;&nbsp;Ra giá</button>
                     </div>
                     <div class="container-button">
-                        <button class="button-favorite" style="margin-left:10px;">&#11088;&nbsp;Thêm vào mục yêu
+                        <button class="button-favorite" style="margin-left:10px;" onclick="addToFav({{this.product.id}})">&#11088;&nbsp;Thêm vào mục yêu
                             thích</button>
                     </div>
                 </div>

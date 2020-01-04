@@ -1,106 +1,116 @@
-
-
-    <div class="listings-title" style="font-size:12px;">
-        <div class="container container-header d-flex align-items-center d-flex row">
-            <div class="wrap-title col-sm-8">
-                <h1 class="category-header ">Laptop MSI</h1>
-            </div>
-            <div class="d-flex col-sm-4 d-flex justify-content-end">
-                <div class="btn-group ">
-                    <button type="button " class="btn btn-secondary sort-order no-spacing button-sort" id="dropdownMenuReference" data-toggle="dropdown " aria-haspopup="true " aria-expanded="false " data-reference="parent" onclick="chaneSort()">
-                        {{#if this.isIncrease}}&uarr;{{else}}&darr;{{/if}}
-                    </button>
-                    <div style="display: inline-block !important;">
-                        <select id="filter-sort" class="btn-secondary my-filter-sort" onchange="changeFilter()">
-                            <option class="dropdown-item option-order" value="1" {{#if this.isSortdate}}selected{{else}}{{/if}}>Sort by Date</a>
-                            <option class="dropdown-item option-order" value="2" {{#if this.isSortdate}}{{else}}selected{{/if}}>Sort by Price</a>
-                        </select>
-                    </div>
+<div class="listings-title" style="font-size:12px;">
+    <div class="container container-header d-flex align-items-center d-flex row">
+        <div class="wrap-title col-sm-8">
+            <h1 class="category-header ">Laptop MSI</h1>
+        </div>
+        <div class="d-flex col-sm-4 d-flex justify-content-end">
+            <div class="btn-group ">
+                <button type="button " class="btn btn-secondary sort-order no-spacing button-sort"
+                    id="dropdownMenuReference" data-toggle="dropdown " aria-haspopup="true " aria-expanded="false "
+                    data-reference="parent" onclick="chaneSort()">
+                    {{#if this.isIncrease}}&uarr;{{else}}&darr;{{/if}}
+                </button>
+                <div style="display: inline-block !important;">
+                    <select id="filter-sort" class="btn-secondary my-filter-sort" onchange="changeFilter()">
+                        <option class="dropdown-item option-order" value="1"
+                            {{#if this.isSortdate}}selected{{else}}{{/if}}>Sort by Date</a>
+                        <option class="dropdown-item option-order" value="2"
+                            {{#if this.isSortdate}}{{else}}selected{{/if}}>Sort by Price</a>
+                    </select>
                 </div>
             </div>
         </div>
     </div>
-    <div class="container ">
-        <div class="row ">
-            <div id="contents " class="content col-lg-12 col-md-12 col-sm-12 " role="main ">
-                <div id="primary " class="content-area ">
-                    <main id="main " class="site-main " role="main ">
-                        <!--  Shop Title -->
+</div>
+<div class="container ">
+    <div class="row ">
+        <div id="contents " class="content col-lg-12 col-md-12 col-sm-12 " role="main ">
+            <div id="primary " class="content-area ">
+                <main id="main " class="site-main " role="main ">
+                    <!--  Shop Title -->
 
-                        <div class="products-wrapper ">
-                            <div class="row-fix clearfix ">
-                            </div>
-                            <div class="clear "></div>
-                            {{#if this.empty}}
-                            <p class="card-text">Không có dữ liệu</p>
-                            {{else}}
-                            <ul class="products-loop row grid clearfix ">
-                                {{#each this.products}}
-                                <li class="item col-lg-3 col-md-3 col-sm-6 col-xs-6 post-14719 product type-product status-publish has-post-thumbnail product_cat-ps-series product_cat-laptop-msi product_cat-msi-prestige-series product_tag-ps42 pa_cac-cong-ket-noi-2x-type-c-usb3-1-gen1-2x-type-a-usb3-1-gen1-1x-sd-xc-hc-1x-4k-30hz-hdmi
+                    <div class="products-wrapper ">
+                        <div class="row-fix clearfix ">
+                        </div>
+                        <div class="clear "></div>
+                        {{#if this.empty}}
+                        <p class="card-text">Không có dữ liệu</p>
+                        {{else}}
+                        <ul class="products-loop row grid clearfix ">
+                            {{#each this.products}}
+                            <li
+                                class="item col-lg-3 col-md-3 col-sm-6 col-xs-6 post-14719 product type-product status-publish has-post-thumbnail product_cat-ps-series product_cat-laptop-msi product_cat-msi-prestige-series product_tag-ps42 pa_cac-cong-ket-noi-2x-type-c-usb3-1-gen1-2x-type-a-usb3-1-gen1-1x-sd-xc-hc-1x-4k-30hz-hdmi
                 pa_cpu-intel-core-i5-8250u pa_he-dieu-hanh-windows-10-sl-64-bit pa_kich-thuoc-322-x-222-x-15-9-mm pa_lan-gigabit-lan pa_man-hinh-14-fhd-1920x1080-ips-panel pa_o-cung-ssd-ssd-m-2-2280-sata-iii-256gb pa_pin-4-cell-50-whrs pa_ram-ddr4-8gb-1-x-8gb-2666mhz-1-slot-up-to-16gb
                 pa_trong-luong-1-18kg pa_wireless-lan-802-11-ac-wi-fi-bluetooth-v4-2 product_brand-msi first instock sale shipping-taxable purchasable product-type-simple ">
-                                    <div class="products-entry item-wrap clearfix ">
-                                        <div class="item-detail ">
-                                            <div class="item-img products-thumb ">
-                                                <div class="bidder-name">{{bidder}}</div>
-                                                <div class="count-bid">{{count_bid}}</div>
-                                                <a href="/category/products/{{id}}">
-                                                    <div class="product-thumb-hover ">
-                                                        <img class="my-image" src="/picture/product/{{id}}/main1.jpg " class="attachment-shop_catalog size-shop_catalog wp-post-image lazyloaded ">
-                                                    </div>
-                                                </a>
-                                                <div class="berocket_better_labels berocket_better_labels_image ">
-                                                    <div class="berocket_better_labels_position berocket_better_labels_position_right ">
-                                                        <div class="berocket_better_labels_line berocket_better_labels_line_1 ">
-                                                            <div class="berocket_better_labels_inline berocket_better_labels_inline_1 ">
-                                                                <span class="content-date">    
-                                                                <i class="template-i-after  font-date"></i><b>{{date_time}}</b></span>
-                                                            </div>
+                                <div class="products-entry item-wrap clearfix ">
+                                    <div class="item-detail ">
+                                        <div class="item-img products-thumb ">
+                                            <div class="bidder-name">{{bidder}}</div>
+                                            <div class="count-bid">{{count_bid}}</div>
+                                            <a href="/category/products/{{id}}">
+                                                <div class="product-thumb-hover ">
+                                                    <img class="my-image" src="/picture/product/{{id}}/main1.jpg "
+                                                        class="attachment-shop_catalog size-shop_catalog wp-post-image lazyloaded ">
+                                                </div>
+                                            </a>
+                                            <div class="berocket_better_labels berocket_better_labels_image ">
+                                                <div
+                                                    class="berocket_better_labels_position berocket_better_labels_position_right ">
+                                                    <div
+                                                        class="berocket_better_labels_line berocket_better_labels_line_1 ">
+                                                        <div
+                                                            class="berocket_better_labels_inline berocket_better_labels_inline_1 ">
+                                                            <span class="content-date">
+                                                                <i
+                                                                    class="template-i-after  font-date"></i><b>{{date_time}}</b></span>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="item-content products-content ">
-                                                <div class="reviews-content ">
+                                        </div>
+                                        <div class="item-content products-content ">
+                                            <div class="reviews-content ">
 
-                                                    <div class="star "></div>
+                                                <div class="star "></div>
 
-                                                </div>
-                                                <h4><a href="/category/products/{{id}}">{{name}}</a></h4>
-                                                <div class="row">
-                                                    <div class="col-sm-6">
-                                                        <div>Khởi điểm:</div>
-                                                        <div>Cao nhất:</div>
-                                                        <div>Mua ngay:</div>
-                                                        <div>Bội số:</div>
-
-                                                    </div>
-                                                    <div class="col-sm-6">
-                                                        <div>{{format start_price}}</div>
-                                                        <div>{{format top_price}}</div>
-                                                        <div>{{format buynow_price}}</div>
-                                                        <div>{{format min_increase}}</div>
-                                                    </div>
-                                                </div>
                                             </div>
-                                            <div class="card-footer">
-                                                <a class="btn btn-outline-primary" href="/category/products/{{id}}" role="button">
-                                                    <i class="fa fa-eye" aria-hidden="true"></i>
-                                                    Chi tiết
-                                                </a>
-                                                <a class="btn btn-outline-success" href="#" role="button">
-                                                    <i class="fa fa-shopping-cart" aria-hidden="true"></i>
-                                                    Đấu giá
-                                                </a>
-                                                <a title="Thêm vào danh mục yêu thích" class="btn btn-outline-info my-star" id="{{id}}">&#9958;</a>
+                                            <h4><a href="/category/products/{{id}}">{{name}}</a></h4>
+                                            <div class="row">
+                                                <div class="col-sm-6">
+                                                    <div>Khởi điểm:</div>
+                                                    <div>Cao nhất:</div>
+                                                    <div>Mua ngay:</div>
+                                                    <div>Bội số:</div>
+
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <div>{{format start_price}}</div>
+                                                    <div>{{format top_price}}</div>
+                                                    <div>{{format buynow_price}}</div>
+                                                    <div>{{format min_increase}}</div>
+                                                </div>
                                             </div>
                                         </div>
+                                        <div class="card-footer">
+                                            <a class="btn btn-outline-primary" href="/category/products/{{id}}"
+                                                role="button">
+                                                <i class="fa fa-eye" aria-hidden="true"></i>
+                                                Chi tiết
+                                            </a>
+                                            <a class="btn btn-outline-success" href="#" role="button">
+                                                <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+                                                Đấu giá
+                                            </a>
+                                            <a title="Thêm vào danh mục yêu thích" class="btn btn-outline-info my-star"
+                                                id="{{id}}">&#9958;</a>
+                                        </div>
                                     </div>
-                                </li>
-                                {{/each}}
-                            </ul>
-                            {{/if}}
-                            {{!-- <ul class="products-loop row grid clearfix ">
+                                </div>
+                            </li>
+                            {{/each}}
+                        </ul>
+                        {{/if}}
+                        {{!-- <ul class="products-loop row grid clearfix ">
                                 <li class="item col-lg-3 col-md-3 col-sm-6 col-xs-6 post-14719 product type-product status-publish has-post-thumbnail product_cat-ps-series product_cat-laptop-msi product_cat-msi-prestige-series product_tag-ps42 pa_cac-cong-ket-noi-2x-type-c-usb3-1-gen1-2x-type-a-usb3-1-gen1-1x-sd-xc-hc-1x-4k-30hz-hdmi
                 pa_cpu-intel-core-i5-8250u pa_he-dieu-hanh-windows-10-sl-64-bit pa_kich-thuoc-322-x-222-x-15-9-mm pa_lan-gigabit-lan pa_man-hinh-14-fhd-1920x1080-ips-panel pa_o-cung-ssd-ssd-m-2-2280-sata-iii-256gb pa_pin-4-cell-50-whrs pa_ram-ddr4-8gb-1-x-8gb-2666mhz-1-slot-up-to-16gb
                 pa_trong-luong-1-18kg pa_wireless-lan-802-11-ac-wi-fi-bluetooth-v4-2 product_brand-msi first instock sale shipping-taxable purchasable product-type-simple ">
@@ -701,65 +711,90 @@
                                     </div>
                                 </li>
                             </ul> --}}
-                        </div>
-                    </main>
-                </div>
+                    </div>
+                </main>
             </div>
         </div>
-        <div class="d-flex justify-content-end">
-            <nav aria-label="Page navigation example">
-                <ul class="pagination justify-content-end no-spacing">
-                    <li class="page-item">
-                        <a class="page-link {{#if this.disable_prev}}my-disabled{{/if}}" href="?style={{this.style}}&search_text={{this.keyword}}&page={{prev_value}}&sortOrder={{this.sortOrder}}&sortFillter={{this.sortFillter}}" >
-                            <i class="fa fa-backward" aria-hidden="true"></i>
-                        </a>
-                    </li>
-                    {{#each this.page_numbers}}
-                    {{#if isCurrentPage}}
-                        <li class="page-item active" aria-current="page"><a class="page-link" href="javascript:;">{{value}}<span class="sr-only">(current)</span></a></li>   
-                    {{else}}
-                        <li class="page-item"><a class="page-link" href="?style={{../this.style}}&search_text={{../this.keyword}}&page={{value}}&sortOrder={{../this.sortOrder}}&sortFillter={{../this.sortFillter}}">{{value}}</a></li>
-                    {{/if}}
-                    {{/each}}
-                    {{!-- <li class="page-item"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link" href="#">3</a></li> --}}
-                    <li class="page-item">
-                        <a class="page-link {{#if this.disable_next}}my-disabled {{/if}}" href="?style={{this.style}}&search_text={{this.keyword}}&page={{next_value}}&sortOrder={{this.sortOrder}}&sortFillter={{this.sortFillter}}">
-                            <i class="fa fa-forward" aria-hidden="true"></i>
-                        </a>
-                    </li>
-                </ul>
-            </nav>
-        </div>
-        <hr class="footer-landing " />
-        {{#section 'js'}}
-        <script>
-            function chaneSort() {
-                let sortOrder = "";
-                if(Symbol($("#dropdownMenuReference").text().trim()).toString() == Symbol("↑").toString()){
-                    $("#dropdownMenuReference").html('&darr;');
-                    sortOrder= "2";
-                }else{
-                    $("#dropdownMenuReference").html('&uarr;');
-                    sortOrder="1";
-                }
-                let sortFilter = $('#filter-sort').val();
-                let page = "{{{getValue this.next_value}}}";
-                page = page - 1;
-                window.location.href =`?style={{{getValue this.style}}}&search_text={{{getValue this.keyword}}}&sortOrder=${sortOrder}&sortFillter=${sortFilter}&page=${page}`;
-            }
-            function changeFilter() {
-                let sortOrder = "";
-                if(Symbol($("#dropdownMenuReference").text().trim()).toString() == Symbol("↑").toString()){
-                    sortOrder= "1";
-                }else{
-                    sortOrder="2";
-                }
-                let sortFilter = $('#filter-sort').val();
-                let page = "{{{getValue this.next_value}}}";
-                page = page - 1;
-                window.location.href =`?style={{{getValue this.style}}}&search_text={{{getValue this.keyword}}}&sortOrder=${sortOrder}&sortFillter=${sortFilter}&page=${page}`;
-            }
-        </script>
-        {{/section}}\
     </div>
+    <div class="d-flex justify-content-end">
+        <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-end no-spacing">
+                <li class="page-item">
+                    <a class="page-link {{#if this.disable_prev}}my-disabled{{/if}}"
+                        href="?style={{this.style}}&search_text={{this.keyword}}&page={{prev_value}}&sortOrder={{this.sortOrder}}&sortFillter={{this.sortFillter}}">
+                        <i class="fa fa-backward" aria-hidden="true"></i>
+                    </a>
+                </li>
+                {{#each this.page_numbers}}
+                {{#if isCurrentPage}}
+                <li class="page-item active" aria-current="page"><a class="page-link" href="javascript:;">{{value}}<span
+                            class="sr-only">(current)</span></a></li>
+                {{else}}
+                <li class="page-item"><a class="page-link"
+                        href="?style={{../this.style}}&search_text={{../this.keyword}}&page={{value}}&sortOrder={{../this.sortOrder}}&sortFillter={{../this.sortFillter}}">{{value}}</a>
+                </li>
+                {{/if}}
+                {{/each}}
+                {{!-- <li class="page-item"><a class="page-link" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link" href="#">3</a></li> --}}
+                <li class="page-item">
+                    <a class="page-link {{#if this.disable_next}}my-disabled {{/if}}"
+                        href="?style={{this.style}}&search_text={{this.keyword}}&page={{next_value}}&sortOrder={{this.sortOrder}}&sortFillter={{this.sortFillter}}">
+                        <i class="fa fa-forward" aria-hidden="true"></i>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+    <hr class="footer-landing " />
+    {{#section 'js'}}
+    <script>
+        function chaneSort() {
+            let sortOrder = "";
+            if (Symbol($("#dropdownMenuReference").text().trim()).toString() == Symbol("↑").toString()) {
+                $("#dropdownMenuReference").html('&darr;');
+                sortOrder = "2";
+            } else {
+                $("#dropdownMenuReference").html('&uarr;');
+                sortOrder = "1";
+            }
+            let sortFilter = $('#filter-sort').val();
+            let page = "{{{getValue this.next_value}}}";
+            page = page - 1;
+            window.location.href = `?style={{{getValue this.style}}}&search_text={{{getValue this.keyword}}}&sortOrder=${sortOrder}&sortFillter=${sortFilter}&page=${page}`;
+        }
+        function changeFilter() {
+            let sortOrder = "";
+            if (Symbol($("#dropdownMenuReference").text().trim()).toString() == Symbol("↑").toString()) {
+                sortOrder = "1";
+            } else {
+                sortOrder = "2";
+            }
+            let sortFilter = $('#filter-sort').val();
+            let page = "{{{getValue this.next_value}}}";
+            page = page - 1;
+            window.location.href = `?style={{{getValue this.style}}}&search_text={{{getValue this.keyword}}}&sortOrder=${sortOrder}&sortFillter=${sortFilter}&page=${page}`;
+        }
+
+        $('.my-star').click(function (event) {
+            event.preventDefault();
+            var id = this.id;
+            $.ajax({
+                global: false,
+                type: 'POST',
+                url: '/bidder/product/fav',
+                dataType: 'html',
+                data: {
+                    id
+                },
+                success: function (result) {
+                    console.log(result);
+                },
+                error: function (request, status, error) {
+                    serviceError();
+                }
+            });
+        });
+    </script>
+    {{/section}}\
+</div>

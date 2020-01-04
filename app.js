@@ -40,7 +40,7 @@ app.engine('handlebars', exphbs({
 app.set('view engine', 'handlebars');
 
 app.get('/auto_generate_list_bidder', async(req, res) => {
-    const listComment = ["Hàng ngon đấy", "Xài cũng tạm được", "Hàng giả, hàng cũ"];
+    // const listComment = ["Hàng ngon đấy", "Xài cũng tạm được", "Hàng giả, hàng cũ"];
     const rows = await categoryModel.all('tblproduct');
     const user = await categoryModel.all('tbluser');
     let list_list_bidder = [];
@@ -57,7 +57,6 @@ app.get('/auto_generate_list_bidder', async(req, res) => {
             let countRan = parseInt((rows[i].buynow_price - rows[i].start_price) / rows[i].min_increase);
             let price = Math.floor(Math.random() * countRan) * rows[i].min_increase + rows[i].start_price;
             bidder["price"] = price;
-            bidder["comment"] = listComment[Math.floor(Math.random() * 3)];
             bidder["point"] = user[idUser].point;
             list_bidder.push(bidder);
         }
@@ -84,8 +83,33 @@ app.get('/auto_generate_list_bidder', async(req, res) => {
         let entityID = { "id": rows[i].id };
         const update = await categoryModel.edit('tblproduct', entity, entityID);
     }
-   // console.log('1234040404')
-    res.render('admin/profile', { layout: false });
+
+    const rows1 = await categoryModel.all('tblproduct');
+    for (let i = 0; i < user.length; i++) {
+        let list_bidder = [];
+        let listProductBidding = [];
+        for (let j = 0; j < rows1.length; j++) {
+            let productBidding = {};
+            list_bidder = JSON.parse(rows1[j].list_bidder);
+            console.log(list_bidder);
+            for (let k = list_bidder.length - 1; k >= 0; k--) {
+                if (list_bidder[k].id == user[i].id) {
+                    productBidding["id"] = rows1[j].id;
+                    productBidding["price"] = list_bidder[k].price;
+                    productBidding["date"] = list_bidder[k].date;
+                    break;
+                }
+            }
+            if (productBidding.id != null) {
+                listProductBidding.push(productBidding);
+            }
+        }
+        let entity = { "list_product_bidding": JSON.stringify(listProductBidding) };
+        let entityID = { "id": user[i].id };
+        const updateUser = await categoryModel.edit('tbluser', entity, entityID);
+    }
+
+    res.end('ok');
 });
 
 function randomDate(start, end, startHour, endHour) {
@@ -268,26 +292,6 @@ app.get('/', async(req, res) => {
     });
 });
 
-app.post('/fav', async(req, res) => {
-
-    let list_productTemp = {};
-    console.log("log req body page fav post:",req.body.id);
-    const rows = await categoryModel.single_by_id('tblproduct',req.body.id);
-    const tempUser = await categoryModel.single_by_id('tbluser',req.session.authUser.id);
-    list_productTemp = JSON.parse(tempUser[0].list_product);
-   // console.log('list product log:',list_productTemp);
-    list_productTemp.push(rows[0]);
-    let entity = { "list_product": JSON.stringify(list_productTemp) };
-    let entityID = { "id": req.session.authUser.id };
-    const update = await categoryModel.edit('tbluser', entity, entityID);
-
-
-    // res.render('bidder/favouriteProducts', {
-       
-    //     layout:false,
-       
-    //     });
-});
 app.get('/search', async(req, res) => {
     let table = "";
     let resultTotal = [];
@@ -488,11 +492,6 @@ function sortPriceDecrease(listItem) {
         }
     }
 }
-
-app.get('/star', function(req, res) {
-    res.render('layouts/Laptop/star');
-});
-
 
 app.use((err, req, res, next) => {
     console.error(err.stack);

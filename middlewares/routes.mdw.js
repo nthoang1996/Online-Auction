@@ -6,4 +6,5 @@ module.exports = function(app) {
     app.use('/category', require('../routes/category.routes'));
     app.use('/admin/product', restrict, require('../routes/admin/product.route'));
     app.use('/seller/product', restrict, require('../routes/seller/product.route'));
+    app.use('/bidder/product', restrict, require('../routes/bidder/product.route'));
 }
