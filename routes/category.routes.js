@@ -391,9 +391,11 @@ router.get('/products/:id', async(req, res) => {
     product["seller_name"] = rowsUser[0].name;
     product["seller_phone"] = rowsUser[0].phone;
     product["seller_email"] = rowsUser[0].email;
-    product["seller_point"] = rowsUser[0].point;
-    let like = parseInt(rowsUser[0].point.substring(0, rowsUser[0].point.indexOf("/")));
-    let disLike = parseInt(rowsUser[0].point.substring(rowsUser[0].point.indexOf("/") + 1));
+    let point = JSON.parse(rowsUser[0].point);
+    product["seller_point"] = point[0].seller;
+    let like = parseInt(point[0].seller.substring(0, point[0].seller.indexOf("-")));
+    let disLike = parseInt(point[0].seller.substring(point[0].seller.indexOf("-") + 1));
+
     if (like / (like + disLike) > 0.8 || like + disLike == 0) {
         product["react_haha"] = true;
     } else {
@@ -430,9 +432,11 @@ router.get('/products/:id', async(req, res) => {
     product["top_bidder"] = bidder_name;
     let bidder_id = listBidder1[listBidder1.length - 1].id;
     let bidderInfo = await categoryModel.single_by_id('tbluser', bidder_id);
-    product["bidder_point"] = bidderInfo[0].point;
-    like = parseInt(bidderInfo[0].point.substring(0, bidderInfo[0].point.indexOf("/")));
-    disLike = parseInt(bidderInfo[0].point.substring(bidderInfo[0].point.indexOf("/") + 1));
+    point = JSON.parse(bidderInfo[0].point);
+    product["bidder_point"] = point[0].bidder;
+    like = parseInt(point[0].bidder.substring(0, point[0].bidder.indexOf("-")));
+    disLike = parseInt(point[0].bidder.substring(point[0].bidder.indexOf("-") + 1));
+
     if (like / (like + disLike) > 0.8 || like + disLike == 0) {
         product["bidder_react_haha"] = true;
     } else {

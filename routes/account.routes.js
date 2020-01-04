@@ -46,7 +46,6 @@ router.post('/register', async(req, res) => {
         "email": req.body.email,
         "password": hash,
         "role": '[3]',
-        "point": '0/0',
         "is_active": 1
     };
 

@@ -104,9 +104,9 @@
                                 <th scope="col" width="7%" style="font-weight:bold;">Giá cao nhất</th>
                                 <th scope="col" width="10%" style="font-weight:bold;">Ngày bắt đầu</th>
                                 <th scope="col" width="10%" style="font-weight:bold;">Ngày kết thúc</th>
-                                <th scope="col" width="10%" style="font-weight:bold;">Ngày đặt giá</th>
-                                <th scope="col" width="10%" style="font-weight:bold;">Người thắng</th>
-                                <th scope="col" width="6%" style="font-weight:bold;">Điểm người thắng</th>
+                                <th scope="col" width="10%" style="font-weight:bold;">Ngày ra giá</th>
+                                <th scope="col" width="10%" style="font-weight:bold;">Người bán</th>
+                                <th scope="col" width="6%" style="font-weight:bold;">Điểm người bán</th>
                                 <th scope="col" width="15%" style="font-weight:bold;"></th>
                             </tr>
                         </thead>
@@ -120,8 +120,9 @@
                                     <td>{{start_date_format}}</td>
                                     <td>{{end_date_format}}</td>
                                     <td>{{date_bid}}</td>
-                                    <td>{{winner}}</td>
-                                    <td>{{bidder_point}}</td>
+                                    <td>{{seller}}</td>
+                                    <td>{{seller_point
+                                        }}</td>
                                     <td>
                                         <a class="btn btn-success my-category-button" href="/seller/product/edit/{{id}}" ><i
                                                             class="fa fa-edit"></i></a>
