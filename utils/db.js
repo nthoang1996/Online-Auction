@@ -21,11 +21,12 @@ module.exports = {
         return mysql_query(`insert into ${table} set ?`, entity);
     },
     del: (table, entity) => {
-       // console.log(entity);
+        // console.log(entity);
         return mysql_query(`delete from ${table} where ?`, entity);
     },
     edit: (table, entity, entityId) => {
-          //  console.log(entity);
+            console.log(entityId);
+            console.log(entity);
             return mysql_query(`update ${table} set ? where ?`, [entity, entityId]);
         }
         // load: sql => new Promise((done, fail) => {

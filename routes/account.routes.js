@@ -99,8 +99,8 @@ router.post('/logout', (req, res) => {
 
 router.get('/profile', restrict, (req, res) => {
     let temp = req.session.authUser;
+    temp["not_seller"] = !res.locals.isSeller;
 
-    console.log('Day la email:', temp)
     res.render('admin/profile', {
 
         layout: false,
@@ -133,6 +133,17 @@ router.post('/profile', async(req, res) => {
     }
     const data = await categoryModel.edit("tbluser", entity, entityId);
 
-    res.redirect('/admin/category');
+    res.redirect('/account/login');
+});
+
+router.post('/promote', async(req, res) => {
+    let entityId = { id: req.body.id };
+    console.log('Day la userID:', req.body);
+    const entity = {
+        "is_approve_seller": 1
+    };
+    const data = await categoryModel.edit("tbluser", entity, entityId);
+
+    res.send({ "success": true });
 });
 module.exports = router;

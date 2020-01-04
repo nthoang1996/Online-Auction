@@ -61,36 +61,62 @@
                 </div>
 
                 <ul class="nav">
+                    {{#if isAuthenticated}}
                     <li class="pl-3 my-li-dashboard">
-                        <a href="dashboard.html">
+                        <a href="/account/profile">
                             <i class="pe-7s-graph"></i>
                             <p class="mb-0">Thông tin cá nhân</p>
                         </a>
                     </li>
-                    <li class="pl-3 my-li-dashboard">
-                        <a href="table.html">
+                    {{/if}}
+                    {{#if isSeller}}
+                    <li class="pl-3 my-li-dashboard my-active">
+                        <a href="/seller/product/">
                             <i class="pe-7s-note2"></i>
-                            <p class="mb-0">Các sản phẩm của bạn</p>
+                            <p class="mb-0">Các sản phẩm đang bán</p>
                         </a>
                     </li>
                     <li class="pl-3 my-li-dashboard">
-                        <a href="typography.html">
+                        <a href="/seller/product/selled">
+                            <i class="pe-7s-note2"></i>
+                            <p class="mb-0">Các sản phẩm đã bán</p>
+                        </a>
+                    </li>
+                    {{/if}}
+                    {{#if isAdmin}}
+                    <li class="pl-3 my-li-dashboard">
+                        <a href="/admin/category">
                             <i class="pe-7s-news-paper"></i>
                             <p class="mb-0">Quản lý danh mục</p>
                         </a>
                     </li>
                     <li class="pl-3 my-li-dashboard">
-                        <a href="icons.html">
+                        <a href="/admin/product">
                             <i class="pe-7s-science"></i>
                             <p class="mb-0">Quản lý sản phẩm</p>
                         </a>
                     </li>
-                    <li class="my-active pl-3 my-li-dashboard">
-                        <a href="maps.html">
+                    <li class="pl-3 my-li-dashboard">
+                        <a href="/admin/user">
                             <i class="pe-7s-map-marker"></i>
                             <p class="mb-0">Quản lý người dùng</p>
                         </a>
                     </li>
+                    {{/if}}
+                    {{#if isBidder}}
+                    <li class="pl-3 my-li-dashboard">
+                        <a href="/bidder/product/list_bidding">
+                            <i class="pe-7s-news-paper"></i>
+                            <p class="mb-0">Các sản phẩm đang đấu giá</p>
+                        </a>
+                    </li>
+                    <li class="pl-3 my-li-dashboard">
+                        <a href="/bidder/product/winner">
+                            <i class="pe-7s-science"></i>
+                            <p class="mb-0">Các sản phẩm đã thắng</p>
+                        </a>
+                    </li>
+                    {{/if}}
                 </ul>
             </div>
         </div>

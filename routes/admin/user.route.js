@@ -97,6 +97,7 @@ router.post('/edit', async(req, res) => {
         json = "[" + req.body.role + "]";
     }
     let entity = {
+        "is_approve_seller": false,
         "role": json,
         "is_active": parseInt(req.body.user_status)
     }
