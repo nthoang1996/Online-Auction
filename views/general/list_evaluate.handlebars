@@ -1,4 +1,4 @@
- <!doctype html>
+<!doctype html>
 <html lang="en">
 
 <head>
@@ -104,6 +104,14 @@
                         </a>
                     </li>
                     {{/if}}
+                    {{#if isAuthenticated}}
+                    <li class="pl-3 my-li-dashboard">
+                        <a href="javascript: logOut()">
+                            <i class="pe-7s-graph"></i>
+                            <p class="mb-0">Thoát</p>
+                        </a>
+                    </li>
+                    {{/if}}
                 </ul>
             </div>
         </div>
@@ -124,11 +132,11 @@
                     <table class="table" id="table_product">
                         <thead class="thead-dark">
                             <tr>
-                              <th scope="col" width="1%" style="font-weight:bold;">STT</th>
+                                <th scope="col" width="1%" style="font-weight:bold;">STT</th>
                                 <th scope="col" width="18%" style="font-weight:bold;">Tên sản phẩm</th>
                                 <th scope="col" width="18%" style="font-weight:bold;">Người bán</th>
                                 <th scope="col" width="7%" style="font-weight:bold;">Giá đã thắng</th>
-                           
+
                                 <th scope="col" width="10%" style="font-weight:bold;">Ngày đấu gía</th>
                                 <th scope="col" width="10%" style="font-weight:bold;">Status</th>
                                 <th scope="col" width="5%" style="font-weight:bold;">Comment</th>
@@ -137,17 +145,17 @@
                         </thead>
                         <tbody>
                             {{#each this.listProduct}}
-                                <tr>
-                                   <th scope="row" class="text-center">{{id}}</th>
-                                    <td>{{name}}</td>
-                                    <td>{{name_seller}}</td>
-                                    <td class="text-right">{{format top_price}}</td>
-                                 
-                                    <td>{{start_date_format}}</td>
-                                    <td>{{status}}</td>
-                                    <td>{{cmt}}</td> 
-                                    <td>
-                                        {{!-- {{#if can_disable}}
+                            <tr>
+                                <th scope="row" class="text-center">{{id}}</th>
+                                <td>{{name}}</td>
+                                <td>{{name_seller}}</td>
+                                <td class="text-right">{{format top_price}}</td>
+
+                                <td>{{start_date_format}}</td>
+                                <td>{{status}}</td>
+                                <td>{{cmt}}</td>
+                                <td>
+                                    {{!-- {{#if can_disable}}
                                             <button class="btn btn-secondary my-category-button" onclick="disableProduct({{id}})"><i
                                                 class="fa fa-ban"></i></button>
                                         {{else}}
@@ -156,10 +164,10 @@
                                         {{/if}}
                                         <button class="btn btn-danger my-category-button" onclick="deleteProduct({{id}})"><i
                                                 class="fa fa-trash"></i></button> --}}
-                                                <a class="btn btn-success my-category-button" href="/category/products/{{id}}"><i
+                                    <a class="btn btn-success my-category-button" href="/category/products/{{id}}"><i
                                             class="fa fa-arrow-right"></i></a>
-                                    </td>
-                                </tr>
+                                </td>
+                            </tr>
                             {{/each}}
                             {{!-- <tr>
                                 <th scope="row">2</th>
@@ -220,7 +228,8 @@
 
             <div class="row mt-2 mx-0">
                 <div class="col-sm-12 d-flex justify-content-end">
-                    <button class="btn btn-danger" onclick="javascript: window.history.back();"><i class="fa fa-arrow-left"></i>&nbsp;Quay lại</button>
+                    <button class="btn btn-danger" onclick="javascript: window.history.back();"><i
+                            class="fa fa-arrow-left"></i>&nbsp;Quay lại</button>
                 </div>
             </div>
 
@@ -259,24 +268,15 @@
     </div>
 
     <script type="text/javascript">
-        function disableProduct(id){
-            $.post('/admin/product/edit', {"id": id, "is_active" : 0}, function(response){
-                location.reload();
+        function logOut() {
+            $.ajax({
+                async: false,
+                type: "POST",
+                url: '/account/logout',
             });
-        }
-
-        function enableProduct(id){
-            $.post('/admin/product/edit', {"id": id, "is_active" : 1}, function(response){
-                location.reload();
-            });
-        }
-
-        function deleteProduct(id){
-            $.post('/admin/product/delete', {"id": id}, function(response){
-                location.reload();
-            });
+            location.reload();
         }
     </script>
 </body>
 
-</html> 
+</html>

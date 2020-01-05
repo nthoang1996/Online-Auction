@@ -26,10 +26,11 @@
     <!-- Theme included stylesheets -->
     <link href="https://cdn.quilljs.com/1.1.9/quill.snow.css" rel="stylesheet">
     <style>
-        .status_like{
-            color: black ;
+        .status_like {
+            color: black;
         }
-        .status_like:hover{
+
+        .status_like:hover {
             color: blue;
             text-decoration: underline !important;
         }
@@ -103,6 +104,14 @@
                         </a>
                     </li>
                     {{/if}}
+                    {{#if isAuthenticated}}
+                    <li class="pl-3 my-li-dashboard">
+                        <a href="javascript: logOut()">
+                            <i class="pe-7s-graph"></i>
+                            <p class="mb-0">Thoát</p>
+                        </a>
+                    </li>
+                    {{/if}}
                 </ul>
             </div>
         </div>
@@ -170,13 +179,13 @@
                             placeholder="Confirm your Password">
                     </div>
                 </div>
-                 {{#if this.profile.is_seller }}
-                  <div class="form-group row">
+                {{#if this.profile.is_seller }}
+                <div class="form-group row">
                     <label for="staticSdt" class="col-sm-2 col-form-label text-right">Đánh giá bidder</label>
                     <div class="col-sm-8">
-                          <a class="status_like"  href="/account/list_evaluate/bidder">   {{this.profile.likeBid}}%</a>
-                       
-                             {{!-- <p>Unlike: {{this.profile.unlikeBid}}%</p> --}}
+                        <a class="status_like" href="/account/list_evaluate/bidder"> {{this.profile.likeBid}}%</a>
+
+                        {{!-- <p>Unlike: {{this.profile.unlikeBid}}%</p> --}}
                     </div>
                 </div>
                 <div class="form-group row">
@@ -185,19 +194,19 @@
                         {{!-- <input type="password" class="form-control"  id="confirm_password" name="confirm_password"
                             placeholder="Confirm your Password" readonly>
                              --}}
-                             <a class="status_like"  href="/account/list_evaluate/seller">   {{this.profile.likeSel}}%</a>
-                             {{!-- <p>Unlike: {{this.profile.unlikeSel}}%</p> --}}
+                        <a class="status_like" href="/account/list_evaluate/seller"> {{this.profile.likeSel}}%</a>
+                        {{!-- <p>Unlike: {{this.profile.unlikeSel}}%</p> --}}
                     </div>
                 </div>
                 {{/if}}
-                
-                 {{#if this.profile.is_bidder}}
-                 <div class="form-group row">
+
+                {{#if this.profile.is_bidder}}
+                <div class="form-group row">
                     <label for="staticSdt" class="col-sm-2 col-form-label text-right">Đánh giá bidder</label>
                     <div class="col-sm-8">
-                          <a class="status_like" href="/account/list_evaluate/bidder">   {{this.profile.likeBid}}%</a>
-                        
-                             {{!-- <p>Unlike: {{this.profile.unlikeBid}}%</p> --}}
+                        <a class="status_like" href="/account/list_evaluate/bidder"> {{this.profile.likeBid}}%</a>
+
+                        {{!-- <p>Unlike: {{this.profile.unlikeBid}}%</p> --}}
                     </div>
                 </div>
                 {{/if}}
@@ -278,11 +287,20 @@
             data: { "id": id, "is_approve": true },
             success: function (success) {
                 console.log(success)
-                if(success.success){
-                     $("#notifiSuccess").removeClass("d-none");
+                if (success.success) {
+                    $("#notifiSuccess").removeClass("d-none");
                 }
             },
         });
+    }
+
+    function logOut() {
+        $.ajax({
+            async: false,
+            type: "POST",
+            url: '/account/logout',
+        });
+        location.reload();
     }
 </script>
 

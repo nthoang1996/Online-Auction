@@ -448,27 +448,25 @@ router.get('/products/:id', async(req, res) => {
     for (let i = 0; i < product.list_bidder_object.length; i++) {
         let Bidder_of_Product = await categoryModel.single_by_id('tbluser', product.list_bidder_object[i].id);
 
-       
+
         var bidderPoint = JSON.parse(Bidder_of_Product[0].point);
         like = parseInt(bidderPoint[0].bidder.substring(0, bidderPoint[0].bidder.indexOf("-")));
         disLike = parseInt(bidderPoint[0].bidder.substring(bidderPoint[0].bidder.indexOf("-") + 1));
         // console.log("bidder name: ", Bidder_of_Product[0].name);
         // console.log("like: ",like);
         // console.log("disLike: ",disLike);
-      //  console.log("bidder name: ",bidder_name)
-        var bidder =like+disLike;
-        var count_like =0;
-        if( bidder==0 )
-        {
-            count_like  = 100;
-           
+        //  console.log("bidder name: ",bidder_name)
+        var bidder = like + disLike;
+        var count_like = 0;
+        if (bidder == 0) {
+            count_like = 100;
+
         }
-        if( bidder > 0 )
-        {
-            count_like = Math.ceil(like/bidder*100);
-           
+        if (bidder > 0) {
+            count_like = Math.ceil(like / bidder * 100);
+
         }
-        product.list_bidder_object[i].point= count_like;
+        product.list_bidder_object[i].point = count_like;
         product.list_bidder_object[i].date = moment(product.list_bidder_object[i].date).format('DD-MM-YYYY HH:mm:ss');
         product.list_bidder_object[i].name = "****" + Bidder_of_Product[0].name.substring(Bidder_of_Product[0].name.lastIndexOf(" ") + 1);;
         product.list_bidder_object[i].is_seller=false;
@@ -481,6 +479,7 @@ router.get('/products/:id', async(req, res) => {
     }
    
 
+    
 
     let minPriceIndex = 0;
     for (let j = 0; j < listBidder1.length - 1; j++) {
@@ -511,7 +510,7 @@ router.get('/products/:id', async(req, res) => {
     like = parseInt(point[0].bidder.substring(0, point[0].bidder.indexOf("-")));
     disLike = parseInt(point[0].bidder.substring(point[0].bidder.indexOf("-") + 1));
 
-   
+
 
     if (like / (like + disLike) > 0.8 || like + disLike == 0) {
         product["bidder_react_haha"] = true;
@@ -533,11 +532,11 @@ router.get('/products/:id', async(req, res) => {
         let list_bidder_json = categoryProduct[i]["list_bidder"];
         let list_bidder_object = JSON.parse(list_bidder_json);
         let minPriceIndex = 0;
-      //  let listBidder_of_Product_Name = [];
-     //   let listBidder_of_Product_Point = [];
-      
-      //  categoryProduct[i]["listBidder_of_Product_Name"] =listBidder_of_Product_Name;
-      //  categoryProduct[i]["listBidder_of_Product_Point"] =listBidder_of_Product_Point;
+        //  let listBidder_of_Product_Name = [];
+        //   let listBidder_of_Product_Point = [];
+
+        //  categoryProduct[i]["listBidder_of_Product_Name"] =listBidder_of_Product_Name;
+        //  categoryProduct[i]["listBidder_of_Product_Point"] =listBidder_of_Product_Point;
 
 
         for (let j = 0; j < list_bidder_object.length - 1; j++) {
@@ -555,8 +554,6 @@ router.get('/products/:id', async(req, res) => {
                     }
                 }
             }
-
-            
         }
         const getBidderName = await categoryModel.single_by_id('tbluser', list_bidder_object[list_bidder_object.length - 1].id);
         // let bidder_name = "";

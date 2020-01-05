@@ -11,8 +11,7 @@
     <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
     <meta name="viewport" content="width=device-width" />
 
-    <script src="https://code.jquery.com/jquery-3.3.1.min.js"
-        crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
         integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
         crossorigin="anonymous"></script>
@@ -117,6 +116,14 @@
                         </a>
                     </li>
                     {{/if}}
+                    {{#if isAuthenticated}}
+                    <li class="pl-3 my-li-dashboard">
+                        <a href="javascript: logOut()">
+                            <i class="pe-7s-graph"></i>
+                            <p class="mb-0">Thoát</p>
+                        </a>
+                    </li>
+                    {{/if}}
                 </ul>
             </div>
         </div>
@@ -136,7 +143,8 @@
                         <label>Tên sản phẩm:</label>
                     </div>
                     <div class="col-sm-6">
-                        <input type="text" class="my-product-input" name="name" value="{{this.product.name}}" disabled/>
+                        <input type="text" class="my-product-input" name="name" value="{{this.product.name}}"
+                            disabled />
                     </div>
                 </div>
                 <div class="row mt-2">
@@ -165,14 +173,16 @@
                     <div class="col-sm-3">
                         <div class="form-check">
                             <label class="form-check-label">
-                                <input type="radio" class="form-check-input" name="trusted" {{#if this.product.trusted}}checked="checked"{{/if}}
-                                    value="1" disabled>Chỉ cho
+                                <input type="radio" class="form-check-input" name="trusted"
+                                    {{#if this.product.trusted}}checked="checked" {{/if}} value="1" disabled>Chỉ cho
                                 những người có độ tin cậy cao đấu giá
                             </label>
                         </div>
                         <div class="form-check">
                             <label class="form-check-label">
-                                <input type="radio" class="form-check-input" name="trusted" value="2" {{#if this.product.trusted}}{{else}}checked="checked"{{/if}} disabled>Ai đấu giá cũng
+                                <input type="radio" class="form-check-input" name="trusted" value="2"
+                                    {{#if this.product.trusted}}{{else}}checked="checked" {{/if}} disabled>Ai đấu giá
+                                cũng
                                 được
                             </label>
                         </div>
@@ -184,7 +194,8 @@
                         <label>Giá khởi điểm</label>
                     </div>
                     <div class="col-sm-2">
-                        <input type="text" class="my-product-input text-right" name="start_price"  value="{{this.product.start_price}}" disabled/>
+                        <input type="text" class="my-product-input text-right" name="start_price"
+                            value="{{this.product.start_price}}" disabled />
                     </div>
                 </div>
 
@@ -193,7 +204,8 @@
                         <label>Giá mua ngay</label>
                     </div>
                     <div class="col-sm-2">
-                        <input type="text" class="my-product-input text-right" name="buynow_price" value="{{this.product.buynow_price}}" disabled/>
+                        <input type="text" class="my-product-input text-right" name="buynow_price"
+                            value="{{this.product.buynow_price}}" disabled />
                     </div>
                 </div>
 
@@ -202,7 +214,8 @@
                         <label>Bước nhảy:</label>
                     </div>
                     <div class="col-sm-2">
-                        <input type="text" class="my-product-input text-right" name="min_increase" value="{{this.product.min_increase}}" disabled/>
+                        <input type="text" class="my-product-input text-right" name="min_increase"
+                            value="{{this.product.min_increase}}" disabled />
                     </div>
                 </div>
 
@@ -211,8 +224,8 @@
                         <label>Ngày kết thúc</label>
                     </div>
                     <div class="col-sm-2">
-                        <input size="16" type="text" id='datetimepicker1' class="my-product-input"
-                            name="end_date" value="{{this.product.end_date_format}}" disabled>
+                        <input size="16" type="text" id='datetimepicker1' class="my-product-input" name="end_date"
+                            value="{{this.product.end_date_format}}" disabled>
                     </div>
                 </div>
 
@@ -221,7 +234,7 @@
                         <label>Mô tả</label>
                     </div>
                     <div class="col-sm-6">
-                        <div id="editor" class="my-text-area-product" ></div>
+                        <div id="editor" class="my-text-area-product"></div>
                     </div>
                 </div>
 
@@ -229,7 +242,8 @@
 
                 <div class="row mt-2">
                     <div class="col-sm-9 d-flex justify-content-end">
-                        <button type="submit" class="btn btn-success mr-3"><i class="fa fa-save"></i>&nbsp;Cập nhật</button>
+                        <button type="submit" class="btn btn-success mr-3"><i class="fa fa-save"></i>&nbsp;Cập
+                            nhật</button>
                         <button class="btn btn-danger" onclick="javascript: window.history.back();"><i
                                 class="fa fa fa-arrow-left"></i>&nbsp;Quay lại</button>
                     </div>
@@ -301,8 +315,14 @@
             $('#description').text(quill.container.firstChild.innerHTML);
         });
 
-
-
+        function logOut() {
+            $.ajax({
+                async: false,
+                type: "POST",
+                url: '/account/logout',
+            });
+            location.reload();
+        }
     </script>
 
 </body>

@@ -138,12 +138,10 @@ app.get('/auto_generate_list_bidder', async(req, res) => {
             bidder["number"] = j + 1;
             let idUser = Math.floor(Math.random() * user.length);
             bidder["id"] = user[idUser].id;
-            bidder["name"] = user[idUser].name;
             bidder["date"] = randomDate(rows[i].start_date, rows[i].end_date, rows[i].start_date.getHours(), rows[i].end_date.getHours());
             let countRan = parseInt((rows[i].buynow_price - rows[i].start_price) / rows[i].min_increase);
             let price = Math.floor(Math.random() * countRan) * rows[i].min_increase + rows[i].start_price;
             bidder["price"] = price;
-            bidder["point"] = user[idUser].point;
             list_bidder.push(bidder);
         }
         list_list_bidder.push(list_bidder);

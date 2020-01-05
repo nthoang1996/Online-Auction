@@ -104,6 +104,14 @@
                         </a>
                     </li>
                     {{/if}}
+                    {{#if isAuthenticated}}
+                    <li class="pl-3 my-li-dashboard">
+                        <a href="javascript: logOut()">
+                            <i class="pe-7s-graph"></i>
+                            <p class="mb-0">Thoát</p>
+                        </a>
+                    </li>
+                    {{/if}}
                 </ul>
             </div>
         </div>
@@ -126,7 +134,7 @@
                             <tr>
                                 {{!-- 
                                  --}}
-                                   <th scope="col" width="1%" style="font-weight:bold;">STT</th>
+                                <th scope="col" width="1%" style="font-weight:bold;">STT</th>
                                 <th scope="col" width="18%" style="font-weight:bold;">Tên sản phẩm</th>
                                 <th scope="col" width="8%" style="font-weight:bold;">Người bán</th>
                                 <th scope="col" width="10%" style="font-weight:bold;">Chuyên mục</th>
@@ -142,31 +150,31 @@
                         </thead>
                         <tbody>
                             {{#each this.listProduct}}
-                                <tr>
-                                    {{!-- --}}
-                                     <th scope="row" class="text-center">{{id}}</th>
-                                    <td>{{name}}</td>
-                                    <td>{{seller}}</td>
-                                    <td>{{cat_name}}</td>
-                                    <td class="text-right">{{format start_price}}</td>
-                                    <td class="text-right">{{format buynow_price}}</td>
-                                    <td class="text-right">{{format top_price}}</td>
-                                    <td class="text-right">{{format min_increase}}</td>
-                                    <td>{{start_date_format}}</td>
-                                    <td>{{end_date_format}}</td>
-                                    <td>{{status}}</td>
-                                    <td>
-                                        {{#if can_disable}}
-                                            <button class="btn btn-secondary my-category-button" onclick="disableProduct({{id}})"><i
-                                                class="fa fa-ban"></i></button>
-                                        {{else}}
-                                            <button class="btn btn-success my-category-button" onclick="enableProduct({{id}})"><i
-                                                class="fa fa-check-circle"></i></button>
-                                        {{/if}}
-                                        <button class="btn btn-danger my-category-button" onclick="deleteProduct({{id}})"><i
-                                                class="fa fa-trash"></i></button>
-                                    </td>
-                                </tr>
+                            <tr>
+                                {{!-- --}}
+                                <th scope="row" class="text-center">{{id}}</th>
+                                <td>{{name}}</td>
+                                <td>{{seller}}</td>
+                                <td>{{cat_name}}</td>
+                                <td class="text-right">{{format start_price}}</td>
+                                <td class="text-right">{{format buynow_price}}</td>
+                                <td class="text-right">{{format top_price}}</td>
+                                <td class="text-right">{{format min_increase}}</td>
+                                <td>{{start_date_format}}</td>
+                                <td>{{end_date_format}}</td>
+                                <td>{{status}}</td>
+                                <td>
+                                    {{#if can_disable}}
+                                    <button class="btn btn-secondary my-category-button"
+                                        onclick="disableProduct({{id}})"><i class="fa fa-ban"></i></button>
+                                    {{else}}
+                                    <button class="btn btn-success my-category-button"
+                                        onclick="enableProduct({{id}})"><i class="fa fa-check-circle"></i></button>
+                                    {{/if}}
+                                    <button class="btn btn-danger my-category-button" onclick="deleteProduct({{id}})"><i
+                                            class="fa fa-trash"></i></button>
+                                </td>
+                            </tr>
                             {{/each}}
                             {{!-- <tr>
                                 <th scope="row">2</th>
@@ -227,7 +235,8 @@
 
             <div class="row mt-2">
                 <div class="col-sm-12 d-flex justify-content-end">
-                    <button class="btn btn-danger" onclick="javascript: window.history.back();"><i class="fa fa-arrow-left"></i>&nbsp;Quay lại</button>
+                    <button class="btn btn-danger" onclick="javascript: window.history.back();"><i
+                            class="fa fa-arrow-left"></i>&nbsp;Quay lại</button>
                 </div>
             </div>
 
@@ -266,22 +275,31 @@
     </div>
 
     <script type="text/javascript">
-        function disableProduct(id){
-            $.post('/admin/product/edit', {"id": id, "is_active" : 0}, function(response){
+        function disableProduct(id) {
+            $.post('/admin/product/edit', { "id": id, "is_active": 0 }, function (response) {
                 location.reload();
             });
         }
 
-        function enableProduct(id){
-            $.post('/admin/product/edit', {"id": id, "is_active" : 1}, function(response){
+        function enableProduct(id) {
+            $.post('/admin/product/edit', { "id": id, "is_active": 1 }, function (response) {
                 location.reload();
             });
         }
 
-        function deleteProduct(id){
-            $.post('/admin/product/delete', {"id": id}, function(response){
+        function deleteProduct(id) {
+            $.post('/admin/product/delete', { "id": id }, function (response) {
                 location.reload();
             });
+        }
+
+        function logOut() {
+            $.ajax({
+                async: false,
+                type: "POST",
+                url: '/account/logout',
+            });
+            location.reload();
         }
     </script>
 </body>

@@ -104,6 +104,15 @@
                         </a>
                     </li>
                     {{/if}}
+
+                    {{#if isAuthenticated}}
+                    <li class="pl-3 my-li-dashboard">
+                        <a href="javascript: logOut()">
+                            <i class="pe-7s-graph"></i>
+                            <p class="mb-0">Thoát</p>
+                        </a>
+                    </li>
+                    {{/if}}
                 </ul>
             </div>
         </div>
@@ -131,15 +140,15 @@
                         </thead>
                         <tbody>
                             {{#each this.categories}}
-                                <tr>
-                                    <th scope="row">{{number}}</th>
-                                    <td>{{name}}</td>
-                                    <td>
-                                        <button class="btn btn-primary my-category-button" onclick='seeDetail({{id}}, {{level}}, "{{name}}" )'>
-                                            <i
-                                                class="fa fa-eye"></i></button>
-                                    </td>
-                                </tr>
+                            <tr>
+                                <th scope="row">{{number}}</th>
+                                <td>{{name}}</td>
+                                <td>
+                                    <button class="btn btn-primary my-category-button"
+                                        onclick='seeDetail({{id}}, {{level}}, "{{name}}" )'>
+                                        <i class="fa fa-eye"></i></button>
+                                </td>
+                            </tr>
                             {{/each}}
                             {{!-- <tr>
                                 <th scope="row">1</th>
@@ -427,7 +436,8 @@
                             </div>
                         </div>
                         <div class="modal-footer d-flex justify-content-end">
-                            <button class="btn btn-danger" onclick="closeModal()"><i class="fa fa-arrow-left"></i>&nbsp;Quay lại</button>
+                            <button class="btn btn-danger" onclick="closeModal()"><i
+                                    class="fa fa-arrow-left"></i>&nbsp;Quay lại</button>
                         </div>
                     </div>
                 </div>
@@ -435,7 +445,8 @@
 
             <div class="row mt-2">
                 <div class="col-sm-7 d-flex justify-content-end">
-                    <a href="/admin/category/create_category" class="btn btn-primary mr-3"><i class="fa fa-plus"></i>&nbsp;Thêm
+                    <a href="/admin/category/create_category" class="btn btn-primary mr-3"><i
+                            class="fa fa-plus"></i>&nbsp;Thêm
                         chuyên mục</a>
                 </div>
             </div>
@@ -474,61 +485,72 @@
         </div>
     </div>
     <script type="text/javascript">
-        function seeDetail(id, level, name){
-            $.ajax({url: "/admin/category/get_category/" + id, success: function(result){
-                if(result.length){
-                    if(level == 1){
-                        $("#title_sub_category").text(name);
-                        $("#title_sub_category").css('visibility', 'visible');
-                        $("#conteiner_sub_category").css('visibility', 'visible');
-                        $("#tbody-child-category").empty();
-                    }
-                    else if(level == 22){
-                        $("#tbody-modal").empty();
-                    }
-                    for(let i=1; i<=result.length; i++){
-                        let element = '<tr> '
-                                    +   '<th scope="row">' + i +'</th> '
-                                    +   '<td>' + result[i-1].name + '</td> '
-                                    +   '<td> ';
-                        if(level==1){
-                            element = element
-                                    +       '<button class="btn btn-primary my-category-button" '
-                                    +           'onclick="seeDetail(' + result[i-1].id  +',' +result[i-1].level + ',\'' + result[i-1].name + '\')" '
-                                    +           ' data-toggle="modal" data-target="#exampleModalCenter"><i '
-                                    +            ' class="fa fa-eye"></i></button> '
-                                    +       '<a href="/admin/category/edit_category/'+ result[i-1].id + '" class="btn btn-success my-category-button"><i '
-                                    +            ' class="fa fa-edit"></i></a> '
-                                    +       '<button class="btn btn-danger my-category-button" onclick="deleteItem(' + result[i-1].id + ')"><i '
-                                    +            ' class="fa fa-trash"></i></button> '
-                                    +   '</td> '
+        function seeDetail(id, level, name) {
+            $.ajax({
+                url: "/admin/category/get_category/" + id, success: function (result) {
+                    if (result.length) {
+                        if (level == 1) {
+                            $("#title_sub_category").text(name);
+                            $("#title_sub_category").css('visibility', 'visible');
+                            $("#conteiner_sub_category").css('visibility', 'visible');
+                            $("#tbody-child-category").empty();
+                        }
+                        else if (level == 22) {
+                            $("#tbody-modal").empty();
+                        }
+                        for (let i = 1; i <= result.length; i++) {
+                            let element = '<tr> '
+                                + '<th scope="row">' + i + '</th> '
+                                + '<td>' + result[i - 1].name + '</td> '
+                                + '<td> ';
+                            if (level == 1) {
+                                element = element
+                                    + '<button class="btn btn-primary my-category-button" '
+                                    + 'onclick="seeDetail(' + result[i - 1].id + ',' + result[i - 1].level + ',\'' + result[i - 1].name + '\')" '
+                                    + ' data-toggle="modal" data-target="#exampleModalCenter"><i '
+                                    + ' class="fa fa-eye"></i></button> '
+                                    + '<a href="/admin/category/edit_category/' + result[i - 1].id + '" class="btn btn-success my-category-button"><i '
+                                    + ' class="fa fa-edit"></i></a> '
+                                    + '<button class="btn btn-danger my-category-button" onclick="deleteItem(' + result[i - 1].id + ')"><i '
+                                    + ' class="fa fa-trash"></i></button> '
+                                    + '</td> '
                                     + '</tr> ';
-                            $('#tbody-child-category').append(element);
-                        }
-                        else{
-                            element = element
-                                    +       '<a href="/admin/category/edit_category/'+ result[i-1].id + '" class="btn btn-success my-category-button"><i '
-                                    +            ' class="fa fa-edit"></i></a> '
-                                    +       '<button class="btn btn-danger my-category-button" onclick="deleteItem(' + result[i-1].id + ')" ><i'
-                                    +            ' class="fa fa-trash"></i></button>'
-                                    +   '</td>'
+                                $('#tbody-child-category').append(element);
+                            }
+                            else {
+                                element = element
+                                    + '<a href="/admin/category/edit_category/' + result[i - 1].id + '" class="btn btn-success my-category-button"><i '
+                                    + ' class="fa fa-edit"></i></a> '
+                                    + '<button class="btn btn-danger my-category-button" onclick="deleteItem(' + result[i - 1].id + ')" ><i'
+                                    + ' class="fa fa-trash"></i></button>'
+                                    + '</td>'
                                     + '</tr>';
-                            $('#tbody-modal').append(element);
+                                $('#tbody-modal').append(element);
+                            }
+
                         }
-                        
                     }
                 }
-            }});
+            });
         }
 
-        function closeModal(){
+        function closeModal() {
             $('#exampleModalCenter').modal('toggle');
         }
 
-        function deleteItem(id){
-            $.post('/admin/category/delete', {"id": id}, function(response){
+        function deleteItem(id) {
+            $.post('/admin/category/delete', { "id": id }, function (response) {
                 location.reload();
             });
+        }
+
+        function logOut() {
+            $.ajax({
+                async: false,
+                type: "POST",
+                url: '/account/logout',
+            });
+            location.reload();
         }
     </script>
 </body>

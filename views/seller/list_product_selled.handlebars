@@ -104,6 +104,14 @@
                         </a>
                     </li>
                     {{/if}}
+                    {{#if isAuthenticated}}
+                    <li class="pl-3 my-li-dashboard">
+                        <a href="javascript: logOut()">
+                            <i class="pe-7s-graph"></i>
+                            <p class="mb-0">Thoát</p>
+                        </a>
+                    </li>
+                    {{/if}}
                 </ul>
             </div>
         </div>
@@ -304,6 +312,15 @@
                     location.reload();
                 }
             });
+        }
+
+        function logOut() {
+            $.ajax({
+                async: false,
+                type: "POST",
+                url: '/account/logout',
+            });
+            location.reload();
         }
     </script>
 </body>
