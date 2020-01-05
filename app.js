@@ -39,6 +39,92 @@ app.engine('handlebars', exphbs({
 }));
 app.set('view engine', 'handlebars');
 
+let interval = setInterval(async() => {
+    let offsetGMT = 7;
+    let today = new Date(new Date().getTime() + offsetGMT * 3600 * 1000);
+    const rowsProduct = await categoryModel.all_product_not_expired('tblproduct');
+    // console.log(rowsProduct);
+    for (let i = 0; i < rowsProduct.length; i++) {
+        if (rowsProduct[i].end_date < today) {
+            let entityID = { id: rowsProduct[i].id };
+            let entity = { is_expired: true };
+            categoryModel.edit('tblproduct', entity, entityID);
+            let user = await categoryModel.single_by_id('tbluser', rowsProduct[i].id_seller);
+            let listProductSelled = JSON.parse(user[0].list_product_selled);
+            entityID = { id: rowsProduct[i].id_seller };
+            let item = {
+                id: rowsProduct[i].id,
+                status: -1,
+                comment: "",
+                isFeedback: -1,
+            }
+            listProductSelled.push(item);
+            entity = {
+                list_product_selled: JSON.stringify(listProductSelled)
+            }
+            categoryModel.edit('tbluser', entity, entityID);
+
+            let listBidder = JSON.parse(rowsProduct[i].list_bidder);
+            for (let j = 0; j < listBidder.length - 1; j++) {
+                minPriceIndex = j;
+                for (let k = j + 1; k < listBidder.length; k++) {
+                    if (listBidder[k].price < listBidder[minPriceIndex].price) {
+                        let temp = {...listBidder[minPriceIndex] };
+                        listBidder[minPriceIndex] = {...listBidder[k] };
+                        listBidder[k] = {...temp };
+                    } else if (listBidder[k].price == listBidder[minPriceIndex].price) {
+                        if (listBidder[k].date > listBidder[minPriceIndex].date) {
+                            let temp = {...listBidder[minPriceIndex] };
+                            listBidder[minPriceIndex] = {...listBidder[k] };
+                            listBidder[k] = {...temp };
+                        }
+                    }
+                }
+            }
+            if (listBidder.length > 0) {
+                let winnerItem = listBidder[listBidder.length - 1];
+                let userWinner = await categoryModel.single_by_id('tbluser', winnerItem.id);
+                entityID = { id: winnerItem.id };
+                let listProductWinner = JSON.parse(userWinner[0].list_product_winner);
+                item = {
+                    id: rowsProduct[i].id,
+                    status: -1,
+                    comment: "",
+                    isFeedback: -1
+                }
+                listProductWinner.push(item);
+                entity = {
+                    list_product_winner: JSON.stringify(listProductWinner)
+                }
+                categoryModel.edit('tbluser', entity, entityID);
+
+                const rowsUser = await categoryModel.all('tbluser')
+                for (let j = 0; j < rowsUser.length; j++) {
+                    entityID = { id: rowsUser[j].id };
+                    let listBidding = JSON.parse(rowsUser[j].list_product_bidding);
+                    listBidding = removeItemInList(listBidding, rowsProduct[i].id);
+                    entity = {
+                        list_product_bidding: JSON.stringify(listBidding)
+                    }
+                    categoryModel.edit('tbluser', entity, entityID);
+                }
+            }
+
+        }
+    }
+    console.log(today);
+}, 60000);
+
+function removeItemInList(list, id) {
+    for (let j = list.length - 1; j >= 0; j--) {
+        if (list[j].id == id) {
+            console.log(list[j].id);
+            list.splice(j, 1);
+        }
+    }
+    return list;
+}
+
 app.get('/auto_generate_list_bidder', async(req, res) => {
     // const listComment = ["Hàng ngon đấy", "Xài cũng tạm được", "Hàng giả, hàng cũ"];
     const rows = await categoryModel.all('tblproduct');
@@ -91,7 +177,6 @@ app.get('/auto_generate_list_bidder', async(req, res) => {
         for (let j = 0; j < rows1.length; j++) {
             let productBidding = {};
             list_bidder = JSON.parse(rows1[j].list_bidder);
-            console.log(list_bidder);
             for (let k = list_bidder.length - 1; k >= 0; k--) {
                 if (list_bidder[k].id == user[i].id) {
                     productBidding["id"] = rows1[j].id;
@@ -122,8 +207,15 @@ require('./middlewares/locals.mdw')(app);
 require('./middlewares/routes.mdw')(app);
 
 app.get('/', async(req, res) => {
-    let dt = new Date();
-    const rows = await categoryModel.all('tblproduct');
+    let offsetGMT = 7;
+    let today = new Date(new Date().getTime() + offsetGMT * 3600 * 1000);
+    const rows1 = await categoryModel.all('tblproduct', today);
+    let rows = [];
+    for (let i = 0; i < rows1.length; i++) {
+        if (rows1[i].end_date > today) {
+            rows.push(rows1[i]);
+        }
+    }
     let index = 0;
     for (let i = 0; i < rows.length - 1; i++) {
         index = i;
@@ -161,11 +253,11 @@ app.get('/', async(req, res) => {
         } else {
             rows[i]["top_price"] = rows[i].start_price;
         }
-        let difference_in_time = rows[i].end_date.getTime() - dt.getTime();
+        let difference_in_time = rows[i].end_date.getTime() - today.getTime();
         let difference_in_date = difference_in_time / (1000 * 3600 * 24);
         if (difference_in_date >= 1 && difference_in_date < 4) {
             rows[i]["end_date_format"] = "" + parseInt(difference_in_date) + " ngày nữa";
-        } else if (difference_in_date < 1) {
+        } else if (difference_in_date < 1 && difference_in_date > 0) {
             let difference_in_hour = difference_in_time / (1000 * 3600);
             if (difference_in_hour < 1) {
                 let difference_in_minute = difference_in_time / (1000 * 60);
@@ -297,7 +389,17 @@ app.get('/search', async(req, res) => {
     let resultTotal = [];
     if (req.query.style === "0") {
         table = "tblproduct";
-        let rows = await categoryModel.full_text_search(table, req.query.search_text);
+        let rows1 = await categoryModel.full_text_search(table, req.query.search_text);
+        let offsetGMT = 7;
+        let today = new Date(new Date().getTime() + offsetGMT * 3600 * 1000);
+        let rows = [];
+        for (let i = 0; i < rows1.length; i++) {
+            rows1[i].end_date = new Date(rows1[i].end_date.getTime() + offsetGMT * 3600 * 1000);
+            rows1[i].start_date = new Date(rows1[i].start_date.getTime() + offsetGMT * 3600 * 1000);
+            if (rows1[i].end_date > today) {
+                rows.push(rows1[i]);
+            }
+        }
         resultTotal = rows;
         console.log(rows)
     } else if (req.query.style === "1") {
@@ -305,18 +407,39 @@ app.get('/search', async(req, res) => {
         let rows = await categoryModel.full_text_search(table, req.query.search_text);
         for (let i = 0; i < rows.length; i++) {
             let data = await categoryModel.all_product_by_cat('tblproduct', rows[i].id);
-            resultTotal = resultTotal.concat(data);
+            let offsetGMT = 7;
+            let today = new Date(new Date().getTime() + offsetGMT * 3600 * 1000);
+            let rows1 = [];
+            for (let j = 0; j < data.length; j++) {
+                data[j].end_date = new Date(data[j].end_date.getTime() + offsetGMT * 3600 * 1000);
+                data[j].start_date = new Date(data[j].start_date.getTime() + offsetGMT * 3600 * 1000);
+                if (data[j].end_date > today) {
+                    rows1.push(data[j]);
+                }
+            }
+            resultTotal = resultTotal.concat(rows1);
         }
     } else {
         table = "tbluser";
         let rows = await categoryModel.full_text_search(table, req.query.search_text);
         for (let i = 0; i < rows.length; i++) {
             let data = await categoryModel.all_product_by_seller('tblproduct', rows[i].id);
-            resultTotal = resultTotal.concat(data);
+            let offsetGMT = 7;
+            let today = new Date(new Date().getTime() + offsetGMT * 3600 * 1000);
+            let rows1 = [];
+            for (let j = 0; j < data.length; j++) {
+                data[j].end_date = new Date(data[j].end_date.getTime() + offsetGMT * 3600 * 1000);
+                data[j].start_date = new Date(data[j].start_date.getTime() + offsetGMT * 3600 * 1000);
+                if (data[j].end_date > today) {
+                    rows1.push(data[j]);
+                }
+            }
+            resultTotal = resultTotal.concat(rows1);
         }
     }
     // console.log(result);
-    let dt = new Date();
+    let offsetGMT = 7;
+    let dt = new Date(new Date().getTime() + offsetGMT * 3600 * 1000);
     const limit = config.paginate.limit;
     const page = req.query.page || 1;
     const sortOrder = req.query.sortOrder || 1;
@@ -384,7 +507,7 @@ app.get('/search', async(req, res) => {
         let difference_in_date = difference_in_time / (1000 * 3600 * 24);
         if (difference_in_date >= 1 && difference_in_date < 4) {
             resultTotal[i]["date_time"] = "" + parseInt(difference_in_date) + " ngày nữa";
-        } else if (difference_in_date < 1) {
+        } else if (difference_in_date < 1 && difference_in_date > 0) {
             let difference_in_hour = difference_in_time / (1000 * 3600);
             if (difference_in_hour < 1) {
                 let difference_in_minute = difference_in_time / (1000 * 60);
@@ -398,6 +521,14 @@ app.get('/search', async(req, res) => {
             }
         } else {
             resultTotal[i]["date_time"] = moment(resultTotal[i].end_date).format('DD-MM-YYYY HH:mm:ss');
+        }
+        let isNew = false;
+        let start_date = resultTotal[i].start_date;
+        difference_in_time = dt.getTime() - start_date;
+        let difference_in_minute_start_date = difference_in_time / (1000 * 60);
+        console.log(start_date);
+        if (difference_in_minute_start_date < 60) {
+            resultTotal[i]["is_new"] = true;
         }
     }
 

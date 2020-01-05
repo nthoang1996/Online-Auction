@@ -2,6 +2,7 @@ const express = require('express');
 const moment = require('moment');
 var multer = require('multer');
 const fs = require('fs');
+const sleep = require('sleep');
 
 const categoryModel = require('../../models/category.model');
 
@@ -68,7 +69,7 @@ router.get('/selled', async(req, res) => {
     const userSeller = await categoryModel.single_by_id('tbluser', res.locals.authUser.id);
     let listProductSelled = JSON.parse(userSeller[0].list_product_selled);
     const rowscat = await categoryModel.all("tblcategory");
-    const rowsUser = await categoryModel.all('tbluser');
+    // const rowsUser = await categoryModel.all('tbluser');
 
     for (let i = 0; i < listProductSelled.length; i++) {
         let product = await categoryModel.single_by_id('tblproduct', listProductSelled[i].id);
@@ -105,8 +106,9 @@ router.get('/selled', async(req, res) => {
                     product[0]["date_bid"] = "Không lượt đấu giá";
                 }
                 let userBidder = await categoryModel.single_by_id('tbluser', listBidder[listBidder.length - 1].id);
-                let point = JSON.parse(rowsUser[0].point);
+                let point = JSON.parse(userBidder[0].point);
                 product[0]["bidder_point"] = point[0].bidder;
+                console.log(userBidder[0]);
                 break;
             }
         }
@@ -118,6 +120,16 @@ router.get('/selled', async(req, res) => {
         listProductSelled[i]["winner"] = product[0].winner;
         listProductSelled[i]["bidder_point"] = product[0].bidder_point;
         listProductSelled[i]["date_bid"] = product[0].date_bid;
+        if (listProductSelled[i].isFeedback == 1) {
+            listProductSelled[i]["feed_back"] = "Đã thích";
+            listProductSelled[i]["can_feed_back"] = false;
+        } else if (listProductSelled[i].isFeedback == 0) {
+            listProductSelled[i]["feed_back"] = "Đã ghét";
+            listProductSelled[i]["can_feed_back"] = false;
+        } else {
+            listProductSelled[i]["feed_back"] = "Chưa đánh giá";
+            listProductSelled[i]["can_feed_back"] = true;
+        }
 
     }
     // let offsetGMT = +7;
@@ -302,6 +314,68 @@ router.post('/upload', async(req, res) => {
         });
     }
     res.redirect('/seller/product/');
+})
+
+router.post('/feedBack', async(req, res) => {
+    let id = req.body.id;
+    const product = await categoryModel.single_by_id('tblproduct', id);
+    let listBidder = JSON.parse(product[0].list_bidder);
+    let minPriceIndex = 0;
+    for (let j = 0; j < listBidder.length - 1; j++) {
+        minPriceIndex = j;
+        for (let k = j + 1; k < listBidder.length; k++) {
+            if (listBidder[k].price < listBidder[minPriceIndex].price) {
+                let temp = {...listBidder[minPriceIndex] };
+                listBidder[minPriceIndex] = {...listBidder[k] };
+                listBidder[k] = {...temp };
+            } else if (listBidder[k].price == listBidder[minPriceIndex].price) {
+                if (listBidder[k].date > listBidder[minPriceIndex].date) {
+                    let temp = {...listBidder[minPriceIndex] };
+                    listBidder[minPriceIndex] = {...listBidder[k] };
+                    listBidder[k] = {...temp };
+                }
+            }
+        }
+    }
+    let id_bidder = listBidder[listBidder.length - 1].id;
+    let bidder = await categoryModel.single_by_id('tbluser', id_bidder);
+    let listProductWinner = JSON.parse(bidder[0].list_product_winner);
+
+    for (let i = 0; i < listProductWinner.length; i++) {
+        if (listProductWinner[i].id == id) {
+            listProductWinner[i].status = req.body.status;
+            listProductWinner[i].comment = req.body.comment;
+        }
+    }
+
+    let point = JSON.parse(bidder[0].point);
+    let like = parseInt(point[0].bidder.substring(0, point[0].bidder.indexOf("-")));
+    let disLike = parseInt(point[0].bidder.substring(point[0].bidder.indexOf("-") + 1));
+    if (req.body.status == 1) {
+        like += 1;
+        point[0].bidder = "" + like + "-" + disLike;
+    } else if (req.body.status == 0) {
+        disLike += 1;
+        point[0].bidder = "" + like + "-" + disLike;
+    }
+
+    let entity = { list_product_winner: JSON.stringify(listProductWinner), point: JSON.stringify(point) };
+    let entityID = { id: id_bidder };
+    categoryModel.edit('tbluser', entity, entityID);
+
+    let idFeedbacker = res.locals.authUser.id;
+    let userFeedback = await categoryModel.single_by_id('tbluser', idFeedbacker);
+    let listProductSelled = JSON.parse(userFeedback[0].list_product_selled);
+    for (let i = 0; i < listProductSelled.length; i++) {
+        if (listProductSelled[i].id == id) {
+            listProductSelled[i].isFeedback = req.body.status;
+        }
+    }
+    entityID = { id: idFeedbacker };
+    entity = { list_product_selled: JSON.stringify(listProductSelled) };
+    categoryModel.edit('tbluser', entity, entityID);
+    sleep.msleep(200);
+    res.send({ success: true });
 })
 
 module.exports = router;

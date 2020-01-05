@@ -2,6 +2,7 @@ const express = require('express');
 const moment = require('moment');
 var multer = require('multer');
 const fs = require('fs');
+const sleep = require('sleep');
 
 const categoryModel = require('../../models/category.model');
 
@@ -145,6 +146,17 @@ router.get('/winner', async(req, res) => {
         listProductWinner[i]["seller"] = product[0].seller;
         listProductWinner[i]["seller_point"] = product[0].seller_point;
         listProductWinner[i]["date_bid"] = product[0].date_bid;
+        console.log(listProductWinner);
+        if (listProductWinner[i].isFeedback == 1) {
+            listProductWinner[i]["feed_back"] = "Đã thích";
+            listProductWinner[i]["can_feed_back"] = false;
+        } else if (listProductWinner[i].isFeedback == 0) {
+            listProductWinner[i]["feed_back"] = "Đã ghét";
+            listProductWinner[i]["can_feed_back"] = false;
+        } else {
+            listProductWinner[i]["feed_back"] = "Chưa đánh giá";
+            listProductWinner[i]["can_feed_back"] = true;
+        }
 
     }
 
@@ -193,10 +205,51 @@ router.get('/winner', async(req, res) => {
 
 })
 
+router.post('/feedBack', async(req, res) => {
+    let id = req.body.id;
+    const product = await categoryModel.single_by_id('tblproduct', id);
+    let id_seller = product[0].id_seller;
+    let seller = await categoryModel.single_by_id('tbluser', id_seller);
+    let listProductSelled = JSON.parse(seller[0].list_product_selled);
+
+    for (let i = 0; i < listProductSelled.length; i++) {
+        if (listProductSelled[i].id == id) {
+            listProductSelled[i].status = req.body.status;
+            listProductSelled[i].comment = req.body.comment;
+        }
+    }
+
+    let point = JSON.parse(seller[0].point);
+    let like = parseInt(point[0].seller.substring(0, point[0].seller.indexOf("-")));
+    let disLike = parseInt(point[0].seller.substring(point[0].seller.indexOf("-") + 1));
+    if (req.body.status == 1) {
+        like += 1;
+        point[0].seller = "" + like + "-" + disLike;
+    } else if (req.body.status == 0) {
+        disLike += 1;
+        point[0].seller = "" + like + "-" + disLike;
+    }
+
+    let entity = { list_product_selled: JSON.stringify(listProductSelled), point: JSON.stringify(point) };
+    let entityID = { id: id_seller };
+    categoryModel.edit('tbluser', entity, entityID);
+
+    let idFeedbacker = res.locals.authUser.id;
+    let userFeedback = await categoryModel.single_by_id('tbluser', idFeedbacker);
+    let listProductWinner = JSON.parse(userFeedback[0].list_product_winner);
+    for (let i = 0; i < listProductWinner.length; i++) {
+        if (listProductWinner[i].id == id) {
+            listProductWinner[i].isFeedback = req.body.status;
+        }
+    }
+    entityID = { id: idFeedbacker };
+    entity = { list_product_winner: JSON.stringify(listProductWinner) };
+    categoryModel.edit('tbluser', entity, entityID);
+    sleep.msleep(200);
+    res.send({ success: true });
+})
+
 router.get('/fav', async(req, res) => {
-    // let temp_list = [];
-    //  temp_list = JSON.parse(req.session.authUser.list_product);
-    // console.log("log req body page fav get :",temp_list.length);
     var idProducts = JSON.parse(req.session.authUser.list_product);
     const rows = [];
     idProducts.forEach(async(element) => {
@@ -205,10 +258,7 @@ router.get('/fav', async(req, res) => {
         console.log(" product: ", tempProduct[0]);
         rows.push(tempProduct[0])
     });
-    console.log("log row page fav get :", rows);
-
-    //  const rows = await categoryModel.single_by_id("tblproduct");
-    // const rows = JSON.parse(req.session.authUser.list_product);
+    // console.log("log row page fav get :", rows);
 
     const rowscat = await categoryModel.all("tblcategory");
     const rowsUser = await categoryModel.all('tbluser');
