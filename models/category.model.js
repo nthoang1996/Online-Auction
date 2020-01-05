@@ -30,4 +30,5 @@ module.exports = {
         return rows[0];
     },
     full_text_search: (table, keyword) => { return db.load(`SELECT * FROM ${table} WHERE MATCH(name) Against("${keyword}");`) },
+    all_product_not_expired: (table) => { return db.load(`SELECT * FROM ${table} WHERE is_expired = false`) },
 };

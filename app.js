@@ -39,6 +39,90 @@ app.engine('handlebars', exphbs({
 }));
 app.set('view engine', 'handlebars');
 
+let interval = setInterval(async() => {
+    let offsetGMT = 7;
+    let today = new Date(new Date().getTime() + offsetGMT * 3600 * 1000);
+    const rowsProduct = await categoryModel.all_product_not_expired('tblproduct');
+    // console.log(rowsProduct);
+    for (let i = 0; i < rowsProduct.length; i++) {
+        if (rowsProduct[i].end_date < today) {
+            let entityID = { id: rowsProduct[i].id };
+            let entity = { is_expired: true };
+            categoryModel.edit('tblproduct', entity, entityID);
+            let user = await categoryModel.single_by_id('tbluser', rowsProduct[i].id_seller);
+            let listProductSelled = JSON.parse(user[0].list_product_selled);
+            entityID = { id: rowsProduct[i].id_seller };
+            let item = {
+                id: rowsProduct[i].id,
+                status: -1,
+                comment: ""
+            }
+            listProductSelled.push(item);
+            entity = {
+                list_product_selled: JSON.stringify(listProductSelled)
+            }
+            categoryModel.edit('tbluser', entity, entityID);
+
+            let listBidder = JSON.parse(rowsProduct[i].list_bidder);
+            for (let j = 0; j < listBidder.length - 1; j++) {
+                minPriceIndex = j;
+                for (let k = j + 1; k < listBidder.length; k++) {
+                    if (listBidder[k].price < listBidder[minPriceIndex].price) {
+                        let temp = {...listBidder[minPriceIndex] };
+                        listBidder[minPriceIndex] = {...listBidder[k] };
+                        listBidder[k] = {...temp };
+                    } else if (listBidder[k].price == listBidder[minPriceIndex].price) {
+                        if (listBidder[k].date > listBidder[minPriceIndex].date) {
+                            let temp = {...listBidder[minPriceIndex] };
+                            listBidder[minPriceIndex] = {...listBidder[k] };
+                            listBidder[k] = {...temp };
+                        }
+                    }
+                }
+            }
+            if (listBidder.length > 0) {
+                let winnerItem = listBidder[listBidder.length - 1];
+                let userWinner = await categoryModel.single_by_id('tbluser', winnerItem.id);
+                entityID = { id: winnerItem.id };
+                let listProductWinner = JSON.parse(userWinner[0].list_product_winner);
+                item = {
+                    id: rowsProduct[i].id,
+                    status: -1,
+                    comment: ""
+                }
+                listProductWinner.push(item);
+                entity = {
+                    list_product_winner: JSON.stringify(listProductWinner)
+                }
+                categoryModel.edit('tbluser', entity, entityID);
+
+                const rowsUser = await categoryModel.all('tbluser')
+                for (let j = 0; j < rowsUser.length; j++) {
+                    entityID = { id: rowsUser[j].id };
+                    let listBidding = JSON.parse(rowsUser[j].list_product_bidding);
+                    listBidding = removeItemInList(listBidding, rowsProduct[i].id);
+                    entity = {
+                        list_product_bidding: JSON.stringify(listBidding)
+                    }
+                    categoryModel.edit('tbluser', entity, entityID);
+                }
+            }
+
+        }
+    }
+    console.log(today);
+}, 60000);
+
+function removeItemInList(list, id) {
+    for (let j = list.length - 1; j >= 0; j--) {
+        if (list[j].id == id) {
+            console.log(list[j].id);
+            list.splice(j, 1);
+        }
+    }
+    return list;
+}
+
 app.get('/auto_generate_list_bidder', async(req, res) => {
     // const listComment = ["Hàng ngon đấy", "Xài cũng tạm được", "Hàng giả, hàng cũ"];
     const rows = await categoryModel.all('tblproduct');
