@@ -57,8 +57,11 @@ router.get('/list_product_winning/:kind', async(req, res) => {
   
     var rows =[];
     for (let i = 0; i < list_product_winning.length; i++) {
-        var tempProduct = await categoryModel.single_by_id("tblproduct",list_product_winning[i].id);
-        rows.push(tempProduct[0]);
+        if(list_product_winning[i].status != -1)
+        {
+            var tempProduct = await categoryModel.single_by_id("tblproduct",list_product_winning[i].id);
+             rows.push(tempProduct[0]);
+        }
     }
    // console.log("day la nhung product winner: ",rows);
 
@@ -76,7 +79,10 @@ router.get('/list_product_winning/:kind', async(req, res) => {
                     rows[i]["top_price"] = rows[i].start_price;
                 }
                 rows[i]["cmt"]=list_product_winning[i].comment;
-                rows[i]["status"]=list_product_winning[i].status;
+                if(list_product_winning[i].status == 0)
+                    rows[i]["status"]="Không thích";
+                else
+                     rows[i]["status"]="Thích";
               //  console.log("ngay bat dau",rows[i]["start_date_format"]);
        
     }
