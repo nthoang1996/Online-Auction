@@ -42,6 +42,53 @@ router.get('/', async(req, res) => {
     });
 })
 
+router.get('/list_product_winning/:kind', async(req, res) => { 
+    
+    let user = req.session.authUser;
+    let list_product_winning;
+    if(req.params.kind == "bidder")
+    {
+        list_product_winning = JSON.parse(user.list_product_winner);
+    }
+    if(req.params.kind == "seller")
+    {
+        list_product_winning = JSON.parse(user.list_product_selled);
+    }
+  
+    var rows =[];
+    for (let i = 0; i < list_product_winning.length; i++) {
+        var tempProduct = await categoryModel.single_by_id("tblproduct",list_product_winning[i].id);
+        rows.push(tempProduct[0]);
+    }
+   // console.log("day la nhung product winner: ",rows);
+
+    for (let i = 0; i < rows.length; i++) {
+        // rows[i]["status"] = rows[i].is_active == 1 ? "Bình thường" : "Vô hiệu hóa";
+       // rows[i]["can_disable"] = rows[i].is_active == 1 ? true : false;
+        rows[i]["start_date_format"] = moment(rows[i].start_date).format('DD-MM-YYYY');
+                rows[i]["end_date_format"] = moment(rows[i].end_date).format('DD-MM-YYYY HH:mm:ss');
+             //  console.log("day la row ${i}",rows[i])
+               
+                let listBidder = JSON.parse(rows[i].list_bidder);
+                if (listBidder.length > 0) {
+                    rows[i]["top_price"] = listBidder[listBidder.length - 1].price;
+                } else {
+                    rows[i]["top_price"] = rows[i].start_price;
+                }
+                rows[i]["cmt"]=list_product_winning[i].comment;
+                rows[i]["status"]=list_product_winning[i].status;
+              //  console.log("ngay bat dau",rows[i]["start_date_format"]);
+       
+    }
+
+
+
+    res.render('admin/list_product_winning', {
+     listProduct: rows,
+    // empty: rows.length === 0,
+    layout: false
+    });
+})
 router.post('/edit', async(req, res) => {
     if (!res.locals.isAdmin) {
         return res.render('error_permission', { layout: false });

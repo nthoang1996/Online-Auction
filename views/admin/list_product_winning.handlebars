@@ -1,4 +1,4 @@
-<!doctype html>
+ <!doctype html>
 <html lang="en">
 
 <head>
@@ -124,37 +124,27 @@
                     <table class="table">
                         <thead class="thead-dark">
                             <tr>
-                                {{!-- 
-                                 --}}
-                                   <th scope="col" width="1%" style="font-weight:bold;">STT</th>
+                              <th scope="col" width="1%" style="font-weight:bold;">STT</th>
                                 <th scope="col" width="18%" style="font-weight:bold;">Tên sản phẩm</th>
-                                <th scope="col" width="8%" style="font-weight:bold;">Người bán</th>
-                                <th scope="col" width="10%" style="font-weight:bold;">Chuyên mục</th>
-                                <th scope="col" width="7%" style="font-weight:bold;">Giá khởi điểm</th>
-                                <th scope="col" width="7%" style="font-weight:bold;">Giá mua ngay</th>
-                                <th scope="col" width="7%" style="font-weight:bold;">Giá cao nhất</th>
-                                <th scope="col" width="7%" style="font-weight:bold;">Bội số</th>
-                                <th scope="col" width="10%" style="font-weight:bold;">Ngày bắt đầu</th>
-                                <th scope="col" width="10%" style="font-weight:bold;">Ngày kết thúc</th>
-                                <th scope="col" width="5%" style="font-weight:bold;">Trạng thái</th>
+                                <th scope="col" width="7%" style="font-weight:bold;">Giá đã thắng</th>
+                           
+                                <th scope="col" width="10%" style="font-weight:bold;">Ngày đấu gía</th>
+                                <th scope="col" width="10%" style="font-weight:bold;">Status</th>
+                                <th scope="col" width="5%" style="font-weight:bold;">Comment</th>
                                 <th scope="col" width="10%" style="font-weight:bold;"></th>
                             </tr>
                         </thead>
                         <tbody>
                             {{#each this.listProduct}}
                                 <tr>
-                                    {{!-- --}}
-                                     <th scope="row" class="text-center">{{id}}</th>
+                                   <th scope="row" class="text-center">{{id}}</th>
                                     <td>{{name}}</td>
-                                    <td>{{seller}}</td>
-                                    <td>{{cat_name}}</td>
-                                    <td class="text-right">{{format start_price}}</td>
-                                    <td class="text-right">{{format buynow_price}}</td>
+                                  
                                     <td class="text-right">{{format top_price}}</td>
-                                    <td class="text-right">{{format min_increase}}</td>
+                                 
                                     <td>{{start_date_format}}</td>
-                                    <td>{{end_date_format}}</td>
                                     <td>{{status}}</td>
+                                    <td>{{cmt}}</td> 
                                     <td>
                                         {{#if can_disable}}
                                             <button class="btn btn-secondary my-category-button" onclick="disableProduct({{id}})"><i
@@ -286,4 +276,4 @@
     </script>
 </body>
 
-</html>
+</html> 

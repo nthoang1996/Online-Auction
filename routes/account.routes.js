@@ -103,8 +103,10 @@ router.get('/profile', restrict, (req, res) => {
    // console.log('co phai la seller ko? ', temp["not_seller"]);
 
    temp["is_seller"] = res.locals.isSeller;
-   temp["is_bidder"] = res.locals.isBidder;
- 
+   if(!temp["is_seller"])
+    {
+         temp["is_bidder"] = res.locals.isBidder;
+    }
      var listDanhGia1 = JSON.parse(temp.point);
     var listDanhGia =listDanhGia1[0];
        // console.log('Day la Danh gia foreach :', listDanhGia);

@@ -25,6 +25,15 @@
     <link href='http://fonts.googleapis.com/css?family=Roboto:400,700,300' rel='stylesheet' type='text/css'>
     <!-- Theme included stylesheets -->
     <link href="https://cdn.quilljs.com/1.1.9/quill.snow.css" rel="stylesheet">
+    <style>
+        .status_like{
+            color: black ;
+        }
+        .status_like:hover{
+            color: blue;
+            text-decoration: underline !important;
+        }
+    </style>
 </head>
 
 <body>
@@ -161,12 +170,12 @@
                             placeholder="Confirm your Password">
                     </div>
                 </div>
-                 {{#if this.profile.is_seller}}
+                 {{#if this.profile.is_seller }}
                   <div class="form-group row">
                     <label for="staticSdt" class="col-sm-2 col-form-label text-right">Đánh giá bidder</label>
                     <div class="col-sm-8">
-                          <p>   {{this.profile.likeBid}}%</p>
-                          <p>{{this.profile.not_seller}}</p>
+                          <a class="status_like"  href="/admin/product/list_product_winning/bidder">   {{this.profile.likeBid}}%</a>
+                       
                              {{!-- <p>Unlike: {{this.profile.unlikeBid}}%</p> --}}
                     </div>
                 </div>
@@ -176,7 +185,7 @@
                         {{!-- <input type="password" class="form-control"  id="confirm_password" name="confirm_password"
                             placeholder="Confirm your Password" readonly>
                              --}}
-                             <p>   {{this.profile.likeSel}}%</p>
+                             <a class="status_like"  href="/admin/product/list_product_winning/seller">   {{this.profile.likeSel}}%</a>
                              {{!-- <p>Unlike: {{this.profile.unlikeSel}}%</p> --}}
                     </div>
                 </div>
@@ -186,7 +195,7 @@
                  <div class="form-group row">
                     <label for="staticSdt" class="col-sm-2 col-form-label text-right">Đánh giá bidder</label>
                     <div class="col-sm-8">
-                          <p>   {{this.profile.likeBid}}%</p>
+                          <a class="status_like" href="/admin/product/list_product_winning/bidder">   {{this.profile.likeBid}}%</a>
                         
                              {{!-- <p>Unlike: {{this.profile.unlikeBid}}%</p> --}}
                     </div>
