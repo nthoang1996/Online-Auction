@@ -153,13 +153,7 @@
                                     <td>{{end_date_format}}</td>
                                     <td>{{status}}</td>
                                     <td>
-                                        {{#if can_disable}}
-                                            <button class="btn btn-secondary my-category-button" onclick="disableProduct({{id}})"><i
-                                                class="fa fa-ban"></i></button>
-                                        {{else}}
-                                            <button class="btn btn-success my-category-button" onclick="enableProduct({{id}})"><i
-                                                class="fa fa-check-circle"></i></button>
-                                        {{/if}}
+                                        <a class="btn btn-success my-category-button" href="/category/products/{{id}}" ><i class="fa fa-arrow-right"></i></a>
                                         <button class="btn btn-danger my-category-button" onclick="deleteProduct({{id}})"><i
                                                 class="fa fa-trash"></i></button>
                                     </td>

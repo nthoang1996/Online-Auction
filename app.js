@@ -55,7 +55,8 @@ let interval = setInterval(async() => {
             let item = {
                 id: rowsProduct[i].id,
                 status: -1,
-                comment: ""
+                comment: "",
+                isFeedback: -1,
             }
             listProductSelled.push(item);
             entity = {
@@ -88,7 +89,8 @@ let interval = setInterval(async() => {
                 item = {
                     id: rowsProduct[i].id,
                     status: -1,
-                    comment: ""
+                    comment: "",
+                    isFeedback: -1
                 }
                 listProductWinner.push(item);
                 entity = {
@@ -175,7 +177,6 @@ app.get('/auto_generate_list_bidder', async(req, res) => {
         for (let j = 0; j < rows1.length; j++) {
             let productBidding = {};
             list_bidder = JSON.parse(rows1[j].list_bidder);
-            console.log(list_bidder);
             for (let k = list_bidder.length - 1; k >= 0; k--) {
                 if (list_bidder[k].id == user[i].id) {
                     productBidding["id"] = rows1[j].id;

@@ -126,35 +126,43 @@
                             <tr>
                                 <th scope="col" width="1%" style="font-weight:bold;">STT</th>
                                 <th scope="col" width="20%" style="font-weight:bold;">Tên sản phẩm</th>
-                                <th scope="col" width="10%" style="font-weight:bold;">Chuyên mục</th>
+                                <th scope="col" width="7%" style="font-weight:bold;">Chuyên mục</th>
                                 <th scope="col" width="7%" style="font-weight:bold;">Giá cao nhất</th>
                                 <th scope="col" width="10%" style="font-weight:bold;">Ngày bắt đầu</th>
                                 <th scope="col" width="10%" style="font-weight:bold;">Ngày kết thúc</th>
                                 <th scope="col" width="10%" style="font-weight:bold;">Ngày ra giá</th>
-                                <th scope="col" width="10%" style="font-weight:bold;">Người bán</th>
+                                <th scope="col" width="8%" style="font-weight:bold;">Người bán</th>
                                 <th scope="col" width="6%" style="font-weight:bold;">Điểm người bán</th>
+                                <th scope="col" width="5%" style="font-weight:bold;">Trạng thái</th>
                                 <th scope="col" width="15%" style="font-weight:bold;"></th>
                             </tr>
                         </thead>
                         <tbody>
                             {{#each this.listProduct}}
-                                <tr>
-                                    <th scope="row" class="text-center">{{id}}</th>
-                                    <td>{{name}}</td>
-                                    <td>{{cat_name}}</td>
-                                    <td class="text-right">{{format top_price}}</td>
-                                    <td>{{start_date_format}}</td>
-                                    <td>{{end_date_format}}</td>
-                                    <td>{{date_bid}}</td>
-                                    <td>{{seller}}</td>
-                                    <td>{{seller_point
-                                        }}</td>
-                                    <td>
-                                        <a class="btn btn-success my-category-button" href="/category/products/{{id}}" ><i class="fa fa-arrow-right"></i></a>
-                                        <button class="btn btn-danger my-category-button" onclick="deleteProduct({{id}})"><i
-                                                class="fa fa-trash"></i></button>
-                                    </td>
-                                </tr>
+                            <tr>
+                                <th scope="row" class="text-center">{{id}}</th>
+                                <td>{{name}}</td>
+                                <td>{{cat_name}}</td>
+                                <td class="text-right">{{format top_price}}</td>
+                                <td>{{start_date_format}}</td>
+                                <td>{{end_date_format}}</td>
+                                <td>{{date_bid}}</td>
+                                <td>{{seller}}</td>
+                                <td>{{seller_point}}</td>
+                                <td>{{feed_back}}</td>
+                                <td>
+                                    <a class="btn btn-success my-category-button" href="/category/products/{{id}}"><i
+                                            class="fa fa-arrow-right"></i></a>
+                                    <button class="btn btn-primary my-category-button" 
+                                        {{#if can_feed_back}}{{else}}disabled{{/if}} type="button" onclick="likeButtonClicked({{id}})"
+                                        class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" ><i
+                                            class="fa fa-thumbs-up"></i></button>
+                                    <button class="btn btn-primary my-category-button"
+                                        {{#if can_feed_back}}{{else}}disabled{{/if}} type="button" onclick="dislikeButtonClicked({{id}})"
+                                        class="btn btn-primary" data-toggle="modal" data-target="#exampleModal"><i
+                                            class="fa fa-thumbs-down"></i></button>
+                                </td>
+                            </tr>
                             {{/each}}
                             {{!-- <tr>
                                 <th scope="row">2</th>
@@ -213,9 +221,32 @@
                 </div>
             </div>
 
+            <!-- Modal -->
+            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Bình luận</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <textarea id="comment" style="width:100%; height: 300px;"></textarea>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Để khi khác</button>
+                            <button type="button" class="btn btn-primary" onclick="feed_back()">Đánh giá</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div class="row mt-2">
                 <div class="col-sm-12 d-flex justify-content-end">
-                    <button class="btn btn-danger" onclick="javascript: window.history.back();"><i class="fa fa-arrow-left"></i>&nbsp;Quay lại</button>
+                    <button class="btn btn-danger" onclick="javascript: window.history.back();"><i
+                            class="fa fa-arrow-left"></i>&nbsp;Quay lại</button>
                 </div>
             </div>
 
@@ -254,21 +285,23 @@
     </div>
 
     <script type="text/javascript">
-        function disableProduct(id){
-            $.post('/admin/product/edit', {"id": id, "is_active" : 0}, function(response){
-                location.reload();
-            });
-        }
-
-        function enableProduct(id){
-            $.post('/admin/product/edit', {"id": id, "is_active" : 1}, function(response){
-                location.reload();
-            });
-        }
-
-        function deleteProduct(id){
-            $.post('/admin/product/delete', {"id": id}, function(response){
-                location.reload();
+         let status = -1;
+         let id = -1;
+         function likeButtonClicked(idProduct){
+             status=1;
+             id = idProduct;
+         }
+         function dislikeButtonClicked(idProduct){
+             status=0;
+             id= idProduct;
+         }
+        function feed_back() {
+            console.log($("#comment").val());
+            console.log(id);
+            $.post('/bidder/product/feedBack', { "id": id, "status": status, "comment": $("#comment").val() }, function (response) {
+                if(response.success){
+                    location.reload();
+                }
             });
         }
     </script>
