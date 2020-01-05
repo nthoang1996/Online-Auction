@@ -85,6 +85,8 @@ router.get('/list_product_winning/:kind', async(req, res) => {
                      rows[i]["status"]="Thích";
               //  console.log("ngay bat dau",rows[i]["start_date_format"]);
        
+              let seller =  await categoryModel.single_by_id("tbluser",rows[i].id_seller);
+              rows[i]["name_seller"] =seller[0].name;
     }
 
 

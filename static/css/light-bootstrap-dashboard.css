@@ -139,7 +139,9 @@ h1 .subtitle {
 .text-success:hover {
     color: #87CB16 !important;
 }
-
+#table_product{
+    text-align: center;
+}
 .text-warning,
 .text-warning:hover {
     color: #FF9500 !important;

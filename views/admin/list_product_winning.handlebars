@@ -117,15 +117,16 @@
                 </div>
             </nav>
             <h4 class="ml-5">Danh sách sản phẩm:</h4>
-            <div class="row">
+            <div class="row mx-0">
                 {{!-- <div class="col-sm-1">
                 </div> --}}
-                <div class="col-sm-12 ml-2 mr-2">
-                    <table class="table">
+                <div class="col-sm-12">
+                    <table class="table" id="table_product">
                         <thead class="thead-dark">
                             <tr>
                               <th scope="col" width="1%" style="font-weight:bold;">STT</th>
                                 <th scope="col" width="18%" style="font-weight:bold;">Tên sản phẩm</th>
+                                <th scope="col" width="18%" style="font-weight:bold;">Người bán</th>
                                 <th scope="col" width="7%" style="font-weight:bold;">Giá đã thắng</th>
                            
                                 <th scope="col" width="10%" style="font-weight:bold;">Ngày đấu gía</th>
@@ -139,14 +140,14 @@
                                 <tr>
                                    <th scope="row" class="text-center">{{id}}</th>
                                     <td>{{name}}</td>
-                                  
+                                    <td>{{name_seller}}</td>
                                     <td class="text-right">{{format top_price}}</td>
                                  
                                     <td>{{start_date_format}}</td>
                                     <td>{{status}}</td>
                                     <td>{{cmt}}</td> 
                                     <td>
-                                        {{#if can_disable}}
+                                        {{!-- {{#if can_disable}}
                                             <button class="btn btn-secondary my-category-button" onclick="disableProduct({{id}})"><i
                                                 class="fa fa-ban"></i></button>
                                         {{else}}
@@ -154,7 +155,9 @@
                                                 class="fa fa-check-circle"></i></button>
                                         {{/if}}
                                         <button class="btn btn-danger my-category-button" onclick="deleteProduct({{id}})"><i
-                                                class="fa fa-trash"></i></button>
+                                                class="fa fa-trash"></i></button> --}}
+                                                <a class="btn btn-success my-category-button" href="/category/products/{{id}}"><i
+                                            class="fa fa-arrow-right"></i></a>
                                     </td>
                                 </tr>
                             {{/each}}
@@ -215,7 +218,7 @@
                 </div>
             </div>
 
-            <div class="row mt-2">
+            <div class="row mt-2 mx-0">
                 <div class="col-sm-12 d-flex justify-content-end">
                     <button class="btn btn-danger" onclick="javascript: window.history.back();"><i class="fa fa-arrow-left"></i>&nbsp;Quay lại</button>
                 </div>

@@ -242,7 +242,8 @@
                             <tr>
                                 <th scope="col" width="5%" class="normal-fontsize font-weight-bold">#</th>
                                 <th scope="col" width="30%" class="normal-fontsize font-weight-bold">Thời điểm</th>
-                                <th scope="col" width="30%" class="normal-fontsize font-weight-bold">Người mua</th>
+                                <th scope="col" width="30%" class="normal-fontsize font-weight-bold">Người mua(Đánh giá)</th>
+                          
                                 <th scope="col" width="35%" class="normal-fontsize font-weight-bold">Giá</th>
                             </tr>
                         </thead>
@@ -251,7 +252,8 @@
                             <tr>
                                 <th scope="row" class="normal-fontsize">{{number}}</button></th>
                                 <td class="normal-fontsize">{{date}}</td>
-                                <td class="normal-fontsize">{{name}}</td>
+                                <td class="normal-fontsize">{{name}}({{point}}%)</td>
+                                
                                 <td class="normal-fontsize">{{format price}}</td>
                             </tr>
                             {{/each}}
@@ -306,7 +308,8 @@
                                         <div class="star "></div>
 
                                     </div>
-                                    <h4><a href="#">{{name}}/a></h4>
+                                    <h4><a href="#">{{name}}</a></h4>
+                                
                                     <div class="row">
                                         <div class="col-sm-6">
                                             <div>Khởi điểm:</div>
