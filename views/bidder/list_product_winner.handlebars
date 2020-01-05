@@ -36,7 +36,7 @@
     <!-- Theme included stylesheets -->
     <link href="https://cdn.quilljs.com/1.1.9/quill.snow.css" rel="stylesheet">
     <style>
-        
+
     </style>
 </head>
 
@@ -107,6 +107,14 @@
                         </a>
                     </li>
                     {{/if}}
+                    {{#if isAuthenticated}}
+                    <li class="pl-3 my-li-dashboard">
+                        <a href="javascript: logOut()">
+                            <i class="pe-7s-graph"></i>
+                            <p class="mb-0">Thoát</p>
+                        </a>
+                    </li>
+                    {{/if}}
                 </ul>
             </div>
         </div>
@@ -124,7 +132,7 @@
                 {{!-- <div class="col-sm-1">
                 </div> --}}
                 <div class="col-sm-12 ml-2 mr-2">
-                   <table class="table" >
+                    <table class="table">
                         <thead class="thead-dark">
                             <tr>
                                 <th scope="col" width="1%" style="font-weight:bold;">STT</th>
@@ -156,13 +164,14 @@
                                 <td>
                                     <a class="btn btn-success my-category-button" href="/category/products/{{id}}"><i
                                             class="fa fa-arrow-right"></i></a>
-                                    <button class="btn btn-primary my-category-button" 
-                                        {{#if can_feed_back}}{{else}}disabled{{/if}} type="button" onclick="likeButtonClicked({{id}})"
-                                        class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" ><i
-                                            class="fa fa-thumbs-up"></i></button>
                                     <button class="btn btn-primary my-category-button"
-                                        {{#if can_feed_back}}{{else}}disabled{{/if}} type="button" onclick="dislikeButtonClicked({{id}})"
-                                        class="btn btn-primary" data-toggle="modal" data-target="#exampleModal"><i
+                                        {{#if can_feed_back}}{{else}}disabled{{/if}} type="button"
+                                        onclick="likeButtonClicked({{id}})" class="btn btn-primary" data-toggle="modal"
+                                        data-target="#exampleModal"><i class="fa fa-thumbs-up"></i></button>
+                                    <button class="btn btn-primary my-category-button"
+                                        {{#if can_feed_back}}{{else}}disabled{{/if}} type="button"
+                                        onclick="dislikeButtonClicked({{id}})" class="btn btn-primary"
+                                        data-toggle="modal" data-target="#exampleModal"><i
                                             class="fa fa-thumbs-down"></i></button>
                                 </td>
                             </tr>
@@ -288,24 +297,30 @@
     </div>
 
     <script type="text/javascript">
-         let status = -1;
-         let id = -1;
-         function likeButtonClicked(idProduct){
-             status=1;
-             id = idProduct;
-         }
-         function dislikeButtonClicked(idProduct){
-             status=0;
-             id= idProduct;
-         }
+        let status = -1;
+        let id = -1;
+        function likeButtonClicked(idProduct) {
+            status = 1;
+            id = idProduct;
+        }
+        function dislikeButtonClicked(idProduct) {
+            status = 0;
+            id = idProduct;
+        }
         function feed_back() {
-            console.log($("#comment").val());
-            console.log(id);
             $.post('/bidder/product/feedBack', { "id": id, "status": status, "comment": $("#comment").val() }, function (response) {
-                if(response.success){
+                if (response.success) {
                     location.reload();
                 }
             });
+        }
+        function logOut() {
+            $.ajax({
+                async: false,
+                type: "POST",
+                url: '/account/logout',
+            });
+            location.reload();
         }
     </script>
 </body>

@@ -11,8 +11,7 @@
     <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
     <meta name="viewport" content="width=device-width" />
 
-    <script src="https://code.jquery.com/jquery-3.3.1.min.js"
-        crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
         integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
         crossorigin="anonymous"></script>
@@ -114,6 +113,14 @@
                         <a href="/bidder/product/winner">
                             <i class="pe-7s-science"></i>
                             <p class="mb-0">Các sản phẩm đã thắng</p>
+                        </a>
+                    </li>
+                    {{/if}}
+                    {{#if isAuthenticated}}
+                    <li class="pl-3 my-li-dashboard">
+                        <a href="javascript: logOut()">
+                            <i class="pe-7s-graph"></i>
+                            <p class="mb-0">Thoát</p>
                         </a>
                     </li>
                     {{/if}}
@@ -321,16 +328,16 @@
         });
 
         $("#upload").on("submit", function () {
-            let rs= {};
+            let rs = {};
             let data = {
-                name : $('input[name$="name"]').val(),
-                cat_id : $('select[name="cat_id"]').val(),
-                trusted : $('input[name$="trusted"]:checked').val(),
-                start_price : $('input[name$="start_price"]').val(),
-                buynow_price : $('input[name$="buynow_price"]').val(),
-                min_increase : $('input[name$="min_increase"]').val(),
-                end_date : $('input[name$="end_date"]').val(),
-                description : quill.container.firstChild.innerHTML,
+                name: $('input[name$="name"]').val(),
+                cat_id: $('select[name="cat_id"]').val(),
+                trusted: $('input[name$="trusted"]:checked').val(),
+                start_price: $('input[name$="start_price"]').val(),
+                buynow_price: $('input[name$="buynow_price"]').val(),
+                min_increase: $('input[name$="min_increase"]').val(),
+                end_date: $('input[name$="end_date"]').val(),
+                description: quill.container.firstChild.innerHTML,
             }
             console.log(data);
             $.ajax({
@@ -338,11 +345,20 @@
                 async: false,
                 url: '/seller/product/post_product',
                 data: data,
-                success: function(result){
+                success: function (result) {
                     rs = result;
                 },
             });
         })
+
+        function logOut() {
+            $.ajax({
+                async: false,
+                type: "POST",
+                url: '/account/logout',
+            });
+            location.reload();
+        }
 
     </script>
 

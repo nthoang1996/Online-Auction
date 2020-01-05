@@ -104,6 +104,14 @@
                         </a>
                     </li>
                     {{/if}}
+                    {{#if isAuthenticated}}
+                    <li class="pl-3 my-li-dashboard">
+                        <a href="javascript: logOut()">
+                            <i class="pe-7s-graph"></i>
+                            <p class="mb-0">Thoát</p>
+                        </a>
+                    </li>
+                    {{/if}}
                 </ul>
             </div>
         </div>
@@ -137,7 +145,7 @@
                         </thead>
                         <tbody>
                             {{#each this.listUser}}
-                                <tr>
+                            <tr>
                                 <th scope="row">{{id}}</th>
                                 <td>{{name}}</td>
                                 <td>{{formatPhone phone}}</td>
@@ -148,9 +156,10 @@
                                 <td>{{status}}</td>
                                 <td>
                                     <button class="btn btn-success my-category-button" data-toggle="modal"
-                                        data-target="#exampleModalCenter" onclick="viewUser({{id}})"><i class="fa fa-edit"></i></button>
-                                    <button class="btn btn-danger my-category-button"><i
-                                            class="fa fa-trash" onclick="deleteUser({{id}})"></i></button>
+                                        data-target="#exampleModalCenter" onclick="viewUser({{id}})"><i
+                                            class="fa fa-edit"></i></button>
+                                    <button class="btn btn-danger my-category-button"><i class="fa fa-trash"
+                                            onclick="deleteUser({{id}})"></i></button>
                                 </td>
                             </tr>
                             {{/each}}
@@ -221,25 +230,25 @@
                         </div>
                         <div class="modal-body my-content-modal" style="background-color: #f7f7f8;">
                             <form method="POST" id="form-edit-user">
-                                <input name="user_id" id="user_id" type="text" class="my-product-input pl-2" value="Nguyễn Thái Hoàng"
-                                            readonly style="display: none;"/>
+                                <input name="user_id" id="user_id" type="text" class="my-product-input pl-2"
+                                    value="Nguyễn Thái Hoàng" readonly style="display: none;" />
                                 <div class="row mt-5 form-group">
                                     <div class="col-sm-3 text-right">
                                         <label for="user_name">Tên người dùng:</label>
                                     </div>
                                     <div class="col-sm-6 ">
-                                        <input name="user_name" id="user_name" type="text" class="my-product-input pl-2" value="Nguyễn Thái Hoàng"
-                                            readonly />
+                                        <input name="user_name" id="user_name" type="text" class="my-product-input pl-2"
+                                            value="Nguyễn Thái Hoàng" readonly />
                                     </div>
                                 </div>
 
                                 <div class="row mt-2 form-group">
-                                     <div class="col-sm-3 text-right">
+                                    <div class="col-sm-3 text-right">
                                         <label for="user_email">Email:</label>
                                     </div>
                                     <div class="col-sm-6">
-                                        <input name="user_email" id="user_email" type="text" class="my-product-input pl-2" value="nthoang1996@gmail.com"
-                                            readonly />
+                                        <input name="user_email" id="user_email" type="text"
+                                            class="my-product-input pl-2" value="nthoang1996@gmail.com" readonly />
                                     </div>
                                 </div>
 
@@ -248,7 +257,8 @@
                                         <label for="user_phone">Số điện thoại:</label>
                                     </div>
                                     <div class="col-sm-6">
-                                        <input type="text" name="user_phone" id="user_phone" class="my-product-input pl-2" value="0936252722" readonly />
+                                        <input type="text" name="user_phone" id="user_phone"
+                                            class="my-product-input pl-2" value="0936252722" readonly />
                                     </div>
                                 </div>
 
@@ -257,8 +267,9 @@
                                         <label for="user_address">Địa chỉ:</label>
                                     </div>
                                     <div class="col-sm-6">
-                                        <input type="text" class="my-product-input pl-2" name="user_address" id="user_address"
-                                            value="c4/6d Lê Đình Chi H.Bình Chánh TP.Hồ Chí Minh" readonly />
+                                        <input type="text" class="my-product-input pl-2" name="user_address"
+                                            id="user_address" value="c4/6d Lê Đình Chi H.Bình Chánh TP.Hồ Chí Minh"
+                                            readonly />
                                     </div>
                                 </div>
 
@@ -268,8 +279,10 @@
                                     </div>
                                     <div class="col-sm-6">
                                         <input id="chxboxAdmin" type="checkbox" name="role" value="1"> Quản trị viên
-                                        <input id="chxboxSeller" type="checkbox" name="role" value="2" class="ml-3">Người bán
-                                        <input id="chxboxBidder" type="checkbox" name="role" value="3" class="ml-3">Người đấu giá
+                                        <input id="chxboxSeller" type="checkbox" name="role" value="2"
+                                            class="ml-3">Người bán
+                                        <input id="chxboxBidder" type="checkbox" name="role" value="3"
+                                            class="ml-3">Người đấu giá
                                     </div>
                                 </div>
 
@@ -278,18 +291,21 @@
                                         <label for="user_status">Trạng thái</label>
                                     </div>
                                     <div class="col-sm-6">
-                                        <select class="my-product-select" data-selected="" name="user_status" id="user_status">
+                                        <select class="my-product-select" data-selected="" name="user_status"
+                                            id="user_status">
                                             <option value="" disabled="disabled">Vui lòng chọn 1 trạng thái</option>
                                         </select>
                                     </div>
                                 </div>
 
-                                 <div class="row mt-2 d-flex justify-content-end">
-                                     <div class="modal-footer">
-                                        <button type="submit"  formaction="/admin/user/edit" class="btn btn-success mr-3"><i class="fa fa-save"></i>&nbsp;Lưu</button>
-                                        <button type="button" class="btn btn-danger" onclick="closeModal()"><i class="fa fa fa-arrow-left"></i>&nbsp;Quay lại</button>
+                                <div class="row mt-2 d-flex justify-content-end">
+                                    <div class="modal-footer">
+                                        <button type="submit" formaction="/admin/user/edit"
+                                            class="btn btn-success mr-3"><i class="fa fa-save"></i>&nbsp;Lưu</button>
+                                        <button type="button" class="btn btn-danger" onclick="closeModal()"><i
+                                                class="fa fa fa-arrow-left"></i>&nbsp;Quay lại</button>
                                     </div>
-                                 </div>
+                                </div>
                             </form>
                         </div>
                     </div>
@@ -330,39 +346,41 @@
         </div>
     </div>
     <script type="text/javascript">
-        function viewUser(id){
-           $.ajax({url: "/admin/user/get_user/" + id, async: false, success: function(result){
-               $('#chxboxAdmin').prop('checked', false);
-               $('#chxboxSeller').prop('checked', false);
-               $('#chxboxBidder').prop('checked', false);
-                console.log(result);
-                $("#user_id").val(result.id);
-                $("#user_name").val(result.name);
-                $("#user_email").val(result.email);
-                $("#user_phone").val(result.phone);
-                $("#user_address").val(result.address);
-                $("#user_role").val(result.role);
-                let listRole = JSON.parse(result.role);
-                for(let i = 0; i< listRole.length; i++){
-                    if(listRole[i] === 1){
-                        $('#chxboxAdmin').prop('checked', true);
+        function viewUser(id) {
+            $.ajax({
+                url: "/admin/user/get_user/" + id, async: false, success: function (result) {
+                    $('#chxboxAdmin').prop('checked', false);
+                    $('#chxboxSeller').prop('checked', false);
+                    $('#chxboxBidder').prop('checked', false);
+                    console.log(result);
+                    $("#user_id").val(result.id);
+                    $("#user_name").val(result.name);
+                    $("#user_email").val(result.email);
+                    $("#user_phone").val(result.phone);
+                    $("#user_address").val(result.address);
+                    $("#user_role").val(result.role);
+                    let listRole = JSON.parse(result.role);
+                    for (let i = 0; i < listRole.length; i++) {
+                        if (listRole[i] === 1) {
+                            $('#chxboxAdmin').prop('checked', true);
+                        }
+                        else if (listRole[i] === 2) {
+                            $('#chxboxSeller').prop('checked', true);
+                        }
+                        else {
+                            $('#chxboxBidder').prop('checked', true);
+                        }
                     }
-                    else if(listRole[i] === 2){
-                        $('#chxboxSeller').prop('checked', true);
-                    }
-                    else{
-                        $('#chxboxBidder').prop('checked', true);
-                    }
+                    $("#user_status").val(result.is_active);
                 }
-                $("#user_status").val(result.is_active);
-            }});
+            });
         }
 
-        function closeModal(){
+        function closeModal() {
             $('#exampleModalCenter').modal('toggle');
         }
 
-        function init(){
+        function init() {
             /*$.ajax({
                 url: '/admin/user/get_userrole',
                 success: function (result) {
@@ -385,12 +403,12 @@
             $.ajax({
                 url: '/admin/user/get_userstatus',
                 success: function (result) {
-                    for(let i = 0; i<result.length; i++){
+                    for (let i = 0; i < result.length; i++) {
                         let status_name_vn = "";
-                        if(result[i].name === "Active"){
+                        if (result[i].name === "Active") {
                             status_name_vn = "Bình thường";
                         }
-                        else{
+                        else {
                             status_name_vn = "Vô hiệu hóa";
                         }
                         $("#user_status").append(`<option value="${result[i].id}" >${status_name_vn}</option>`)
@@ -400,10 +418,19 @@
             });
         }
 
-        function deleteUser(id){
-            $.post('/admin/user/delete', {"id": id}, function(response){
+        function deleteUser(id) {
+            $.post('/admin/user/delete', { "id": id }, function (response) {
                 location.reload();
             });
+        }
+
+        function logOut() {
+            $.ajax({
+                async: false,
+                type: "POST",
+                url: '/account/logout',
+            });
+            location.reload();
         }
     </script>
 </body>
