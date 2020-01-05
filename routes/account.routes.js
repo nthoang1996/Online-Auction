@@ -3,6 +3,7 @@ const bcrypt = require('bcryptjs');
 const router = express.Router();
 const categoryModel = require('../models/category.model');
 const request = require('request');
+var moment = require('moment');
 const restrict = require('../middlewares/auth.mdw');
 const secretKey = "6LeQAMwUAAAAANC665bQZKP5KE-JUtd6UQdXcG-D";
 router.get('/register', async(req, res) => {
@@ -100,16 +101,15 @@ router.post('/logout', (req, res) => {
 router.get('/profile', restrict, (req, res) => {
     let temp = req.session.authUser;
     temp["not_seller"] = !res.locals.isSeller;
-   // console.log('co phai la seller ko? ', temp["not_seller"]);
+    // console.log('co phai la seller ko? ', temp["not_seller"]);
 
-   temp["is_seller"] = res.locals.isSeller;
-   if(!temp["is_seller"])
-    {
-         temp["is_bidder"] = res.locals.isBidder;
+    temp["is_seller"] = res.locals.isSeller;
+    if (!temp["is_seller"]) {
+        temp["is_bidder"] = res.locals.isBidder;
     }
-     var listDanhGia1 = JSON.parse(temp.point);
-    var listDanhGia =listDanhGia1[0];
-       // console.log('Day la Danh gia foreach :', listDanhGia);
+    var listDanhGia1 = JSON.parse(temp.point);
+    var listDanhGia = listDanhGia1[0];
+    // console.log('Day la Danh gia foreach :', listDanhGia);
     //     var arr = [];
     //     for (var key in listDanhGia) {
     //         if (listDanhGia.hasOwnProperty(key)) {
@@ -118,49 +118,39 @@ router.get('/profile', restrict, (req, res) => {
     //     };
     //    // var result = arr.join(',');
     //     console.log(arr[0]);
-    let tempKeyPair =Object.entries(listDanhGia).map(([key, value]) => ({ key, value }))
+    let tempKeyPair = Object.entries(listDanhGia).map(([key, value]) => ({ key, value }))
     var likeSel = parseInt(tempKeyPair[0].value.split("-")[0]);
-    var unlikeSel =parseInt(tempKeyPair[0].value.split("-")[1]);
-    var seller = likeSel+unlikeSel;
-     //   console.log("Key Value: ",like+unlike);
-        if( seller==0 )
-        {
-            temp["likeSel"] = 100;
-            temp["unlikeSel"] = 100; 
-        }
-        if( seller > 0 )
-        {
-            temp["likeSel"] = Math.ceil(likeSel/seller*100);
-            temp["unlikeSel"]  = unlikeSel/seller*100; 
-        }
+    var unlikeSel = parseInt(tempKeyPair[0].value.split("-")[1]);
+    var seller = likeSel + unlikeSel;
+    //   console.log("Key Value: ",like+unlike);
+    if (seller == 0) {
+        temp["likeSel"] = 100;
+        temp["unlikeSel"] = 100;
+    }
+    if (seller > 0) {
+        temp["likeSel"] = Math.ceil(likeSel / seller * 100);
+        temp["unlikeSel"] = unlikeSel / seller * 100;
+    }
 
 
-        var likeBid = parseInt(tempKeyPair[1].value.split("-")[0]);
-        var unlikeBid =parseInt(tempKeyPair[1].value.split("-")[1]);
-        var bidder = likeBid+unlikeBid;
-         //   console.log("Key Value: ",like+unlike);
-            if( bidder==0 )
-            {
-                temp["likeBid"]  = 100;
-                temp["unlikeBid"] = 100; 
-            }
-            if( bidder > 0 )
-            {
-                temp["likeBid"] = Math.ceil(likeBid/bidder*100);
-                temp["unlikeBid"]  = unlikeBid/bidder*100; 
-            }
-    // listDanhGia.forEach(element => {
-       
-    // });
-    
+    var likeBid = parseInt(tempKeyPair[1].value.split("-")[0]);
+    var unlikeBid = parseInt(tempKeyPair[1].value.split("-")[1]);
+    var bidder = likeBid + unlikeBid;
+    //   console.log("Key Value: ",like+unlike);
+    if (bidder == 0) {
+        temp["likeBid"] = 100;
+        temp["unlikeBid"] = 100;
+    }
+    if (bidder > 0) {
+        temp["likeBid"] = Math.ceil(likeBid / bidder * 100);
+        temp["unlikeBid"] = unlikeBid / bidder * 100;
+    }
 
-
-
-    res.render('admin/profile', {
+    res.render('general/profile', {
 
         layout: false,
         profile: temp,
-       
+
     });
 
 });
@@ -169,7 +159,7 @@ router.post('/profile', async(req, res) => {
     let entityId = { id: req.session.authUser.id };
     const hash = bcrypt.hashSync(req.body.new_password, 10);
     const user = await categoryModel.single_by_email('tbluser', req.body.email);
-   
+
     const entity = {
         "name": req.body.name,
         "phone": req.body.phone,
@@ -180,7 +170,7 @@ router.post('/profile', async(req, res) => {
         "point": user.point,
         "is_active": 1
     };
-   
+
     const rs = bcrypt.compareSync(req.body.old_password, user.password);
     if (rs === false) {
         return res.render('admin/profile', {
@@ -202,5 +192,69 @@ router.post('/promote', async(req, res) => {
     const data = await categoryModel.edit("tbluser", entity, entityId);
 
     res.send({ "success": true });
+});
+
+router.get('/list_evaluate/:kind', restrict, async(req, res) => {
+
+    let user = req.session.authUser;
+    let list_product_winning;
+    if (req.params.kind == "bidder") {
+        list_product_winning = JSON.parse(user.list_product_winner);
+    }
+    if (req.params.kind == "seller") {
+        list_product_winning = JSON.parse(user.list_product_selled);
+    }
+
+    var rows = [];
+    for (let i = 0; i < list_product_winning.length; i++) {
+        if (list_product_winning[i].status != -1) {
+            var tempProduct = await categoryModel.single_by_id("tblproduct", list_product_winning[i].id);
+            rows.push(tempProduct[0]);
+        }
+    }
+    // console.log("day la nhung product winner: ",rows);
+
+    for (let i = 0; i < rows.length; i++) {
+        // rows[i]["status"] = rows[i].is_active == 1 ? "Bình thường" : "Vô hiệu hóa";
+        // rows[i]["can_disable"] = rows[i].is_active == 1 ? true : false;
+        rows[i]["start_date_format"] = moment(rows[i].start_date).format('DD-MM-YYYY');
+        rows[i]["end_date_format"] = moment(rows[i].end_date).format('DD-MM-YYYY HH:mm:ss');
+        //  console.log("day la row ${i}",rows[i])
+
+        let listBidder = JSON.parse(rows[i].list_bidder);
+        if (listBidder.length > 0) {
+            rows[i]["top_price"] = listBidder[listBidder.length - 1].price;
+        } else {
+            rows[i]["top_price"] = rows[i].start_price;
+        }
+        rows[i]["cmt"] = list_product_winning[i].comment;
+        if (list_product_winning[i].status == 0)
+            rows[i]["status"] = "Không thích";
+        else
+            rows[i]["status"] = "Thích";
+        //  console.log("ngay bat dau",rows[i]["start_date_format"]);
+
+        let seller = await categoryModel.single_by_id("tbluser", rows[i].id_seller);
+        rows[i]["name_seller"] = seller[0].name;
+    }
+
+    res.render('general/list_evaluate', {
+        listProduct: rows,
+        // empty: rows.length === 0,
+        layout: false
+    });
+})
+router.post('/edit', async(req, res) => {
+    if (!res.locals.isAdmin) {
+        return res.render('error_permission', { layout: false });
+    }
+    let entityId = {
+        "id": parseInt(req.body.id)
+    }
+    let entity = {
+        "is_active": req.body.is_active
+    }
+    const data = await categoryModel.edit("tblproduct", entity, entityId);
+    res.redirect('/admin/user');
 });
 module.exports = router;
