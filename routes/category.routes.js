@@ -272,11 +272,11 @@ router.get('/:id/products', async(req, res) => {
                 }
             }
 
-          
+
             const getBidderName = await categoryModel.single_by_id('tbluser', list_bidder_object[list_bidder_object.length - 1].id);
             let bidder_name = "";
             //bidder_name = list_bidder_object[list_bidder_object.length - 1].name;
-            bidder_name= getBidderName[0].name;
+            bidder_name = getBidderName[0].name;
             bidder_name = bidder_name.substring(bidder_name.lastIndexOf(" ") + 1);
             top_price = list_bidder_object[list_bidder_object.length - 1].price;
             bidder_name = "****" + bidder_name;
@@ -469,17 +469,14 @@ router.get('/products/:id', async(req, res) => {
         product.list_bidder_object[i].point = count_like;
         product.list_bidder_object[i].date = moment(product.list_bidder_object[i].date).format('DD-MM-YYYY HH:mm:ss');
         product.list_bidder_object[i].name = "****" + Bidder_of_Product[0].name.substring(Bidder_of_Product[0].name.lastIndexOf(" ") + 1);;
-        product.list_bidder_object[i].is_seller=false;
-         product.list_bidder_object[i].is_not_seller=false;
-        if(res.locals.authUser.id == product.id_seller)
-          {product.list_bidder_object[i].is_seller= true;}
-         else
-          {product.list_bidder_object[i].is_not_seller = true;
-          }
+        product.list_bidder_object[i].is_seller = false;
+        product.list_bidder_object[i].is_not_seller = false;
+        if (res.locals.isAuthenticated && res.locals.authUser.id == product.id_seller) {
+            product.list_bidder_object[i].is_seller = true;
+        } else {
+            product.list_bidder_object[i].is_not_seller = true;
+        }
     }
-   
-
-    
 
     let minPriceIndex = 0;
     for (let j = 0; j < listBidder1.length - 1; j++) {
@@ -498,7 +495,7 @@ router.get('/products/:id', async(req, res) => {
             }
         }
     }
-   
+
     bidder_name = listBidder1[listBidder1.length - 1].name;
     bidder_name = bidder_name.substring(bidder_name.lastIndexOf(" ") + 1);
     bidder_name = "****" + bidder_name;
@@ -562,10 +559,10 @@ router.get('/products/:id', async(req, res) => {
         // bidder_name = bidder_name.substring(bidder_name.lastIndexOf(" ") + 1);
         // top_price = list_bidder_object[list_bidder_object.length - 1].price;
         // bidder_name = "****" + bidder_name;
-        
+
         let bidder_name = "";
-        bidder_name= getBidderName[0].name;
-       
+        bidder_name = getBidderName[0].name;
+
         bidder_name = bidder_name.substring(bidder_name.lastIndexOf(" ") + 1);
         top_price = list_bidder_object[list_bidder_object.length - 1].price;
         bidder_name = "****" + bidder_name;
@@ -605,13 +602,13 @@ router.get('/products/:id', async(req, res) => {
             }
         }
     }
-    let is_seller=false;
-    let is_not_seller=false;
-    if(res.locals.authUser.id == product.id_seller)
-      {is_seller= true;}
-     else
-      {is_not_seller = true;
-      }
+    let is_seller = false;
+    let is_not_seller = false;
+    if (res.locals.isAuthenticated && res.locals.authUser.id == product.id_seller) {
+        is_seller = true;
+    } else {
+        is_not_seller = true;
+    }
     //   console.log("is_seller:",is_seller);
     //   console.log("is_not_seller:",is_not_seller);
     // console.log("name:",product.list_bidder_object)
