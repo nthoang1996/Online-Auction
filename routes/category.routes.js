@@ -30,7 +30,10 @@ router.get('/:id/products', async(req, res) => {
         categoryModel.count_product_by_cat('tblproduct', id),
         categoryModel.all_product_by_cat('tblproduct', id)
     ]);
-    let dt = new Date();
+
+    const cat = await categoryModel.single_by_id('tblcategory', id);
+    let offsetGMT = 7;
+    let dt = new Date(new Date().getTime() + offsetGMT * 3600 * 1000);
 
     if (rows.length == 0) {
         const catRows = await categoryModel.single_by_id('tblcategory', id);
@@ -81,7 +84,8 @@ router.get('/:id/products', async(req, res) => {
                 }
                 let bidder_name = "";
                 if (list_bidder_object.length > 0) {
-                    bidder_name = list_bidder_object[list_bidder_object.length - 1].name;
+                    let topBidder = await categoryModel.single_by_id('tbluser', list_bidder_object[list_bidder_object.length - 1].id);
+                    bidder_name = topBidder[0].name;
                     bidder_name = bidder_name.substring(bidder_name.lastIndexOf(" ") + 1);
                     top_price = list_bidder_object[list_bidder_object.length - 1].price;
                     bidder_name = "****" + bidder_name;
@@ -97,7 +101,7 @@ router.get('/:id/products', async(req, res) => {
                 let difference_in_date = difference_in_time / (1000 * 3600 * 24);
                 if (difference_in_date >= 1 && difference_in_date < 4) {
                     result[i]["date_time"] = "" + parseInt(difference_in_date) + " ngày nữa";
-                } else if (difference_in_date < 1) {
+                } else if (difference_in_date < 1 && difference_in_time > 0) {
                     let difference_in_hour = difference_in_time / (1000 * 3600);
                     if (difference_in_hour < 1) {
                         let difference_in_minute = difference_in_time / (1000 * 60);
@@ -116,7 +120,6 @@ router.get('/:id/products', async(req, res) => {
                 let isNew = false;
                 difference_in_time = dt.getTime() - result[i].start_date;
                 let difference_in_minute_start_date = difference_in_time / (1000 * 60);
-                console.log(difference_in_minute_start_date);
                 if (difference_in_minute_start_date < 60) {
                     result[i]["is_new"] = true;
                 }
@@ -152,7 +155,8 @@ router.get('/:id/products', async(req, res) => {
                 sortOrder,
                 sortFillter,
                 isIncrease,
-                isSortdate
+                isSortdate,
+                catName: cat[0].name
             });
         }
         // else {
@@ -287,7 +291,7 @@ router.get('/:id/products', async(req, res) => {
             let difference_in_date = difference_in_time / (1000 * 3600 * 24);
             if (difference_in_date >= 1 && difference_in_date < 4) {
                 rows[i]["date_time"] = "" + parseInt(difference_in_date) + " ngày nữa";
-            } else if (difference_in_date < 1) {
+            } else if (difference_in_date < 1 && difference_in_time > 0) {
                 let difference_in_hour = difference_in_time / (1000 * 3600);
                 if (difference_in_hour < 1) {
                     let difference_in_minute = difference_in_time / (1000 * 60);
@@ -306,7 +310,6 @@ router.get('/:id/products', async(req, res) => {
             let isNew = false;
             difference_in_time = dt.getTime() - rows[i].start_date;
             let difference_in_minute_start_date = difference_in_time / (1000 * 60);
-            console.log(difference_in_minute_start_date);
             if (difference_in_minute_start_date < 60) {
                 rows[i]["is_new"] = true;
             }
@@ -341,7 +344,8 @@ router.get('/:id/products', async(req, res) => {
             sortOrder,
             sortFillter,
             isIncrease,
-            isSortdate
+            isSortdate,
+            catName: cat[0].name
         });
     }
 });
@@ -411,11 +415,14 @@ router.get('/products/:id', async(req, res) => {
     product["seller_phone"] = rowsUser[0].phone;
     product["seller_email"] = rowsUser[0].email;
     let point = JSON.parse(rowsUser[0].point);
-    product["seller_point"] = point[0].seller;
     let like = parseInt(point[0].seller.substring(0, point[0].seller.indexOf("-")));
     let disLike = parseInt(point[0].seller.substring(point[0].seller.indexOf("-") + 1));
     let offsetGMT = 7;
     let dt = new Date(new Date().getTime() + offsetGMT * 3600 * 1000);
+    product["seller_point"] = like / (disLike + like) * 100;
+    if (like + disLike == 0) {
+        product["seller_point"] = 100;
+    }
 
     if (like / (like + disLike) > 0.8 || like + disLike == 0) {
         product["react_haha"] = true;
@@ -616,9 +623,15 @@ router.get('/products/:id', async(req, res) => {
         categoryProduct,
         validValidate,
         is_seller,
-        is_not_seller
+        is_not_seller,
     });
 });
+
+router.get('/list_evaluate/:kind/:id', async(req, res) => {
+    res.render('products/list_evaluate', {
+
+    });
+})
 
 
 module.exports = router;
