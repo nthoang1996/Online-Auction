@@ -44,6 +44,29 @@
             }
         });
     }
+   function deleteBidder(number,id){
+   
+        $.ajax({
+            global: false,
+            type: 'POST',
+            url: '/bidder/product/del',
+          
+            data: {
+                id,
+                number
+            },
+            success: function (result) {
+                
+                 if (result.success == true) {
+                     console.log(result.success);
+                        location.reload();
+                    }
+            },
+            error: function (request, status, error) {
+                serviceError();
+            }
+        });
+   }
 </script>
 {{/section}}
 <div class="listings-title">
@@ -241,15 +264,17 @@
                         <thead>
                             <tr>
                                 <th scope="col" width="5%" class="normal-fontsize font-weight-bold">#</th>
-                                <th scope="col" width="30%" class="normal-fontsize font-weight-bold">Thời điểm</th>
+                                <th scope="col" width="20%" class="normal-fontsize font-weight-bold">Thời điểm</th>
+                                <th scope="col" width="25%" class="normal-fontsize font-weight-bold">Giá</th>
                                 {{#if is_seller}}
-                                <th scope="col" width="30%" class="normal-fontsize font-weight-bold">Người mua(Đánh giá)</th>
-                            
+                                <th scope="col" width="20%" class="normal-fontsize font-weight-bold">Người mua(Đánh giá)</th>
+                              <th></th>
                             {{else if is_not_seller}}
-                                <th scope="col" width="30%" class="normal-fontsize font-weight-bold">Người mua</th>
+                                <th scope="col" width="20%" class="normal-fontsize font-weight-bold">Người mua</th>
                                {{else}}
                                 {{/if}}
-                                <th scope="col" width="35%" class="normal-fontsize font-weight-bold">Giá</th>
+                                
+                          
                             </tr>
                         </thead>
                         <tbody>
@@ -257,14 +282,20 @@
                             <tr>
                                 <th scope="row" class="normal-fontsize">{{number}}</button></th>
                                 <td class="normal-fontsize">{{date}}</td>
+                                   <td class="normal-fontsize">{{format price}}</td>
                                  {{#if is_seller}}
                                 <td class="normal-fontsize">{{name}}({{point}}%)</td>
+                                 <td>  <button class="button-trash" 
+                                             onclick="deleteBidder({{number}},{{curProductID}})"
+                           ><i class="fa fa-trash" aria-hidden="true"></i></button>
+                            </td>
                                  {{else if is_not_seller}}
                                  <td class="normal-fontsize">{{name}}</td>
                                 {{else}}
                                   {{/if}}
                                
-                                <td class="normal-fontsize">{{format price}}</td>
+                             
+                              
                             </tr>
                             {{/each}}
                             {{!-- <tr>

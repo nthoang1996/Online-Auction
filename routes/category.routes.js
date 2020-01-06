@@ -272,7 +272,7 @@ router.get('/:id/products', async(req, res) => {
                 }
             }
 
-          
+       // console.log("list_bidder_object 276: ",list_bidder_object)
             const getBidderName = await categoryModel.single_by_id('tbluser', list_bidder_object[list_bidder_object.length - 1].id);
             let bidder_name = "";
             //bidder_name = list_bidder_object[list_bidder_object.length - 1].name;
@@ -471,6 +471,7 @@ router.get('/products/:id', async(req, res) => {
         product.list_bidder_object[i].name = "****" + Bidder_of_Product[0].name.substring(Bidder_of_Product[0].name.lastIndexOf(" ") + 1);;
         product.list_bidder_object[i].is_seller=false;
          product.list_bidder_object[i].is_not_seller=false;
+         product.list_bidder_object[i].curProductID = req.params.id;
         if(res.locals.authUser.id == product.id_seller)
           {product.list_bidder_object[i].is_seller= true;}
          else

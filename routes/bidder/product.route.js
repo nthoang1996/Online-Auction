@@ -10,7 +10,7 @@ const router = express.Router();
 
 router.post('/fav', async(req, res) => {
     let list_productTemp = {};
-    console.log("log req body page fav post:", req.body.id);
+  
     const rows = await categoryModel.single_by_id('tblproduct', req.body.id);
     const tempUser = await categoryModel.single_by_id('tbluser', req.session.authUser.id);
     list_productTemp = JSON.parse(tempUser[0].list_product);
@@ -29,6 +29,36 @@ router.post('/fav', async(req, res) => {
     //     });
 });
 
+router.post('/del', async(req, res) => {
+    //console.log("id: ",req.body.id);
+    //console.log("number: ",req.body.number);
+    const rows = await categoryModel.single_by_id('tblproduct', req.body.id);
+   var list_bidder = JSON.parse(rows[0].list_bidder);
+ 
+    for(let i=0;i<list_bidder.length;i++)
+    {
+        if(list_bidder[i].number == req.body.number)
+        {
+            list_bidder.splice(i, 1);
+        }
+    }
+  
+  //  entity = { list_bidder: JSON.stringify(listBidder) };
+  //  result = await categoryModel.edit('tblproduct', entity, entityID);
+
+   
+ 
+    let entityId = {
+        "id": req.body.id
+    }
+    let entity = {
+        "list_bidder":JSON.stringify(list_bidder)
+       
+    };
+    const temp = await categoryModel.edit('tblproduct', entity,entityId);
+   
+    res.send({ success: true });
+})
 router.get('/list_bidding', async(req, res) => {
     const user = await categoryModel.single_by_id('tbluser', res.locals.authUser.id);
     let list_bidding = [];
