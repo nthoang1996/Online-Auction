@@ -30,15 +30,17 @@ router.post('/fav', async(req, res) => {
 });
 
 router.post('/del', async(req, res) => {
-    //console.log("id: ",req.body.id);
+    console.log("id: ",req.body.id);
     //console.log("number: ",req.body.number);
     const rows = await categoryModel.single_by_id('tblproduct', req.body.id);
    var list_bidder = JSON.parse(rows[0].list_bidder);
- 
+    var list_deny=JSON.parse(rows[0].list_deny) ;
     for(let i=0;i<list_bidder.length;i++)
     {
         if(list_bidder[i].number == req.body.number)
         {
+            console.log("list_bidder i :",list_bidder[i])
+            list_deny.push(list_bidder[i].id)
             list_bidder.splice(i, 1);
         }
     }
@@ -46,14 +48,14 @@ router.post('/del', async(req, res) => {
   //  entity = { list_bidder: JSON.stringify(listBidder) };
   //  result = await categoryModel.edit('tblproduct', entity, entityID);
 
-   
+ console.log("list_deny: ",JSON.stringify(list_deny)); 
  
     let entityId = {
         "id": req.body.id
     }
     let entity = {
-        "list_bidder":JSON.stringify(list_bidder)
-       
+        "list_bidder":JSON.stringify(list_bidder),
+        "list_deny":JSON.stringify(list_deny)
     };
     const temp = await categoryModel.edit('tblproduct', entity,entityId);
    

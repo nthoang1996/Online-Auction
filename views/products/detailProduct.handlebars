@@ -45,7 +45,7 @@
         });
     }
    function deleteBidder(number,id){
-   
+       console.log("number: ",number,"id: ",id);
         $.ajax({
             global: false,
             type: 'POST',
@@ -58,7 +58,7 @@
             success: function (result) {
                 
                  if (result.success == true) {
-                     console.log(result.success);
+                 
                         location.reload();
                     }
             },
@@ -230,9 +230,11 @@
 
                 <div class="col-sm-8 d-flex justify-content-center">
                     <div class="container-button ">
+                        {{#if this.product.notListDeny}}
                         <button class="button-favorite" style="margin-left:10px; margin-right:10px;" data-toggle="modal"
                             data-target="#modal_confirm_price" {{#if isBidder}}{{else}}disabled{{/if}} {{#if this.validValidate}}{{else}}disabled{{/if}}>&#10004;&nbsp;Ra
                             giá</button>
+                            {{/if}}
                     </div>
                     <div class="container-button">
                         <button class="button-favorite" style="margin-left:10px;"

@@ -475,6 +475,7 @@ router.get('/products/:id', async(req, res) => {
         } else {
             product.list_bidder_object[i].is_not_seller = true;
         }
+        product.list_bidder_object[i].curProductID = req.params.id;
     }
 
     let minPriceIndex = 0;
@@ -607,6 +608,12 @@ router.get('/products/:id', async(req, res) => {
         is_seller = true;
     } else {
         is_not_seller = true;
+    }
+    product["notListDeny"]=true;
+    if(product.list_deny.includes(res.locals.authUser.id))
+    {
+        console.log("Có");
+        product["notListDeny"]=false;
     }
     //   console.log("is_seller:",is_seller);
     //   console.log("is_not_seller:",is_not_seller);
