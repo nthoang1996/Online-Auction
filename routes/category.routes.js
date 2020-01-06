@@ -458,10 +458,6 @@ router.get('/products/:id', async(req, res) => {
         var bidderPoint = JSON.parse(Bidder_of_Product[0].point);
         like = parseInt(bidderPoint[0].bidder.substring(0, bidderPoint[0].bidder.indexOf("-")));
         disLike = parseInt(bidderPoint[0].bidder.substring(bidderPoint[0].bidder.indexOf("-") + 1));
-        // console.log("bidder name: ", Bidder_of_Product[0].name);
-        // console.log("like: ",like);
-        // console.log("disLike: ",disLike);
-        //  console.log("bidder name: ",bidder_name)
         var bidder = like + disLike;
         var count_like = 0;
         if (bidder == 0) {
@@ -510,17 +506,19 @@ router.get('/products/:id', async(req, res) => {
     let bidder_id = listBidder1[listBidder1.length - 1].id;
     let bidderInfo = await categoryModel.single_by_id('tbluser', bidder_id);
     point = JSON.parse(bidderInfo[0].point);
-    product["bidder_point"] = point[0].bidder;
     like = parseInt(point[0].bidder.substring(0, point[0].bidder.indexOf("-")));
     disLike = parseInt(point[0].bidder.substring(point[0].bidder.indexOf("-") + 1));
-
-
+    product["bidder_point"] = like / (disLike + like) * 100;
+    if (like + disLike == 0) {
+        product["bidder_point"] = 100;
+    }
 
     if (like / (like + disLike) > 0.8 || like + disLike == 0) {
         product["bidder_react_haha"] = true;
     } else {
         product["bidder_react_haha"] = false;
     }
+
     product["top_price"] = listBidder1[listBidder1.length - 1].price;
     product["recommend_price"] = parseInt(product["top_price"]) + parseInt(product["min_increase"]);
 
@@ -616,11 +614,12 @@ router.get('/products/:id', async(req, res) => {
     } else {
         is_not_seller = true;
     }
-    product["notListDeny"]=true;
-    if(product.list_deny.includes(res.locals.authUser.id))
-    {
-        console.log("Có");
-        product["notListDeny"]=false;
+    product["notListDeny"] = true;
+    if (res.locals.isAuthenticated) {
+        if (product.list_deny.includes(res.locals.authUser.id)) {
+            console.log("Có");
+            product["notListDeny"] = false;
+        }
     }
     //   console.log("is_seller:",is_seller);
     //   console.log("is_not_seller:",is_not_seller);
