@@ -40,6 +40,14 @@ router.post('/register', async(req, res) => {
     const N = 10;
     const hash = bcrypt.hashSync(req.body.password, N);
 
+    const user = await categoryModel.single_by_email('tbluser', req.body.email);
+    if (user != null) {
+        return res.render('guest/register', {
+            layout: false,
+            err_message: 'Email đã tồn tại'
+        });
+    }
+
     const entity = {
         "name": req.body.name,
         "phone": req.body.phone,
