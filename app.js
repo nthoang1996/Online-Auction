@@ -489,7 +489,8 @@ app.get('/search', async(req, res) => {
         }
         let bidder_name = "";
         if (list_bidder_object.length > 0) {
-            bidder_name = list_bidder_object[list_bidder_object.length - 1].name;
+            let topBidder = await categoryModel.single_by_id('tbluser', list_bidder_object[list_bidder_object.length - 1].id);
+            bidder_name = topBidder[0].name;
             bidder_name = bidder_name.substring(bidder_name.lastIndexOf(" ") + 1);
             top_price = list_bidder_object[list_bidder_object.length - 1].price;
             bidder_name = "****" + bidder_name;
