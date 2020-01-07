@@ -412,6 +412,8 @@ router.get('/products/:id', async(req, res) => {
     const product = rows[0];
     const rowsUser = await categoryModel.single_by_id('tbluser', product.id_seller);
     product["seller_name"] = rowsUser[0].name;
+    product["seller_id"] = rowsUser[0].id;
+    console.log("rowsUser[0].id: ",rowsUser[0].id)
     product["seller_phone"] = rowsUser[0].phone;
     product["seller_email"] = rowsUser[0].email;
     let point = JSON.parse(rowsUser[0].point);
@@ -458,7 +460,7 @@ router.get('/products/:id', async(req, res) => {
         var bidderPoint = JSON.parse(Bidder_of_Product[0].point);
         like = parseInt(bidderPoint[0].bidder.substring(0, bidderPoint[0].bidder.indexOf("-")));
         disLike = parseInt(bidderPoint[0].bidder.substring(bidderPoint[0].bidder.indexOf("-") + 1));
-        // console.log("bidder name: ", Bidder_of_Product[0].name);
+     console.log("danh sach bidder name: ", Bidder_of_Product[0]);
         // console.log("like: ",like);
         // console.log("disLike: ",disLike);
         //  console.log("bidder name: ",bidder_name)
@@ -483,6 +485,7 @@ router.get('/products/:id', async(req, res) => {
             product.list_bidder_object[i].is_not_seller = true;
         }
         product.list_bidder_object[i].curProductID = req.params.id;
+        product.list_bidder_object[i].BidderID = Bidder_of_Product[0].id;
     }
 
     let minPriceIndex = 0;
@@ -635,8 +638,54 @@ router.get('/products/:id', async(req, res) => {
 });
 
 router.get('/list_evaluate/:kind/:id', async(req, res) => {
-    res.render('products/list_evaluate', {
+    // console.log("id: ",req.params.id);
+    let userByID = await categoryModel.single_by_id("tbluser", req.params.id);
+    let user = userByID[0];
+    let list_product_winning = [];
+    if(req.params.kind == "bidder"){
+        list_product_winning = JSON.parse(user.list_product_winner);
+    }
+    else{
+        list_product_winning = JSON.parse(user.list_product_selled);
+    }
+   
+    var rows = [];
+    for (let i = 0; i < list_product_winning.length; i++) {
+        if (list_product_winning[i].status != -1) {
+            var tempProduct = await categoryModel.single_by_id("tblproduct", list_product_winning[i].id);
+            rows.push(tempProduct[0]);
+        }
+    }
+     console.log("day la winning length: ",list_product_winning.length);
 
+    for (let i = 0; i < rows.length; i++) {
+        // rows[i]["status"] = rows[i].is_active == 1 ? "Bình thường" : "Vô hiệu hóa";
+        // rows[i]["can_disable"] = rows[i].is_active == 1 ? true : false;
+        rows[i]["start_date_format"] = moment(rows[i].start_date).format('DD-MM-YYYY');
+        rows[i]["end_date_format"] = moment(rows[i].end_date).format('DD-MM-YYYY HH:mm:ss');
+    
+
+        let listBidder = JSON.parse(rows[i].list_bidder);
+        if (listBidder.length > 0) {
+            rows[i]["top_price"] = listBidder[listBidder.length - 1].price;
+        } else {
+            rows[i]["top_price"] = rows[i].start_price;
+        }
+        rows[i]["cmt"] = list_product_winning[i].comment;
+        if (list_product_winning[i].status == 0)
+            rows[i]["status"] = "Không thích";
+        else
+            rows[i]["status"] = "Thích";
+        //  console.log("ngay bat dau",rows[i]["start_date_format"]);
+
+        let seller = await categoryModel.single_by_id("tbluser", rows[i].id_seller);
+        rows[i]["name_seller"] = seller[0].name;
+        console.log("day la row ${i}",rows[i])
+    }
+    // console.log("day la nhung product winner: ",rows);
+   
+    res.render('products/list_evaluate', {
+        listProduct: rows
     });
 })
 

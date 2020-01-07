@@ -220,14 +220,14 @@ router.get('/list_evaluate/:kind', restrict, async(req, res) => {
             rows.push(tempProduct[0]);
         }
     }
-    // console.log("day la nhung product winner: ",rows);
+   //  console.log("day la winning length: ",list_product_winning.length);
 
     for (let i = 0; i < rows.length; i++) {
         // rows[i]["status"] = rows[i].is_active == 1 ? "Bình thường" : "Vô hiệu hóa";
         // rows[i]["can_disable"] = rows[i].is_active == 1 ? true : false;
         rows[i]["start_date_format"] = moment(rows[i].start_date).format('DD-MM-YYYY');
         rows[i]["end_date_format"] = moment(rows[i].end_date).format('DD-MM-YYYY HH:mm:ss');
-        //  console.log("day la row ${i}",rows[i])
+    
 
         let listBidder = JSON.parse(rows[i].list_bidder);
         if (listBidder.length > 0) {
@@ -244,8 +244,9 @@ router.get('/list_evaluate/:kind', restrict, async(req, res) => {
 
         let seller = await categoryModel.single_by_id("tbluser", rows[i].id_seller);
         rows[i]["name_seller"] = seller[0].name;
+        console.log("day la row ${i}",rows[i])
     }
-
+    // console.log("day la nhung product winner: ",rows);
     res.render('general/list_evaluate', {
         listProduct: rows,
         // empty: rows.length === 0,

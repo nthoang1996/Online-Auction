@@ -114,7 +114,8 @@
 
                                         <div class="info">
                                             <label>Điểm:</label>
-                                            <label>{{this.product.seller_point}}%&nbsp;<img width="20" height="20"
+                                          
+                                            <label><a href="/category/list_evaluate/seller/{{this.product.seller_id}}">{{this.product.seller_point}}%&nbsp;</a><img width="20" height="20"
                                                     style="display: inline-block;"
                                                     src="{{#if this.product.react_haha}}/picture/icon/smile.png{{else}}/picture/icon/sad.jpg{{/if}}" /></label>
                                         </div>
@@ -286,7 +287,7 @@
                                 <td class="normal-fontsize">{{date}}</td>
                                    <td class="normal-fontsize">{{format price}}</td>
                                  {{#if is_seller}}
-                                <td class="normal-fontsize">{{name}}({{point}}%)</td>
+                                <td class="normal-fontsize"><a href="/category/list_evaluate/bidder/{{BidderID}}">{{name}}({{point}}%)</a></td>
                                  <td>  <button class="button-trash" 
                                              onclick="deleteBidder({{number}},{{curProductID}})"
                            ><i class="fa fa-trash" aria-hidden="true"></i></button>

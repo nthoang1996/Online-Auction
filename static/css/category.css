@@ -9,7 +9,14 @@
     max-width: 1170px;
     margin: auto !important;
 }
-
+#table_evaluate th{
+    font-size:1.3rem;
+    text-align: center;
+}
+#table_evaluate td{
+    font-size:1.3rem;
+    text-align: center;
+}
 .sort-order {
     width: 34px;
     height: 34px;
