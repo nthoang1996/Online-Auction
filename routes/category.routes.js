@@ -82,6 +82,7 @@ router.get('/:id/products', async(req, res) => {
                         }
                     }
                 }
+
                 let bidder_name = "";
                 if (list_bidder_object.length > 0) {
                     let topBidder = await categoryModel.single_by_id('tbluser', list_bidder_object[list_bidder_object.length - 1].id);
@@ -411,6 +412,7 @@ router.get('/products/:id', async(req, res) => {
     const rows = await categoryModel.single_by_id('tblproduct', req.params.id);
     const product = rows[0];
     const rowsUser = await categoryModel.single_by_id('tbluser', product.id_seller);
+    let isOwnProduct = false;
     product["seller_name"] = rowsUser[0].name;
     product["seller_id"] = rowsUser[0].id;
     console.log("rowsUser[0].id: ",rowsUser[0].id)
@@ -452,18 +454,31 @@ router.get('/products/:id', async(req, res) => {
         product["end_date_format"] = moment(product.end_date).format('DD-MM-YYYY HH:mm:ss');
     }
     listBidder1 = JSON.parse(product.list_bidder);
+
+    let minPriceIndex = 0;
+    for (let j = 0; j < listBidder1.length - 1; j++) {
+        minPriceIndex = j;
+        for (let k = j + 1; k < listBidder1.length; k++) {
+            if (listBidder1[k].price < listBidder1[minPriceIndex].price) {
+                let temp = {...listBidder1[minPriceIndex] };
+                listBidder1[minPriceIndex] = {...listBidder1[k] };
+                listBidder1[k] = {...temp };
+            } else if (listBidder1[k].price == listBidder1[minPriceIndex].price) {
+                if (listBidder1[k].date > listBidder1[minPriceIndex].date) {
+                    let temp = {...listBidder1[minPriceIndex] };
+                    listBidder1[minPriceIndex] = {...listBidder1[k] };
+                    listBidder1[k] = {...temp };
+                }
+            }
+        }
+    }
+
     product["list_bidder_object"] = [...listBidder1];
     for (let i = 0; i < product.list_bidder_object.length; i++) {
         let Bidder_of_Product = await categoryModel.single_by_id('tbluser', product.list_bidder_object[i].id);
-
-
         var bidderPoint = JSON.parse(Bidder_of_Product[0].point);
         like = parseInt(bidderPoint[0].bidder.substring(0, bidderPoint[0].bidder.indexOf("-")));
         disLike = parseInt(bidderPoint[0].bidder.substring(bidderPoint[0].bidder.indexOf("-") + 1));
-     console.log("danh sach bidder name: ", Bidder_of_Product[0]);
-        // console.log("like: ",like);
-        // console.log("disLike: ",disLike);
-        //  console.log("bidder name: ",bidder_name)
         var bidder = like + disLike;
         var count_like = 0;
         if (bidder == 0) {
@@ -487,24 +502,7 @@ router.get('/products/:id', async(req, res) => {
         product.list_bidder_object[i].curProductID = req.params.id;
         product.list_bidder_object[i].BidderID = Bidder_of_Product[0].id;
     }
-
-    let minPriceIndex = 0;
-    for (let j = 0; j < listBidder1.length - 1; j++) {
-        minPriceIndex = j;
-        for (let k = j + 1; k < listBidder1.length; k++) {
-            if (listBidder1[k].price < listBidder1[minPriceIndex].price) {
-                let temp = {...listBidder1[minPriceIndex] };
-                listBidder1[minPriceIndex] = {...listBidder1[k] };
-                listBidder1[k] = {...temp };
-            } else if (listBidder1[k].price == listBidder1[minPriceIndex].price) {
-                if (listBidder1[k].date > listBidder1[minPriceIndex].date) {
-                    let temp = {...listBidder1[minPriceIndex] };
-                    listBidder1[minPriceIndex] = {...listBidder1[k] };
-                    listBidder1[k] = {...temp };
-                }
-            }
-        }
-    }
+    console.log(listBidder1);
 
     bidder_name = listBidder1[listBidder1.length - 1].name;
     bidder_name = bidder_name.substring(bidder_name.lastIndexOf(" ") + 1);
@@ -513,17 +511,19 @@ router.get('/products/:id', async(req, res) => {
     let bidder_id = listBidder1[listBidder1.length - 1].id;
     let bidderInfo = await categoryModel.single_by_id('tbluser', bidder_id);
     point = JSON.parse(bidderInfo[0].point);
-    product["bidder_point"] = point[0].bidder;
     like = parseInt(point[0].bidder.substring(0, point[0].bidder.indexOf("-")));
     disLike = parseInt(point[0].bidder.substring(point[0].bidder.indexOf("-") + 1));
-
-
+    product["bidder_point"] = like / (disLike + like) * 100;
+    if (like + disLike == 0) {
+        product["bidder_point"] = 100;
+    }
 
     if (like / (like + disLike) > 0.8 || like + disLike == 0) {
         product["bidder_react_haha"] = true;
     } else {
         product["bidder_react_haha"] = false;
     }
+
     product["top_price"] = listBidder1[listBidder1.length - 1].price;
     product["recommend_price"] = parseInt(product["top_price"]) + parseInt(product["min_increase"]);
 
@@ -619,11 +619,17 @@ router.get('/products/:id', async(req, res) => {
     } else {
         is_not_seller = true;
     }
-    product["notListDeny"]=true;
-    if(product.list_deny.includes(res.locals.authUser.id))
-    {
-        console.log("Có");
-        product["notListDeny"]=false;
+    product["notListDeny"] = true;
+    if (res.locals.isAuthenticated) {
+        if (product.list_deny.includes(res.locals.authUser.id)) {
+            console.log("Có");
+            product["notListDeny"] = false;
+        }
+    }
+    if (res.locals.isAuthenticated) {
+        if (product.id_seller == res.locals.authUser.id && !validValidate) {
+            isOwnProduct = true;
+        }
     }
     //   console.log("is_seller:",is_seller);
     //   console.log("is_not_seller:",is_not_seller);
@@ -634,6 +640,7 @@ router.get('/products/:id', async(req, res) => {
         validValidate,
         is_seller,
         is_not_seller,
+        isOwnProduct
     });
 });
 
