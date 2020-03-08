@@ -415,7 +415,7 @@ router.get('/products/:id', async(req, res) => {
     let isOwnProduct = false;
     product["seller_name"] = rowsUser[0].name;
     product["seller_id"] = rowsUser[0].id;
-    console.log("rowsUser[0].id: ",rowsUser[0].id)
+    console.log("rowsUser[0].id: ", rowsUser[0].id)
     product["seller_phone"] = rowsUser[0].phone;
     product["seller_email"] = rowsUser[0].email;
     let point = JSON.parse(rowsUser[0].point);
@@ -474,6 +474,7 @@ router.get('/products/:id', async(req, res) => {
     }
 
     product["list_bidder_object"] = [...listBidder1];
+    console.log(product);
     for (let i = 0; i < product.list_bidder_object.length; i++) {
         let Bidder_of_Product = await categoryModel.single_by_id('tbluser', product.list_bidder_object[i].id);
         var bidderPoint = JSON.parse(Bidder_of_Product[0].point);
@@ -649,13 +650,12 @@ router.get('/list_evaluate/:kind/:id', async(req, res) => {
     let userByID = await categoryModel.single_by_id("tbluser", req.params.id);
     let user = userByID[0];
     let list_product_winning = [];
-    if(req.params.kind == "bidder"){
+    if (req.params.kind == "bidder") {
         list_product_winning = JSON.parse(user.list_product_winner);
-    }
-    else{
+    } else {
         list_product_winning = JSON.parse(user.list_product_selled);
     }
-   
+
     var rows = [];
     for (let i = 0; i < list_product_winning.length; i++) {
         if (list_product_winning[i].status != -1) {
@@ -663,14 +663,14 @@ router.get('/list_evaluate/:kind/:id', async(req, res) => {
             rows.push(tempProduct[0]);
         }
     }
-     console.log("day la winning length: ",list_product_winning.length);
+    console.log("day la winning length: ", list_product_winning.length);
 
     for (let i = 0; i < rows.length; i++) {
         // rows[i]["status"] = rows[i].is_active == 1 ? "Bình thường" : "Vô hiệu hóa";
         // rows[i]["can_disable"] = rows[i].is_active == 1 ? true : false;
         rows[i]["start_date_format"] = moment(rows[i].start_date).format('DD-MM-YYYY');
         rows[i]["end_date_format"] = moment(rows[i].end_date).format('DD-MM-YYYY HH:mm:ss');
-    
+
 
         let listBidder = JSON.parse(rows[i].list_bidder);
         if (listBidder.length > 0) {
@@ -687,10 +687,10 @@ router.get('/list_evaluate/:kind/:id', async(req, res) => {
 
         let seller = await categoryModel.single_by_id("tbluser", rows[i].id_seller);
         rows[i]["name_seller"] = seller[0].name;
-        console.log("day la row ${i}",rows[i])
+        console.log("day la row ${i}", rows[i])
     }
     // console.log("day la nhung product winner: ",rows);
-   
+
     res.render('products/list_evaluate', {
         listProduct: rows
     });
