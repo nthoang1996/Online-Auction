@@ -6,11 +6,6 @@ const config = require('../config/default.json')
 const router = express.Router();
 
 router.get('/:id/products', async(req, res) => {
-    // for(const c of res.locals.lcCategories){
-    //     if(c.id === +req.params.id){
-    //         c.isActive = true;
-    //     }
-    // }
     const limit = config.paginate.limit;
     const id = req.params.id;
 
@@ -28,7 +23,7 @@ router.get('/:id/products', async(req, res) => {
 
     const [total, rows] = await Promise.all([
         categoryModel.count_product_by_cat('tblproduct', id),
-        categoryModel.all_product_by_cat('tblproduct', id)
+        categoryModel.all_product_not_expired('tblproduct', id)
     ]);
 
     const cat = await categoryModel.single_by_id('tblcategory', id);
@@ -454,6 +449,7 @@ router.get('/products/:id', async(req, res) => {
         product["end_date_format"] = moment(product.end_date).format('DD-MM-YYYY HH:mm:ss');
     }
     listBidder1 = JSON.parse(product.list_bidder);
+    product["list_bidder_object"] = [...listBidder1];
 
     let minPriceIndex = 0;
     for (let j = 0; j < listBidder1.length - 1; j++) {
@@ -473,10 +469,9 @@ router.get('/products/:id', async(req, res) => {
         }
     }
 
-    product["list_bidder_object"] = [...listBidder1];
-    console.log(product);
     for (let i = 0; i < product.list_bidder_object.length; i++) {
         let Bidder_of_Product = await categoryModel.single_by_id('tbluser', product.list_bidder_object[i].id);
+        console.log(product);
         var bidderPoint = JSON.parse(Bidder_of_Product[0].point);
         like = parseInt(bidderPoint[0].bidder.substring(0, bidderPoint[0].bidder.indexOf("-")));
         disLike = parseInt(bidderPoint[0].bidder.substring(bidderPoint[0].bidder.indexOf("-") + 1));
@@ -505,28 +500,38 @@ router.get('/products/:id', async(req, res) => {
     }
     console.log(listBidder1);
 
-    bidder_name = listBidder1[listBidder1.length - 1].name;
-    bidder_name = bidder_name.substring(bidder_name.lastIndexOf(" ") + 1);
-    bidder_name = "****" + bidder_name;
-    product["top_bidder"] = bidder_name;
-    let bidder_id = listBidder1[listBidder1.length - 1].id;
-    let bidderInfo = await categoryModel.single_by_id('tbluser', bidder_id);
-    point = JSON.parse(bidderInfo[0].point);
-    like = parseInt(point[0].bidder.substring(0, point[0].bidder.indexOf("-")));
-    disLike = parseInt(point[0].bidder.substring(point[0].bidder.indexOf("-") + 1));
-    product["bidder_point"] = like / (disLike + like) * 100;
-    if (like + disLike == 0) {
-        product["bidder_point"] = 100;
-    }
-
-    if (like / (like + disLike) > 0.8 || like + disLike == 0) {
+    if (listBidder1.length == 0) {
+        product["top_bidder"] = "Chưa ai ra giá"
+        product["bidder_point"] = 0;
         product["bidder_react_haha"] = true;
+        product["top_price"] = 0;
+        product["recommend_price"] = parseInt(product["start_price"]);
     } else {
-        product["bidder_react_haha"] = false;
-    }
+        let bidder_user = await categoryModel.single_by_id('tbluser', listBidder1[listBidder1.length - 1].id);
 
-    product["top_price"] = listBidder1[listBidder1.length - 1].price;
-    product["recommend_price"] = parseInt(product["top_price"]) + parseInt(product["min_increase"]);
+        bidder_name = bidder_user[0].name;
+        bidder_name = bidder_name.substring(bidder_name.lastIndexOf(" ") + 1);
+        bidder_name = "****" + bidder_name;
+        product["top_bidder"] = bidder_name;
+        let bidder_id = listBidder1[listBidder1.length - 1].id;
+        let bidderInfo = await categoryModel.single_by_id('tbluser', bidder_id);
+        point = JSON.parse(bidderInfo[0].point);
+        like = parseInt(point[0].bidder.substring(0, point[0].bidder.indexOf("-")));
+        disLike = parseInt(point[0].bidder.substring(point[0].bidder.indexOf("-") + 1));
+        product["bidder_point"] = like / (disLike + like) * 100;
+        if (like + disLike == 0) {
+            product["bidder_point"] = 100;
+        }
+
+        if (like / (like + disLike) > 0.8 || like + disLike == 0) {
+            product["bidder_react_haha"] = true;
+        } else {
+            product["bidder_react_haha"] = false;
+        }
+
+        product["top_price"] = listBidder1[listBidder1.length - 1].price;
+        product["recommend_price"] = parseInt(product["top_price"]) + parseInt(product["min_increase"]);
+    }
 
     let categoryProduct = await categoryModel.all_product_by_cat('tblproduct', product.cat_id);
     for (let i = 0; i < categoryProduct.length; i++) {
@@ -620,11 +625,11 @@ router.get('/products/:id', async(req, res) => {
     } else {
         is_not_seller = true;
     }
-    product["notListDeny"] = true;
+    product["listDeny"] = false;
     if (res.locals.isAuthenticated) {
         if (product.list_deny.includes(res.locals.authUser.id)) {
+            product["listDeny"] = true;
             console.log("Có");
-            product["notListDeny"] = false;
         }
     }
     if (res.locals.isAuthenticated) {

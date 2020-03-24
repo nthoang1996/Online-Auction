@@ -3,9 +3,11 @@ const bcrypt = require('bcryptjs');
 const router = express.Router();
 const categoryModel = require('../models/category.model');
 const request = require('request');
-var moment = require('moment');
+const moment = require('moment');
 const restrict = require('../middlewares/auth.mdw');
 const secretKey = "6LeQAMwUAAAAANC665bQZKP5KE-JUtd6UQdXcG-D";
+const passport = require('passport');
+
 router.get('/register', async(req, res) => {
     res.render('guest/register', { layout: false });
 });
@@ -68,13 +70,6 @@ router.get('/login', async(req, res) => {
 });
 
 router.post('/login', async(req, res) => {
-    // const user = {
-    //     email: req.body.email,
-    //     password: req.body.password
-    // };
-
-    console.log(req.body.email);
-
     const user = await categoryModel.single_by_email('tbluser', req.body.email);
     if (user === null) {
         return res.render('guest/login', {

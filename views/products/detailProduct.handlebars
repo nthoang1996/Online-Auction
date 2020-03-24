@@ -231,11 +231,9 @@
 
                 <div class="col-sm-8 d-flex justify-content-center">
                     <div class="container-button ">
-                        {{#if this.product.notListDeny}}
                         <button class="button-favorite" style="margin-left:10px; margin-right:10px;" data-toggle="modal"
                             data-target="#modal_confirm_price" {{#if isBidder}}{{else}}disabled{{/if}} {{#if this.validValidate}}{{else}}disabled{{/if}} {{#if this.isOwnProduct}}disabled{{/if}}>&#10004;&nbsp;Ra
                             giá</button>
-                            {{/if}}
                     </div>
                     <div class="container-button">
                         <button class="button-favorite" style="margin-left:10px;"
@@ -253,10 +251,15 @@
                     hoặc thêm sản phẩm vào chuyên mục yêu thích của mình</div>
             </div>
             {{/if}}
-             {{#if this.isOwnProduct}}
+            {{#if this.isOwnProduct}}
             <div class="row">
                 <div class="col-sm-4"></div>
                 <div class="col-sm-8 d-flex justify-content-center text-danger">Bạn không thể tự đấu giá sản phẩm của chính bản thân mình</div>
+            </div>
+            {{else if this.product.listDeny}}
+            <div class="row">
+                <div class="col-sm-4"></div>
+                <div class="col-sm-8 d-flex justify-content-center text-danger">Bạn bị người bán từ chối việc ra giá</div>
             </div>
             {{else if this.validValidate}}
             {{else}}
