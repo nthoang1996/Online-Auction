@@ -7,6 +7,25 @@ const moment = require('moment');
 const restrict = require('../middlewares/auth.mdw');
 const secretKey = "6LeQAMwUAAAAANC665bQZKP5KE-JUtd6UQdXcG-D";
 const passport = require('passport');
+const initializePassport = require('../config/passport-config');
+const flash = require('express-flash');
+const session = require('express-session')
+
+initializePassport(
+    passport,
+    email => user.find(user => user.email === email),
+    id => user.find(user => user.id === id)
+)
+
+router.use(flash());
+router.use(session({
+    secret: 'keyboard cat',
+    resave: false,
+    saveUninitialized: true,
+    // cookie: { secure: true }
+}))
+router.use(passport.initialize());
+router.use(passport.session());
 
 router.get('/register', async(req, res) => {
     res.render('guest/register', { layout: false });
@@ -66,34 +85,45 @@ router.post('/register', async(req, res) => {
 });
 
 router.get('/login', async(req, res) => {
-    res.render('guest/login', { layout: false });
+    res.render('guest/login', { layout: false, error: req.flash('error') });
 });
 
-router.post('/login', async(req, res) => {
-    const user = await categoryModel.single_by_email('tbluser', req.body.email);
-    if (user === null) {
-        return res.render('guest/login', {
-            layout: false,
-            err_message: 'Email không tồn tại'
-        });
-    }
+router.post('/login', passport.authenticate('local', {
+        failureRedirect: '/account/login',
+        failureFlash: true
+    }),
+    function(req, res) {
+        req.session.isAuthenticated = true;
+        req.session.authUser = req.user;
+        const url = req.query.retUrl || '/';
+        res.redirect(url);
+    });
 
-    const rs = bcrypt.compareSync(req.body.password, user.password);
-    if (rs === false) {
-        return res.render('guest/login', {
-            layout: false,
-            err_message: 'Mật khẩu bạn nhập vào sai'
-        });
-    }
+// router.post('/login', async(req, res) => {
+//     const user = await categoryModel.single_by_email('tbluser', req.body.email);
+//     if (user === null) {
+//         return res.render('guest/login', {
+//             layout: false,
+//             err_message: 'Email không tồn tại'
+//         });
+//     }
 
-    delete user.password;
-    req.session.isAuthenticated = true;
-    req.session.authUser = user;
+//     const rs = bcrypt.compareSync(req.body.password, user.password);
+//     if (rs === false) {
+//         return res.render('guest/login', {
+//             layout: false,
+//             err_message: 'Mật khẩu bạn nhập vào sai'
+//         });
+//     }
 
-    const url = req.query.retUrl || '/';
-    res.redirect(url);
-    // res.redirect(req.headers.referer);
-});
+//     delete user.password;
+// req.session.isAuthenticated = true;
+// req.session.authUser = user;
+
+//     const url = req.query.retUrl || '/';
+//     res.redirect(url);
+//     // res.redirect(req.headers.referer);
+// });
 
 router.post('/logout', (req, res) => {
     req.session.isAuthenticated = false;
@@ -104,7 +134,6 @@ router.post('/logout', (req, res) => {
 router.get('/profile', restrict, (req, res) => {
     let temp = req.session.authUser;
     temp["not_seller"] = !res.locals.isSeller;
-    // console.log('co phai la seller ko? ', temp["not_seller"]);
 
     temp["is_seller"] = res.locals.isSeller;
     if (!temp["is_seller"]) {
@@ -112,15 +141,6 @@ router.get('/profile', restrict, (req, res) => {
     }
     var listDanhGia1 = JSON.parse(temp.point);
     var listDanhGia = listDanhGia1[0];
-    // console.log('Day la Danh gia foreach :', listDanhGia);
-    //     var arr = [];
-    //     for (var key in listDanhGia) {
-    //         if (listDanhGia.hasOwnProperty(key)) {
-    //             arr.push(key + '=' + listDanhGia[key]);
-    //         }
-    //     };
-    //    // var result = arr.join(',');
-    //     console.log(arr[0]);
     let tempKeyPair = Object.entries(listDanhGia).map(([key, value]) => ({ key, value }))
     var likeSel = parseInt(tempKeyPair[0].value.split("-")[0]);
     var unlikeSel = parseInt(tempKeyPair[0].value.split("-")[1]);
@@ -176,7 +196,7 @@ router.post('/profile', async(req, res) => {
 
     const rs = bcrypt.compareSync(req.body.old_password, user.password);
     if (rs === false) {
-        return res.render('admin/profile', {
+        return res.render('general/profile', {
             layout: false,
             err_message: 'Mật khẩu bạn nhập vào sai'
         });
@@ -215,14 +235,14 @@ router.get('/list_evaluate/:kind', restrict, async(req, res) => {
             rows.push(tempProduct[0]);
         }
     }
-   //  console.log("day la winning length: ",list_product_winning.length);
+    //  console.log("day la winning length: ",list_product_winning.length);
 
     for (let i = 0; i < rows.length; i++) {
         // rows[i]["status"] = rows[i].is_active == 1 ? "Bình thường" : "Vô hiệu hóa";
         // rows[i]["can_disable"] = rows[i].is_active == 1 ? true : false;
         rows[i]["start_date_format"] = moment(rows[i].start_date).format('DD-MM-YYYY');
         rows[i]["end_date_format"] = moment(rows[i].end_date).format('DD-MM-YYYY HH:mm:ss');
-    
+
 
         let listBidder = JSON.parse(rows[i].list_bidder);
         if (listBidder.length > 0) {
@@ -239,7 +259,7 @@ router.get('/list_evaluate/:kind', restrict, async(req, res) => {
 
         let seller = await categoryModel.single_by_id("tbluser", rows[i].id_seller);
         rows[i]["name_seller"] = seller[0].name;
-        console.log("day la row ${i}",rows[i])
+        console.log("day la row ${i}", rows[i])
     }
     // console.log("day la nhung product winner: ",rows);
     res.render('general/list_evaluate', {
