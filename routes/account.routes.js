@@ -131,15 +131,15 @@ router.post('/logout', (req, res) => {
     res.redirect(req.headers.referer);
 });
 
-router.get('/profile', restrict, (req, res) => {
-    let temp = req.session.authUser;
-    temp["not_seller"] = !res.locals.isSeller;
+router.get('/profile', restrict, async(req, res) => {
+    const user = await categoryModel.single_by_id('tbluser', req.session.authUser.id);
+    user[0]["not_seller"] = !res.locals.isSeller;
 
-    temp["is_seller"] = res.locals.isSeller;
-    if (!temp["is_seller"]) {
-        temp["is_bidder"] = res.locals.isBidder;
+    user[0]["is_seller"] = res.locals.isSeller;
+    if (!user[0]["is_seller"]) {
+        user[0]["is_bidder"] = res.locals.isBidder;
     }
-    var listDanhGia1 = JSON.parse(temp.point);
+    var listDanhGia1 = JSON.parse(user[0].point);
     var listDanhGia = listDanhGia1[0];
     let tempKeyPair = Object.entries(listDanhGia).map(([key, value]) => ({ key, value }))
     var likeSel = parseInt(tempKeyPair[0].value.split("-")[0]);
@@ -147,12 +147,12 @@ router.get('/profile', restrict, (req, res) => {
     var seller = likeSel + unlikeSel;
     //   console.log("Key Value: ",like+unlike);
     if (seller == 0) {
-        temp["likeSel"] = 100;
-        temp["unlikeSel"] = 100;
+        user[0]["likeSel"] = 100;
+        user[0]["unlikeSel"] = 100;
     }
     if (seller > 0) {
-        temp["likeSel"] = Math.ceil(likeSel / seller * 100);
-        temp["unlikeSel"] = unlikeSel / seller * 100;
+        user[0]["likeSel"] = Math.ceil(likeSel / seller * 100);
+        user[0]["unlikeSel"] = unlikeSel / seller * 100;
     }
 
 
@@ -161,18 +161,17 @@ router.get('/profile', restrict, (req, res) => {
     var bidder = likeBid + unlikeBid;
     //   console.log("Key Value: ",like+unlike);
     if (bidder == 0) {
-        temp["likeBid"] = 100;
-        temp["unlikeBid"] = 100;
+        user[0]["likeBid"] = 100;
+        user[0]["unlikeBid"] = 100;
     }
     if (bidder > 0) {
-        temp["likeBid"] = Math.ceil(likeBid / bidder * 100);
-        temp["unlikeBid"] = unlikeBid / bidder * 100;
+        user[0]["likeBid"] = Math.ceil(likeBid / bidder * 100);
+        user[0]["unlikeBid"] = unlikeBid / bidder * 100;
     }
 
     res.render('general/profile', {
-
         layout: false,
-        profile: temp,
+        profile: user[0],
 
     });
 
@@ -180,30 +179,25 @@ router.get('/profile', restrict, (req, res) => {
 
 router.post('/profile', async(req, res) => {
     let entityId = { id: req.session.authUser.id };
-    const hash = bcrypt.hashSync(req.body.new_password, 10);
-    const user = await categoryModel.single_by_email('tbluser', req.body.email);
+    const user = await categoryModel.single_by_id('tbluser', req.session.authUser.id);
 
     const entity = {
         "name": req.body.name,
         "phone": req.body.phone,
         "address": req.body.address,
         "email": req.body.email,
-        "password": hash,
-        "role": user.role,
-        "point": user.point,
+        "role": user[0].role,
+        "point": user[0].point,
         "is_active": 1
     };
-
-    const rs = bcrypt.compareSync(req.body.old_password, user.password);
-    if (rs === false) {
-        return res.render('general/profile', {
-            layout: false,
-            err_message: 'Mật khẩu bạn nhập vào sai'
-        });
+    try {
+        const edit = await categoryModel.edit("tbluser", entity, entityId);
+        console.log(edit);
+    } catch (err) {
+        console.log(err);
     }
-    const data = await categoryModel.edit("tbluser", entity, entityId);
 
-    res.redirect('/account/login');
+    res.redirect('/account/profile')
 });
 
 router.post('/promote', async(req, res) => {
